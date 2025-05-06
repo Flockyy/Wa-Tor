@@ -1,6 +1,7 @@
 #from typing import List
 from poisson import Poisson
 
+
 class Proie(Poisson):
     """
     Classe Proie (descendant de Poisson, qui tente de survivre en échapant aux prédateurs)

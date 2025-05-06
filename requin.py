@@ -1,6 +1,7 @@
 #from typing import
 from poisson import Poisson
 
+
 class Requin(Poisson):
     """
     Classe Requin (descendant de Poisson, est un prédateur qui doit manger des poissons pour survivre)

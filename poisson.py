@@ -1,3 +1,4 @@
+
 class Poisson:
     """
     Classe de base des êtres vivants sur WA-TOR.
