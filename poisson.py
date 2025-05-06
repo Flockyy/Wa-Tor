@@ -1,4 +1,3 @@
-
 class Poisson:
     """
     Classe de base des êtres vivants sur WA-TOR.
@@ -11,5 +10,7 @@ class Poisson:
     @property
     def cycle_reproduction(self)-> int:
         return self.__cycle_reproduction
-    def symbole()-> str:
-        raise Exception("Méthode abstraite")
+    def symbole(self)-> str:
+        pass
+    def executer_cycle(self)-> None:
+        pass

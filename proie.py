@@ -13,5 +13,5 @@ class Proie(Poisson):
         super().__init__(cycle_reproduction)
     def __str__(self):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
-    def symbole()-> str:
+    def symbole(self)-> str:
         return "·"
