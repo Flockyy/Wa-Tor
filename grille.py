@@ -56,7 +56,7 @@ class Grille:
         else:
             raise IndexError("Position en dehors des limites de la grille.")
         
-    def change_coordonnees(self, i: int, j: int, direction: Direction):
+    def deplacer_coordonnees(self, i: int, j: int, direction: Direction):
         """Change les coordonnes en fonction de la direction.
         Args:
             i (int): La ligne de la cellule.
