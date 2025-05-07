@@ -1,7 +1,3 @@
-from proie import Proie
-from requin import Requin
-
-
 class Grille:
     def __init__(self, lignes: int, colonnes: int):
         """Initialise la grille avec le nombre donné de lignes et colonnes.

@@ -1,3 +1,5 @@
+from grille import Grille
+
 class Poisson:
     """
     Classe de base des êtres vivants sur WA-TOR.
@@ -10,7 +12,7 @@ class Poisson:
     @property
     def cycle_reproduction(self)-> int:
         return self.__cycle_reproduction
-    def symbole(self)-> str:
+    def caractere_symbole(self)-> str:
         pass
-    def executer_cycle(self)-> None:
+    def executer_cycle(self, x: int, y: int, grille: Grille)-> None:
         pass

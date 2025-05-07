@@ -1,4 +1,5 @@
 #from typing import List
+from grille import Grille
 from poisson import Poisson
 
 
@@ -13,5 +14,7 @@ class Proie(Poisson):
         super().__init__(cycle_reproduction)
     def __str__(self):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
-    def symbole(self)-> str:
-        return "·"
+    def caractere_symbole(self)-> str:
+        return "-"
+    def executer_cycle(self, x: int, y: int, grille: Grille)-> None:
+        pass
