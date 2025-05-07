@@ -3,6 +3,7 @@
 
 import random
 from typing import List
+from poisson import Poisson
 
 class Monde:
     """Class monde représente le monde de la simulation Wa-tor.
