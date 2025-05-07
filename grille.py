@@ -1,3 +1,8 @@
+class Coordonnees:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
 class Grille:
     def __init__(self, lignes: int, colonnes: int):
         """Initialise la grille avec le nombre donné de lignes et colonnes.
@@ -36,6 +41,17 @@ class Grille:
             self.grille[i][j] = requin
         else:
             raise IndexError("Position en dehors des limites de la grille.")
+    
+    
+    def valeur_coordonnees(x, y): #fct temporaire à supprimer
+        pass
+
+    def deplacer_coordonnees(x, y, direction): #fct temporaire à supprimer
+        pass
+
+    def deplacer_valeur(self,anciennes_coordonees: Coordonnees, nouvelles_coordonnees: Coordonnees)-> None:
+        self.grille[nouvelles_coordonnees.x][nouvelles_coordonnees.y] = self.grille[anciennes_coordonees.x][anciennes_coordonees.y]
+        self.grille[anciennes_coordonees.x][anciennes_coordonees.y] = None
 
     def __repr__(self):
         return f"Grille({self.lignes}, {self.colonnes}, {self.grille})"

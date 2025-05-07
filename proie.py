@@ -18,3 +18,4 @@ class Proie(Poisson):
         return "-"
     def executer_cycle(self, x: int, y: int, grille: Grille)-> None:
         pass
+    
