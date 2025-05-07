@@ -1,5 +1,5 @@
 #from typing import List
-from grille import Grille
+from grille import Grille, Coordonnees
 from poisson import Poisson
 
 
@@ -17,5 +17,5 @@ class Proie(Poisson):
     def caractere_symbole(self)-> str:
         return "-"
     def executer_cycle(self, x: int, y: int, grille: Grille)-> None:
-        pass
-    
+        nouvelles_coordonnees = grille.deplacer_coordonnees(Coordonnees(x, y), 'haut')
+        valeur = grille.valeur_coordonnees(nouvelles_coordonnees)
