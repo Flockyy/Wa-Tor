@@ -3,82 +3,97 @@
 
 import random
 from typing import List
-from poisson import Poisson
+from proie import Proie
+from requin import Requin
+from proie import Proie
+from grille import Grille
+
 
 class Monde:
     """Class monde représente le monde de la simulation Wa-tor.
     Cette classe est responsable de la gestion de la grille, y compris sa taille et le
-    placement de poissons et de requins.
+    placement de proies et de requins.
     """
-    def __init__(self, lignes: int, cols: int):
-        """Initialise la grille avec le nombre donnée de lignes et colonnes.
-        
+
+    def __init__(self, lignes: int, colonnes: int):
+        """Initialise le monde avec une grille de la taille donnée.
+
         Args:
-            lignes (int): Nombre de ligne dans la grille.
-            cols (int): Nombre de colonne dans la grille.
+            lignes (int): Nombre de lignes dans la grille.
+            colonnes (int): Nombre de colonnes dans la grille.
         """
         self.lignes = lignes
-        self.cols = cols
-        self.grille = [[None for _ in range(cols)] for _ in range(lignes)]
-    
-    def place_fishes(self, poissons: List[object]):
-        """Place une liste de poissons dans la grille.
-        
-        Args:
-            poissons (list): Liste d'objets poisson à placer dans la grille.
+        self.colonnes = colonnes
+        self.grille = Grille(lignes, colonnes)
+
+    def placer_poissons(self, proies: List[object], requins: List[object]):
+        """Place une liste de proies et de requins dans la grille.
+        Cette méthode place les proies et les requins dans la grille à des positions aléatoires.
         """
-        for poisson in poissons:
-            placed = False
-            while not placed:
-                row = random.randint(0, self.lignes - 1)
-                col = random.randint(0, self.cols - 1)
-                if self.grille[row][col] is None:
-                    self.grille[row][col] = poisson
-                    placed = True
-    
-    def place_sharks(self, requins: List[object]):
-        """Place une liste de requins dans la grille.
-        
-        Args:
-            requins (list): Liste d'objets requin à placer dans la grille.
-        """
+        if not isinstance(proies, list):
+            raise TypeError("Les proies doivent être une liste")
+        if not isinstance(requins, list):
+            raise TypeError("Les requins doivent être une liste")
+
+        # place les proies et les requins dans la grille aleatoirement
+        for proie in proies:
+            if not isinstance(proie, Proie):
+                raise TypeError("L'objet doit être une proie")
+            i, j = self._get_random_empty_cell()
+            while self.grille.grille[i][j] is not None:
+                i, j = self._get_random_empty_cell()
+            self.grille.placer_proie(proie, i, j)
+
+        # place les requins dans la grille aleatoirement
         for requin in requins:
-            placed = False
-            while not placed:
-                row = random.randint(0, self.rows - 1)
-                col = random.randint(0, self.cols - 1)
-                if self.grille[row][col] is None:
-                    self.grille[row][col] = requin
-                    placed = True
-                    
-    def update(self):
-        """Met à jour la grille en déplaçant les poissons et les requins."""
-        for i in range(self.lignes):
-            for j in range(self.cols):
-                if self.grille[i][j] is not None:
-                    self.grille[i][j].move(self.grille, i, j)
-                    # Si le poisson ou le requin est mort, le retirer de la grille
-                    if self.grille[i][j].is_dead():
-                        self.grille[i][j] = None
+            if not isinstance(requin, Requin):
+                raise TypeError("L'objet doit être un requin")
+            i, j = self._get_random_empty_cell()
+            while self.grille.grille[i][j] is not None:
+                i, j = self._get_random_empty_cell()
+            self.grille.placer_requin(requin, i, j)
 
-        self.update_fishes()
-        self.update_sharks()
-    
-    def update_fishes(self):
-        """Met à jour les poissons dans la grille."""
+    def _get_random_empty_cell(self):
+        """Retourne une cellule vide aléatoire dans la grille.
 
-        pass
+        Returns:
+            tuple: Coordonnées (i, j) de la cellule vide.
+        """
+        while True:
+            i = random.randint(0, self.lignes - 1)
+            j = random.randint(0, self.colonnes - 1)
+            if self.grille.grille[i][j] is None:
+                return i, j
 
-    def update_sharks(self):
-        """Met à jour les requins dans la grille."""
-        
-        pass
-        
+    def infos_coordonnées(self, i: int, j: int):
+        """Retourne les informations d'une cellule de la grille.
+
+        Args:
+            i (int): La ligne de la cellule.
+            j (int): La colonne de la cellule.
+
+        Returns:
+            tuple: symbole de la grille correspondant à la cellule.
+        """
+        if not isinstance(i, int) or not isinstance(j, int):
+            raise TypeError("Les coordonnées doivent être des entiers")
+
+        if i < 0 or i >= self.lignes or j < 0 or j >= self.colonnes:
+            raise IndexError("Coordonnées en dehors de la grille")
+
+        if self.grille[i][j] is None:
+            return None
+        elif isinstance(self.grille[i][j], Proie):
+            return self.grille[i][j].symbole()
+        elif isinstance(self.grille[i][j], Requin):
+            return self.grille[i][j].symbole()
+        else:
+            raise ValueError("Type de cellule inconnu")
+
+    def __repr__(self):
+        """Retourne une représentation textuelle du monde."""
+        return f"Monde({self.lignes}, {self.colonnes}, {self.grille})"
+
     def __str__(self):
-        """Return une représentation string de la grille."""
-        grille_str = ""
-        for ligne in self.grille:
-            grille_str += " ".join(str(cell) if cell else "." for cell in ligne) + "\n"
-        return grille_str
-    
-
+        """Retourne une représentation textuelle du monde."""
+        return str(self.grille)
