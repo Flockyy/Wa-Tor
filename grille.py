@@ -1,5 +1,10 @@
 from enum import Enum
 
+class Coordonnees:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
 class Grille:
@@ -40,6 +45,10 @@ class Grille:
             self.grille[i][j] = requin
         else:
             raise IndexError("Position en dehors des limites de la grille.")
+
+    def deplacer_valeur(self,anciennes_coordonees: Coordonnees, nouvelles_coordonnees: Coordonnees)-> None:
+        self.grille[nouvelles_coordonnees.x][nouvelles_coordonnees.y] = self.grille[anciennes_coordonees.x][anciennes_coordonees.y]
+        self.grille[anciennes_coordonees.x][anciennes_coordonees.y] = None
 
     def valeur_coordonnees(self, i: int, j: int):
         """Retourne la valeur d'une cellule de la grille.
