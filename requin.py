@@ -1,4 +1,5 @@
 #from typing import
+from grille import Grille
 from poisson import Poisson
 
 
@@ -20,7 +21,9 @@ class Requin(Poisson):
     @property
     def points_energie(self)-> int:
         return self.__points_energie
-    def symbole()-> str:
+    def caractere_symbole(self)-> str:
         return "O"
     def mange(self)-> None:
         self.__points_energie += self.__points_par_repas
+    def executer_cycle(self, x: int, y: int, grille: Grille)-> None:
+        pass

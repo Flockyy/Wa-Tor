@@ -60,20 +60,18 @@ def main():
         for i in range(args.hauteur):
             for j in range(args.largeur):
                 if isinstance(grille.grille[i][j], Requin):
-                    # requin.execute_cycle(requin, i, j, grille)
-                    pass
-                elif isinstance(grille.grille[i][j], Proie):
-                    # proie.execute_cycle(proie, i, j, grille)
-                    pass
-
+                    grille.grille[i][j].executer_cycle(i, j, grille)
         for i in range(args.hauteur):
             for j in range(args.largeur):
                 if isinstance(grille.grille[i][j], Proie):
-                    print("P", end=" ")
-                elif isinstance(grille.grille[i][j], Requin):
-                    print("R", end=" ")
-                else:
-                    print(".", end=" ")
+                    grille.grille[i][j].executer_cycle( i, j, grille)
+
+        for i in range(args.hauteur):
+            for j in range(args.largeur):
+                    if grille.grille[i][j] == None:
+                        print("·", end=" ") 
+                    else:
+                         print(grille.grille[i][j].caractere_symbole(), end=" ")
             print()
 
     # Sauvegarde des résultats dans un fichier
