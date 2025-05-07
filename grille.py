@@ -1,3 +1,7 @@
+from enum import Enum
+
+Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
+
 class Grille:
     def __init__(self, lignes: int, colonnes: int):
         """Initialise la grille avec le nombre donné de lignes et colonnes.
@@ -51,7 +55,39 @@ class Grille:
             return self.grille[i][j]
         else:
             raise IndexError("Position en dehors des limites de la grille.")
-    
+        
+    def change_coordonnees(self, i: int, j: int, direction: Direction):
+        """Change les coordonnes en fonction de la direction.
+        Args:
+            i (int): La ligne de la cellule.
+            j (int): La colonne de la cellule.
+            direction (Direction): La direction dans laquelle changer la valeur.
+        """
+        if direction == Direction.Haut:
+            if i - 1 < 0:
+                i = self.lignes - 1
+            else:
+                i -= 1
+        elif direction == Direction.Bas:
+            if i + 1 >= self.lignes:
+                i = 0
+            else:
+                i += 1
+        elif direction == Direction.Gauche:
+            if j - 1 < 0:
+                j = self.colonnes - 1
+            else:
+                j -= 1      
+        elif direction == Direction.Droite:
+            if j + 1 >= self.colonnes:
+                j = 0
+            else:
+                j += 1
+        else:
+            raise ValueError("Direction non valide.")
+        
+        return i, j
+        
     def __repr__(self):
         return f"Grille({self.lignes}, {self.colonnes}, {self.grille})"
 
