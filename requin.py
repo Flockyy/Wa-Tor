@@ -8,11 +8,13 @@ class Requin(Poisson):
 
     Args:
         cycle_reproduction (int): 12 par défaut. Nombre de cycle entre chaque reproduction.
-        points_energie (int): 6 par défaut. Nombre de cycles possibles sans manger.
+        points_energie (int): 6 par défaut. Nombre de chronons possibles sans manger. Points de vie de départ.
+        points_par_repas (int): 3 par défaut. Nombre de chronons ajoutés aux points de vie lors d'un repas. 
     """
-    def __init__(self, cycle_reproduction: int = 12, points_energie: int = 6):
+    def __init__(self, cycle_reproduction: int = 12, points_energie: int = 6, points_par_repas: int = 3):
         super().__init__(cycle_reproduction)
         self.__points_energie = points_energie
+        self.__points_par_repas = points_par_repas
     def __str__(self):
         return f"Requin ayant un cycle de reproduction de {self.cycle_reproduction} tours et {self.points_energie} tours de vie"
     @property
@@ -20,3 +22,5 @@ class Requin(Poisson):
         return self.__points_energie
     def symbole()-> str:
         return "O"
+    def mange(self)-> None:
+        self.__points_energie += self.__points_par_repas

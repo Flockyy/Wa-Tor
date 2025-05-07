@@ -1,8 +1,9 @@
+from poisson import Poisson
 from proie import Proie
 from requin import Requin
 
-ma_proie = Proie()
-mon_requin = Requin()
-print(ma_proie)
-print(mon_requin)
-pass
+def test_poisson():
+    """Test de la classe Poisson."""
+    le_poisson = Poisson(10)
+    assert le_poisson is not None
+    assert le_poisson.cycle_reproduction == 10
