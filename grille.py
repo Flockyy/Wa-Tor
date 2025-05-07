@@ -37,6 +37,21 @@ class Grille:
         else:
             raise IndexError("Position en dehors des limites de la grille.")
 
+    def valeur_coordonnees(self, i: int, j: int):
+        """Retourne la valeur d'une cellule de la grille.
+
+        Args:
+            i (int): La ligne de la cellule.
+            j (int): La colonne de la cellule.
+
+        Returns:
+            object: La valeur de la cellule.
+        """
+        if 0 <= i < self.lignes and 0 <= j < self.colonnes:
+            return self.grille[i][j]
+        else:
+            raise IndexError("Position en dehors des limites de la grille.")
+    
     def __repr__(self):
         return f"Grille({self.lignes}, {self.colonnes}, {self.grille})"
 
