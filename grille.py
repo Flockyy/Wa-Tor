@@ -75,11 +75,10 @@ class Grille:
         """Retourne la valeur d'une cellule de la grille.
 
         Args:
-            i (int): La ligne de la cellule.
-            j (int): La colonne de la cellule.
+            coordonnees (Coordonnees): coordonnées de la cellule à lire.
 
         Returns:
-            object: La valeur de la cellule.
+            any: La valeur de la cellule.
         """
         if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
             return self.grille[coordonnees.ligne][coordonnees.colonne]
