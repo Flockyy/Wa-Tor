@@ -1,9 +1,9 @@
 from enum import Enum
 
 class Coordonnees:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, ligne: int, colonne: int):
+        self.ligne = ligne
+        self.colonne = colonne
 
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
@@ -47,10 +47,10 @@ class Grille:
             raise IndexError("Position en dehors des limites de la grille.")
 
     def deplacer_valeur(self,anciennes_coordonees: Coordonnees, nouvelles_coordonnees: Coordonnees)-> None:
-        self.grille[nouvelles_coordonnees.x][nouvelles_coordonnees.y] = self.grille[anciennes_coordonees.x][anciennes_coordonees.y]
-        self.grille[anciennes_coordonees.x][anciennes_coordonees.y] = None
+        self.grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
+        self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = None
 
-    def valeur_coordonnees(self, i: int, j: int):
+    def valeur_coordonnees(self, coordonnees: Coordonnees):
         """Retourne la valeur d'une cellule de la grille.
 
         Args:
@@ -60,42 +60,44 @@ class Grille:
         Returns:
             object: La valeur de la cellule.
         """
-        if 0 <= i < self.lignes and 0 <= j < self.colonnes:
-            return self.grille[i][j]
+        if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
+            return self.grille[coordonnees.ligne][coordonnees.colonne]
         else:
             raise IndexError("Position en dehors des limites de la grille.")
         
-    def deplacer_coordonnees(self, i: int, j: int, direction: Direction):
+    def deplacer_coordonnees(self, coordonnees_initiales: Coordonnees, direction: Direction)-> Coordonnees:
         """Change les coordonnes en fonction de la direction.
         Args:
-            i (int): La ligne de la cellule.
-            j (int): La colonne de la cellule.
+            coordonnees_initiales: Coordonnees
             direction (Direction): La direction dans laquelle changer la valeur.
+        Returns:
+            Coordonnees
         """
+        nouvelles_coordonnees = Coordonnees(coordonnees_initiales.ligne, coordonnees_initiales.colonne)
         if direction == Direction.Haut:
-            if i - 1 < 0:
-                i = self.lignes - 1
+            if nouvelles_coordonnees.ligne - 1 < 0:
+                nouvelles_coordonnees.ligne = self.lignes - 1
             else:
-                i -= 1
+                nouvelles_coordonnees.ligne -= 1
         elif direction == Direction.Bas:
-            if i + 1 >= self.lignes:
-                i = 0
+            if nouvelles_coordonnees.ligne + 1 >= self.lignes:
+                nouvelles_coordonnees.ligne = 0
             else:
-                i += 1
+                nouvelles_coordonnees.ligne += 1
         elif direction == Direction.Gauche:
             if j - 1 < 0:
                 j = self.colonnes - 1
             else:
                 j -= 1      
         elif direction == Direction.Droite:
-            if j + 1 >= self.colonnes:
-                j = 0
+            if nouvelles_coordonnees.colonne + 1 >= self.colonnes:
+                nouvelles_coordonnees.colonne = 0
             else:
-                j += 1
+                nouvelles_coordonnees.colonne += 1
         else:
             raise ValueError("Direction non valide.")
         
-        return i, j
+        return nouvelles_coordonnees
         
     def __repr__(self):
         return f"Grille({self.lignes}, {self.colonnes}, {self.grille})"
