@@ -4,6 +4,10 @@ class Coordonnees:
     def __init__(self, ligne: int, colonne: int):
         self.ligne = ligne
         self.colonne = colonne
+    def __str__(self):
+        return f"Coordonnées = (Ligne {self.ligne} / Colonne {self.colonne})"
+    def __repr__(self):
+        return f"{__name__}({getattr(self)})" #TODO: Alexis: à vérifier...
 
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
