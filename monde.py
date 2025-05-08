@@ -103,30 +103,26 @@ class Monde:
                         print(self.grille.grille[ligne][colonne].caractere_symbole(), end=" ")
             print()
 
-    def infos_coordonnées(self, i: int, j: int):
+    def infos_coordonnées(self, coordonnees: Coordonnees)-> None | str:
         """Retourne les informations d'une cellule de la grille.
 
         Args:
-            i (int): La ligne de la cellule.
-            j (int): La colonne de la cellule.
+            coordonnees (Coordonnees) : coordonnées de la cellule dont on veut obtenir les coordonnées
 
         Returns:
-            tuple: symbole de la grille correspondant à la cellule.
+            None ou le nom (en chaîne de caractères) de la classe de l'objet présent dans la cellule.
         """
-        if not isinstance(i, int) or not isinstance(j, int):
-            raise TypeError("Les coordonnées doivent être des entiers")
+        if not isinstance(coordonnees, Coordonnees):
+            raise TypeError("Type incorrect pour le paramètre coordonnees")
 
-        if i < 0 or i >= self.lignes or j < 0 or j >= self.colonnes:
+        if coordonnees.ligne < 0 or coordonnees.ligne >= self.lignes or coordonnees.colonne < 0 or coordonnees.colonne >= self.colonnes:
             raise IndexError("Coordonnées en dehors de la grille")
 
-        if self.grille[i][j] is None:
+        contenu_cellule = self.grille[coordonnees.ligne][coordonnees.colonne]
+        if self.grille[coordonnees.ligne][coordonnees.colonne] is None: #Alexis: is None ou == None ? ya une différence ?
             return None
-        elif isinstance(self.grille[i][j], Proie):
-            return self.grille[i][j].symbole()
-        elif isinstance(self.grille[i][j], Requin):
-            return self.grille[i][j].symbole()
         else:
-            raise ValueError("Type de cellule inconnu")
+            return type(contenu_cellule).__name__
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
