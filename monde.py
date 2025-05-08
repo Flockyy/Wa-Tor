@@ -6,7 +6,7 @@ from typing import List
 from proie import Proie
 from requin import Requin
 from proie import Proie
-from grille import Grille
+from grille import Grille, Coordonnees
 
 
 class Monde:
@@ -15,16 +15,29 @@ class Monde:
     placement de proies et de requins.
     """
 
-    def __init__(self, lignes: int, colonnes: int):
+    def __init__(self, nb_lignes: int, nb_colonnes: int):
         """Initialise le monde avec une grille de la taille donnée.
 
         Args:
-            lignes (int): Nombre de lignes dans la grille.
-            colonnes (int): Nombre de colonnes dans la grille.
+            nb_lignes (int): Nombre de lignes dans la grille.
+            nb_colonnes (int): Nombre de colonnes dans la grille.
         """
-        self.lignes = lignes
-        self.colonnes = colonnes
-        self.grille = Grille(lignes, colonnes)
+        self.__nb_lignes = nb_lignes
+        self.__nb_colonnes = nb_colonnes
+        self.grille = Grille(nb_lignes, nb_colonnes)
+        self.__numero_chronon = 0
+
+    @property
+    def nb_lignes(self):
+        return self.__nb_lignes
+    
+    @property
+    def nb_colonnes(self):
+        return self.__nb_colonnes
+    
+    @property
+    def numero_chronon(self):
+        return self.__numero_chronon
 
     def placer_poissons(self, proies: List[object], requins: List[object]):
         """Place une liste de proies et de requins dans la grille.
@@ -60,10 +73,35 @@ class Monde:
             tuple: Coordonnées (i, j) de la cellule vide.
         """
         while True:
-            i = random.randint(0, self.lignes - 1)
-            j = random.randint(0, self.colonnes - 1)
+            i = random.randint(0, self.nb_lignes - 1)
+            j = random.randint(0, self.nb_colonnes - 1)
             if self.grille.grille[i][j] is None:
                 return i, j
+            
+    def executer_cycle(self)-> None:
+        """Exécution d'un cycle pour l'ensemble des poissons
+
+        Returns:
+            None
+        """
+        self.__numero_chronon += self.__numero_chronon
+        print(f"Chronon {self.numero_chronon}")
+        for ligne in range(self.nb_lignes):
+            for colonne in range(self.nb_colonnes):
+                if isinstance(self.grille.grille[ligne][colonne], Requin):
+                    self.grille.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.grille)
+        for ligne in range(self.nb_lignes):
+            for colonne in range(self.nb_colonnes):
+                if isinstance(self.grille.grille[ligne][colonne], Proie):
+                    self.grille.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.grille)
+
+        for ligne in range(self.nb_lignes):
+            for colonne in range(self.nb_colonnes):
+                    if self.grille.grille[ligne][colonne] == None:
+                        print("·", end=" ") 
+                    else:
+                        print(self.grille.grille[ligne][colonne].caractere_symbole(), end=" ")
+            print()
 
     def infos_coordonnées(self, i: int, j: int):
         """Retourne les informations d'une cellule de la grille.

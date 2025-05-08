@@ -18,9 +18,6 @@ def main():
             "--largeur", type=int, default=10, help="Nombre de colonnes dans la grille"
         )
         parser.add_argument(
-            "--chronon", type=int, default=10, help="Nombre d'étapes de simulation"
-        )
-        parser.add_argument(
             "--proie",
             type=int,
             default=5,
@@ -54,25 +51,10 @@ def main():
     # Placement des poissons et requins dans la grille
     monde.placer_poissons(proie, requins)
 
-    # Simulation de la grille
-    for chronon in range(args.chronon):
-        print(f"Chronon {chronon + 1}/{args.chronon}")
-        for i in range(args.hauteur):
-            for j in range(args.largeur):
-                if isinstance(grille.grille[i][j], Requin):
-                    grille.grille[i][j].executer_cycle(i, j, grille)
-        for i in range(args.hauteur):
-            for j in range(args.largeur):
-                if isinstance(grille.grille[i][j], Proie):
-                    grille.grille[i][j].executer_cycle( i, j, grille)
-
-        for i in range(args.hauteur):
-            for j in range(args.largeur):
-                    if grille.grille[i][j] == None:
-                        print("·", end=" ") 
-                    else:
-                         print(grille.grille[i][j].caractere_symbole(), end=" ")
-            print()
+    while True:
+        monde.executer_cycle()
+        if input("Entrez Q pour quitter ou n'importe quelle autre touche pour continuer...").lower() == "q":
+            break
 
     # Sauvegarde des résultats dans un fichier
     if args.fichier:
