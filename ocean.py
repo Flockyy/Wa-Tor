@@ -23,7 +23,7 @@ class Ocean:
         self.lignes = lignes
         self.colonnes = colonnes
         self.grille = [[None for _ in range(colonnes)] for _ in range(lignes)]
-
+    
     def placer_proie(self, proie, i: int, j: int):
         """Place une proie dans la grille à la position donnée.
 

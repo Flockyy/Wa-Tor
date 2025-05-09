@@ -12,10 +12,28 @@ def main():
         """Parse les arguments de la ligne de commande."""
         parser = argparse.ArgumentParser(description="Wa-tor simulation")
         parser.add_argument(
-            "--hauteur", type=int, default=10, help="Nombre de lignes dans la grille"
+            "--auto", 
+            type=str, 
+            default="NON",
+            help="Automatiser la simulation (OUI ou NON)"
         )
         parser.add_argument(
-            "--largeur", type=int, default=10, help="Nombre de colonnes dans la grille"
+            "--chronon",
+            type=int,
+            default=10,
+            help="Nombre d'étapes de simulation (cycle de vie)",
+        )
+        parser.add_argument(
+            "--hauteur", 
+            type=int, 
+            default=10, 
+            help="Nombre de lignes dans la grille"
+        )
+        parser.add_argument(
+            "--largeur", 
+            type=int, 
+            default=10, 
+            help="Nombre de colonnes dans la grille"
         )
         parser.add_argument(
             "--proie",
@@ -48,11 +66,18 @@ def main():
 
     # Placement des poissons et requins dans la grille
     monde.placer_poissons(proie, requins)
-
-    while True:
-        monde.executer_cycle()
-        if input("Entrez Q pour quitter ou n'importe quelle autre touche pour continuer...").lower() == "q":
-            break
+    
+    if args.auto.lower() == "oui":
+        cnt = 0
+        while cnt < args.chronon:
+            print(f"Cycle {cnt + 1}/{args.chronon}")
+            monde.executer_cycle()
+            cnt += 1
+    else:
+        while True:
+            monde.executer_cycle()
+            if input("Entrez Q pour quitter ou n'importe quelle autre touche pour continuer...").lower() == "q":
+                break
 
     # Sauvegarde des résultats dans un fichier
     if args.fichier:
