@@ -94,7 +94,6 @@ class Monde:
             for colonne in range(self.nb_colonnes):
                 if isinstance(self.ocean.grille[ligne][colonne], Proie):
                     self.ocean.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.ocean)
-        # debut modifs temporaires à ne pas récupérer
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                     valeur_cellule = self.ocean.valeur_coordonnees(Coordonnees(ligne, colonne))
@@ -103,7 +102,6 @@ class Monde:
                     else:
                         print(valeur_cellule.caractere_symbole(), end=" ")
             print()
-        # fin modifs temporaires à ne pas récupérer
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
