@@ -24,10 +24,16 @@ def main():
             help="Nombre d'étapes de simulation (cycle de vie)",
         )
         parser.add_argument(
-            "--hauteur", type=int, default=10, help="Nombre de lignes dans la grille"
+            "--hauteur", 
+            type=int, 
+            default=10, 
+            help="Nombre de lignes dans la grille"
         )
         parser.add_argument(
-            "--largeur", type=int, default=10, help="Nombre de colonnes dans la grille"
+            "--largeur", 
+            type=int, 
+            default=10, 
+            help="Nombre de colonnes dans la grille"
         )
         parser.add_argument(
             "--proie",
@@ -58,8 +64,6 @@ def main():
     proie = [Proie() for _ in range(args.proie)]
     requins = [Requin() for _ in range(args.requin)]
 
-    grille = monde.grille
-
     # Placement des poissons et requins dans la grille
     monde.placer_poissons(proie, requins)
     
@@ -80,9 +84,9 @@ def main():
         with open(args.fichier, "w") as f:
             for i in range(args.hauteur):
                 for j in range(args.largeur):
-                    if isinstance(grille.grille[i][j], Proie):
+                    if isinstance(monde.ocean.grille[i][j], Proie):
                         f.write("P ")
-                    elif isinstance(grille.grille[i][j], Requin):
+                    elif isinstance(monde.ocean.grille[i][j], Requin):
                         f.write("R ")
                     else:
                         f.write(". ")

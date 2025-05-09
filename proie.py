@@ -1,5 +1,5 @@
 #from typing import List
-from grille import Grille, Coordonnees, Direction
+from ocean import Ocean, Coordonnees, Direction
 from poisson import Poisson
 
 
@@ -12,10 +12,19 @@ class Proie(Poisson):
     """
     def __init__(self, cycle_reproduction: int = 8):
         super().__init__(cycle_reproduction)
+        self._age = 0
     def __str__(self):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
-        return "-"
-    def executer_cycle(self, coordonnees: Coordonnees, grille: Grille)-> None:
-        nouvelles_coordonnees = grille.deplacer_coordonnees(coordonnees, Direction.Haut)
-        valeur = grille.valeur_coordonnees(nouvelles_coordonnees)
+        return "P"
+    def _nouvelle_instance(self):
+        return Proie(self.cycle_reproduction)
+    def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
+        self.vieillisement()
+        nouvelles_coordonnees = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
+        valeur = ocean.infos_coordonnees(nouvelles_coordonnees)
+
+        if valeur is None:
+            ocean.effectuer_deplacement(coordonnees, nouvelles_coordonnees, self.gestion_reproduction())
+                
+# reproduction(), vieillissement a ajouter dans poisson
