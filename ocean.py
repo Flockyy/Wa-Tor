@@ -2,12 +2,28 @@ from enum import Enum
 
 class Coordonnees:
     def __init__(self, ligne: int, colonne: int):
-        self.ligne = ligne
-        self.colonne = colonne
+        self.__ligne = ligne
+        self.__colonne = colonne
     def __str__(self):
-        return f"Coordonnées = (Ligne {self.ligne} / Colonne {self.colonne})"
+        return f"Coordonnées = (Ligne {self.__ligne} / Colonne {self.__colonne})"
     def __repr__(self):
         return f"{__name__}({getattr(self)})" #TODO: Alexis: à vérifier...
+    
+    @property
+    def ligne(self):
+        return self.__ligne
+    
+    @ligne.setter
+    def ligne(self, valeur):
+        self.__ligne = valeur
+    
+    @property
+    def colonne(self):
+        return self.__colonne
+    
+    @colonne.setter
+    def colonne(self, valeur):
+        self.__colonne = valeur
 
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
@@ -28,7 +44,7 @@ class Ocean:
     def grille(self):
         return self.__grille
 
-    def placer_proie(self, proie, i: int, j: int):
+    def placer_proie(self, proie, coordonnees: Coordonnees):
         """Place une proie dans la grille à la position donnée.
 
         Args:
@@ -36,12 +52,12 @@ class Ocean:
             i (int): La ligne de la grille.
             j (int): La colonne de la grille.
         """
-        if 0 <= i < self.lignes and 0 <= j < self.colonnes:
-            self.__grille[i][j] = proie
+        if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
+            self.__grille[coordonnees.ligne][coordonnees.colonne] = proie
         else:
             raise IndexError("Position en dehors des limites de la grille.")
 
-    def placer_requin(self, requin, i: int, j: int):
+    def placer_requin(self, requin, coordonnees: Coordonnees):
         """Place un requin dans la grille à la position donnée.
 
         Args:
@@ -49,8 +65,8 @@ class Ocean:
             i (int): La ligne de la grille.
             j (int): La colonne de la grille.
         """
-        if 0 <= i < self.lignes and 0 <= j < self.colonnes:
-            self.__grille[i][j] = requin
+        if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
+            self.__grille[coordonnees.ligne][coordonnees.colonne] = requin
         else:
             raise IndexError("Position en dehors des limites de la grille.")
 
@@ -109,21 +125,25 @@ class Ocean:
             Coordonnees
         """
         nouvelles_coordonnees = Coordonnees(coordonnees_initiales.ligne, coordonnees_initiales.colonne)
+        # utilisation ici du setter 
         if direction == Direction.Haut:
             if nouvelles_coordonnees.ligne - 1 < 0:
                 nouvelles_coordonnees.ligne = self.lignes - 1
             else:
                 nouvelles_coordonnees.ligne -= 1
+
         elif direction == Direction.Bas:
             if nouvelles_coordonnees.ligne + 1 >= self.lignes:
                 nouvelles_coordonnees.ligne = 0
             else:
                 nouvelles_coordonnees.ligne += 1
+
         elif direction == Direction.Gauche:
-            if j - 1 < 0:
-                j = self.colonnes - 1
+            if nouvelles_coordonnees.colonne - 1 < 0:
+                nouvelles_coordonnees.colonne = self.colonnes - 1
             else:
-                j -= 1      
+                nouvelles_coordonnees.colonne -= 1     
+                 
         elif direction == Direction.Droite:
             if nouvelles_coordonnees.colonne + 1 >= self.colonnes:
                 nouvelles_coordonnees.colonne = 0
