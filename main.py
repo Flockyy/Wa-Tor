@@ -72,10 +72,28 @@ def main():
         while cnt < args.chronon:
             print(f"Cycle {cnt + 1}/{args.chronon}")
             monde.executer_cycle()
+            for ligne in range(args.hauteur):
+                for colonne in range(args.largeur):
+                        if monde.ocean.grille[ligne][colonne] == None:
+                            print("·", end=" ") 
+                        else:
+                            print(monde.ocean.grille[ligne][colonne].caractere_symbole(), end=" ")
+                print()
             cnt += 1
     else:
+        cnt = 0
         while True:
+            
             monde.executer_cycle()
+            print(f"Cycle {cnt + 1}")
+            for ligne in range(args.hauteur):
+                for colonne in range(args.largeur):
+                        if monde.ocean.grille[ligne][colonne] == None:
+                            print("·", end=" ") 
+                        else:
+                            print(monde.ocean.grille[ligne][colonne].caractere_symbole(), end=" ")
+                print()
+            cnt += 1
             if input("Entrez Q pour quitter ou n'importe quelle autre touche pour continuer...").lower() == "q":
                 break
 

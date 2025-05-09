@@ -85,8 +85,6 @@ class Monde:
         Returns:
             None
         """
-        self.__numero_chronon += 1
-        print(f"Chronon {self.numero_chronon}")
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
@@ -99,16 +97,6 @@ class Monde:
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Proie):
                     poisson.executer_cycle(coordonnees, self.ocean)
-
-        for ligne in range(self.nb_lignes):
-            for colonne in range(self.nb_colonnes):
-                coordonnees = Coordonnees(ligne, colonne)
-                poisson = self.ocean.valeur_coordonnees(coordonnees)
-                if poisson is None:
-                    print("·", end=" ") 
-                else:
-                    print(poisson.caractere_symbole(), end=" ")
-            print()
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
