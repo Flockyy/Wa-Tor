@@ -6,7 +6,7 @@ from typing import List
 from proie import Proie
 from requin import Requin
 from proie import Proie
-from grille import Grille, Coordonnees
+from ocean import Ocean, Coordonnees
 
 
 class Monde:
@@ -24,7 +24,7 @@ class Monde:
         """
         self.__nb_lignes = nb_lignes
         self.__nb_colonnes = nb_colonnes
-        self.grille = Grille(nb_lignes, nb_colonnes)
+        self.ocean = Ocean(nb_lignes, nb_colonnes)
         self.__numero_chronon = 0
 
     @property
@@ -53,18 +53,18 @@ class Monde:
             if not isinstance(proie, Proie):
                 raise TypeError("L'objet doit être une proie")
             i, j = self._get_random_empty_cell()
-            while self.grille.grille[i][j] is not None:
+            while self.ocean.grille[i][j] is not None:
                 i, j = self._get_random_empty_cell()
-            self.grille.placer_proie(proie, i, j)
+            self.ocean.placer_proie(proie, i, j)
 
         # place les requins dans la grille aleatoirement
         for requin in requins:
             if not isinstance(requin, Requin):
                 raise TypeError("L'objet doit être un requin")
             i, j = self._get_random_empty_cell()
-            while self.grille.grille[i][j] is not None:
+            while self.ocean.grille[i][j] is not None:
                 i, j = self._get_random_empty_cell()
-            self.grille.placer_requin(requin, i, j)
+            self.ocean.placer_requin(requin, i, j)
 
     def _get_random_empty_cell(self):
         """Retourne une cellule vide aléatoire dans la grille.
@@ -75,7 +75,7 @@ class Monde:
         while True:
             i = random.randint(0, self.nb_lignes - 1)
             j = random.randint(0, self.nb_colonnes - 1)
-            if self.grille.grille[i][j] is None:
+            if self.ocean.grille[i][j] is None:
                 return i, j
             
     def executer_cycle(self)-> None:
@@ -88,25 +88,25 @@ class Monde:
         print(f"Chronon {self.numero_chronon}")
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
-                if isinstance(self.grille.grille[ligne][colonne], Requin):
-                    self.grille.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.grille)
+                if isinstance(self.ocean.grille[ligne][colonne], Requin):
+                    self.ocean.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.ocean)
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
-                if isinstance(self.grille.grille[ligne][colonne], Proie):
-                    self.grille.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.grille)
+                if isinstance(self.ocean.grille[ligne][colonne], Proie):
+                    self.ocean.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.ocean)
 
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
-                    if self.grille.grille[ligne][colonne] == None:
+                    if self.ocean.grille[ligne][colonne] == None:
                         print("·", end=" ") 
                     else:
-                        print(self.grille.grille[ligne][colonne].caractere_symbole(), end=" ")
+                        print(self.ocean.grille[ligne][colonne].caractere_symbole(), end=" ")
             print()
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
-        return f"Monde({self.lignes}, {self.colonnes}, {self.grille})"
+        return f"Monde({self.lignes}, {self.colonnes}, {self.ocean})"
 
     def __str__(self):
         """Retourne une représentation textuelle du monde."""
-        return str(self.grille)
+        return str(self.ocean)

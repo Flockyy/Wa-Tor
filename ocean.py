@@ -11,7 +11,7 @@ class Coordonnees:
 
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
-class Grille:
+class Ocean:
     def __init__(self, lignes: int, colonnes: int):
         """Initialise la grille avec le nombre donné de lignes et colonnes.
 

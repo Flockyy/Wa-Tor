@@ -1,5 +1,5 @@
 #from typing import List
-from grille import Grille, Coordonnees, Direction
+from ocean import Ocean, Coordonnees, Direction
 from poisson import Poisson
 
 
@@ -16,6 +16,6 @@ class Proie(Poisson):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
         return "-"
-    def executer_cycle(self, coordonnees: Coordonnees, grille: Grille)-> None:
-        nouvelles_coordonnees = grille.deplacer_coordonnees(coordonnees, Direction.Haut)
-        valeur = grille.valeur_coordonnees(nouvelles_coordonnees)
+    def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
+        nouvelles_coordonnees = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
+        valeur = ocean.valeur_coordonnees(nouvelles_coordonnees)
