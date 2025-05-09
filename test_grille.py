@@ -1,4 +1,4 @@
-from grille import Grille
+from ocean import Grille
 
 
 def test_grille():

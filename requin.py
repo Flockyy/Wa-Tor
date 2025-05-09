@@ -1,5 +1,5 @@
 #from typing import
-from grille import Grille, Coordonnees, Direction
+from ocean import Ocean, Coordonnees, Direction
 from poisson import Poisson
 
 
@@ -25,9 +25,9 @@ class Requin(Poisson):
         return "O"
     def mange(self)-> None:
         self.__points_energie += self.__points_par_repas
-    def executer_cycle(self, coordonnees: Coordonnees, grille: Grille)-> None:
-        coordonnes_dessus = grille.deplacer_coordonnees(coordonnees, Direction.Haut)
-        infos_cellule_dessus = grille.infos_coordonnees(coordonnes_dessus)
+    def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
+        coordonnes_dessus = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
+        infos_cellule_dessus = ocean.infos_coordonnees(coordonnes_dessus)
         
         if (infos_cellule_dessus == None) or (infos_cellule_dessus == 'Proie'):
-            grille.deplacer_valeur(coordonnees, coordonnes_dessus)
+            ocean.deplacer_valeur(coordonnees, coordonnes_dessus)
