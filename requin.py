@@ -26,8 +26,8 @@ class Requin(Poisson):
     def mange(self)-> None:
         self.__points_energie += self.__points_par_repas
     def executer_cycle(self, coordonnees: Coordonnees, grille: Grille)-> None:
-        nouvelles_coordonnees = grille.deplacer_coordonnees(coordonnees, Direction.Haut)
-        valeur_emplacement = grille.valeur_coordonnees(nouvelles_coordonnees)
+        coordonnes_dessus = grille.deplacer_coordonnees(coordonnees, Direction.Haut)
+        infos_cellule_dessus = grille.infos_coordonnees(coordonnes_dessus)
         
-        if (valeur_emplacement == None) or (type(valeur_emplacement).__name__ == 'Proie'):
-            grille.deplacer_valeur(coordonnees, nouvelles_coordonnees)
+        if (infos_cellule_dessus == None) or (infos_cellule_dessus == 'Proie'):
+            grille.deplacer_valeur(coordonnees, coordonnes_dessus)

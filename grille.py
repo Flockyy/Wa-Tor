@@ -4,6 +4,10 @@ class Coordonnees:
     def __init__(self, ligne: int, colonne: int):
         self.ligne = ligne
         self.colonne = colonne
+    def __str__(self):
+        return f"Coordonnées = (Ligne {self.ligne} / Colonne {self.colonne})"
+    def __repr__(self):
+        return f"{__name__}({getattr(self)})" #TODO: Alexis: à vérifier...
 
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
@@ -50,15 +54,35 @@ class Grille:
         self.grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
         self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = None
 
+    def infos_coordonnees(self, coordonnees: Coordonnees)-> None | str:
+        """Retourne les informations d'une cellule de la grille.
+
+        Args:
+            coordonnees (Coordonnees) : coordonnées de la cellule dont on veut obtenir les coordonnées
+
+        Returns:
+            None ou le nom (en chaîne de caractères) de la classe de l'objet présent dans la cellule.
+        """
+        if not isinstance(coordonnees, Coordonnees):
+            raise TypeError("Type incorrect pour le paramètre coordonnees")
+
+        if coordonnees.ligne < 0 or coordonnees.ligne >= self.lignes or coordonnees.colonne < 0 or coordonnees.colonne >= self.colonnes:
+            raise IndexError("Coordonnées en dehors de la grille")
+
+        contenu_cellule = self.grille[coordonnees.ligne][coordonnees.colonne]
+        if self.grille[coordonnees.ligne][coordonnees.colonne] is None: #Alexis: is None ou == None ? ya une différence ?
+            return None
+        else:
+            return type(contenu_cellule).__name__
+
     def valeur_coordonnees(self, coordonnees: Coordonnees):
         """Retourne la valeur d'une cellule de la grille.
 
         Args:
-            i (int): La ligne de la cellule.
-            j (int): La colonne de la cellule.
+            coordonnees (Coordonnees): coordonnées de la cellule à lire.
 
         Returns:
-            object: La valeur de la cellule.
+            any: La valeur de la cellule.
         """
         if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
             return self.grille[coordonnees.ligne][coordonnees.colonne]
