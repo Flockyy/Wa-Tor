@@ -2,28 +2,12 @@ from enum import Enum
 
 class Coordonnees:
     def __init__(self, ligne: int, colonne: int):
-        self.__ligne = ligne
-        self.__colonne = colonne
+        self.ligne = ligne
+        self.colonne = colonne
     def __str__(self):
-        return f"Coordonnées = (Ligne {self.__ligne} / Colonne {self.__colonne})"
+        return f"Coordonnées = (Ligne {self.ligne} / Colonne {self.colonne})"
     def __repr__(self):
         return f"{__name__}({getattr(self)})" #TODO: Alexis: à vérifier...
-    
-    @property
-    def ligne(self):
-        return self.__ligne
-    
-    @ligne.setter
-    def ligne(self, valeur):
-        self.__ligne = valeur
-    
-    @property
-    def colonne(self):
-        return self.__colonne
-    
-    @colonne.setter
-    def colonne(self, valeur):
-        self.__colonne = valeur
 
 Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
 
@@ -36,9 +20,25 @@ class Ocean:
             colonnes (int): Nombre de colonne dans la grille.
         """
 
-        self.lignes = lignes
-        self.colonnes = colonnes
+        self.__lignes = lignes
+        self.__colonnes = colonnes
         self.__grille = [[None for _ in range(colonnes)] for _ in range(lignes)]
+
+    @property
+    def lignes(self):
+        return self.__lignes
+    
+    @lignes.setter
+    def lignes(self, valeur):
+        self.__lignes = valeur
+    
+    @property
+    def colonnes(self):
+        return self.__colonnes
+    
+    @colonnes.setter
+    def colonnes(self, valeur):
+        self.__colonnes = valeur
 
     @property
     def grille(self):
@@ -52,7 +52,7 @@ class Ocean:
             i (int): La ligne de la grille.
             j (int): La colonne de la grille.
         """
-        if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
+        if 0 <= coordonnees.ligne < self.__lignes and 0 <= coordonnees.colonne < self.__colonnes:
             self.__grille[coordonnees.ligne][coordonnees.colonne] = proie
         else:
             raise IndexError("Position en dehors des limites de la grille.")
@@ -65,7 +65,7 @@ class Ocean:
             i (int): La ligne de la grille.
             j (int): La colonne de la grille.
         """
-        if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
+        if 0 <= coordonnees.ligne < self.__lignes and 0 <= coordonnees.colonne < self.colonnes:
             self.__grille[coordonnees.ligne][coordonnees.colonne] = requin
         else:
             raise IndexError("Position en dehors des limites de la grille.")
@@ -93,7 +93,7 @@ class Ocean:
         if not isinstance(coordonnees, Coordonnees):
             raise TypeError("Type incorrect pour le paramètre coordonnees")
 
-        if coordonnees.ligne < 0 or coordonnees.ligne >= self.lignes or coordonnees.colonne < 0 or coordonnees.colonne >= self.colonnes:
+        if coordonnees.ligne < 0 or coordonnees.ligne >= self.__lignes or coordonnees.colonne < 0 or coordonnees.colonne >= self.colonnes:
             raise IndexError("Coordonnées en dehors de la grille")
 
         contenu_cellule = self.__grille[coordonnees.ligne][coordonnees.colonne]
@@ -111,7 +111,7 @@ class Ocean:
         Returns:
             any: La valeur de la cellule.
         """
-        if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
+        if 0 <= coordonnees.ligne < self.__lignes and 0 <= coordonnees.colonne < self.colonnes:
             return self.__grille[coordonnees.ligne][coordonnees.colonne]
         else:
             raise IndexError("Position en dehors des limites de la grille.")
@@ -128,24 +128,24 @@ class Ocean:
         # utilisation ici du setter 
         if direction == Direction.Haut:
             if nouvelles_coordonnees.ligne - 1 < 0:
-                nouvelles_coordonnees.ligne = self.lignes - 1
+                nouvelles_coordonnees.ligne = self.__lignes - 1
             else:
                 nouvelles_coordonnees.ligne -= 1
 
         elif direction == Direction.Bas:
-            if nouvelles_coordonnees.ligne + 1 >= self.lignes:
+            if nouvelles_coordonnees.ligne + 1 >= self.__lignes:
                 nouvelles_coordonnees.ligne = 0
             else:
                 nouvelles_coordonnees.ligne += 1
 
         elif direction == Direction.Gauche:
             if nouvelles_coordonnees.colonne - 1 < 0:
-                nouvelles_coordonnees.colonne = self.colonnes - 1
+                nouvelles_coordonnees.colonne = self.__colonnes - 1
             else:
                 nouvelles_coordonnees.colonne -= 1     
                  
         elif direction == Direction.Droite:
-            if nouvelles_coordonnees.colonne + 1 >= self.colonnes:
+            if nouvelles_coordonnees.colonne + 1 >= self.__colonnes:
                 nouvelles_coordonnees.colonne = 0
             else:
                 nouvelles_coordonnees.colonne += 1
@@ -155,7 +155,7 @@ class Ocean:
         return nouvelles_coordonnees
         
     def __repr__(self):
-        return f"Grille({self.lignes}, {self.colonnes}, {self.__grille})"
+        return f"Grille({self.__lignes}, {self.__colonnes}, {self.__grille})"
 
     def __str__(self):
         """Retourne une représentation textuelle de la grille."""
