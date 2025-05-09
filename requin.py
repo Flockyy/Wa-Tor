@@ -23,6 +23,8 @@ class Requin(Poisson):
         return self.__points_energie
     def caractere_symbole(self)-> str:
         return "O"
+    def _nouvelle_instance(self):
+        return Requin(self.cycle_reproduction, self.points_energie, self.__points_par_repas)
     def mange(self)-> None:
         self.__points_energie += self.__points_par_repas
     def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
@@ -30,4 +32,4 @@ class Requin(Poisson):
         infos_cellule_dessus = ocean.infos_coordonnees(coordonnes_dessus)
         
         if (infos_cellule_dessus == None) or (infos_cellule_dessus == 'Proie'):
-            ocean.deplacer_valeur(coordonnees, coordonnes_dessus)
+            ocean.effectuer_deplacement(coordonnees, coordonnes_dessus, self.gestion_reproduction())
