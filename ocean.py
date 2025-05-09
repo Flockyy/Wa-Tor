@@ -28,17 +28,9 @@ class Ocean:
     def lignes(self):
         return self.__lignes
     
-    @lignes.setter
-    def lignes(self, valeur):
-        self.__lignes = valeur
-    
     @property
     def colonnes(self):
         return self.__colonnes
-    
-    @colonnes.setter
-    def colonnes(self, valeur):
-        self.__colonnes = valeur
 
     @property
     def grille(self):
