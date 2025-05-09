@@ -50,9 +50,16 @@ class Ocean:
         else:
             raise IndexError("Position en dehors des limites de la grille.")
 
-    def deplacer_valeur(self,anciennes_coordonees: Coordonnees, nouvelles_coordonnees: Coordonnees)-> None:
+    def effectuer_deplacement(self,anciennes_coordonees: Coordonnees, nouvelles_coordonnees: Coordonnees, enfant: any = None)-> None:
+        """Gestion du déplacement d'un poisson 
+
+        Args:
+            anciennes_coordonees (Coordonnees): _description_
+            nouvelles_coordonnees (Coordonnees): _description_
+            enfant (any, optional): _description_. Defaults to None.
+        """
         self.grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
-        self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = None
+        self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = enfant
 
     def infos_coordonnees(self, coordonnees: Coordonnees)-> None | str:
         """Retourne les informations d'une cellule de la grille.
