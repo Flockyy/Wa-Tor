@@ -1,4 +1,4 @@
-from grille import Grille, Coordonnees
+from ocean import Ocean, Coordonnees
 
 class Poisson:
     """
@@ -14,5 +14,5 @@ class Poisson:
         return self.__cycle_reproduction
     def caractere_symbole(self)-> str:
         pass
-    def executer_cycle(self, coordonnees: Coordonnees, grille: Grille)-> None:
+    def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
         pass

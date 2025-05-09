@@ -1,5 +1,5 @@
 #from typing import List
-from grille import Grille, Coordonnees, Direction
+from ocean import Ocean, Coordonnees, Direction
 from poisson import Poisson
 
 
