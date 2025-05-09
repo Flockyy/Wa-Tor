@@ -52,19 +52,19 @@ class Monde:
         for proie in proies:
             if not isinstance(proie, Proie):
                 raise TypeError("L'objet doit être une proie")
-            i, j = self._get_random_empty_cell()
-            while self.ocean.grille[i][j] is not None:
+            coordonnees = self._get_random_empty_cell()
+            while self.ocean.valeur_coordonnees(coordonnees) is not None:
                 i, j = self._get_random_empty_cell()
-            self.ocean.placer_proie(proie, i, j)
+            self.ocean.placer_proie(proie, coordonnees)
 
         # place les requins dans la grille aleatoirement
         for requin in requins:
             if not isinstance(requin, Requin):
                 raise TypeError("L'objet doit être un requin")
-            i, j = self._get_random_empty_cell()
-            while self.ocean.grille[i][j] is not None:
+            coordonnees = self._get_random_empty_cell()
+            while self.ocean.valeur_coordonnees(coordonnees) is not None:
                 i, j = self._get_random_empty_cell()
-            self.ocean.placer_requin(requin, i, j)
+            self.ocean.placer_requin(requin, coordonnees)
 
     def _get_random_empty_cell(self):
         """Retourne une cellule vide aléatoire dans la grille.
@@ -73,10 +73,11 @@ class Monde:
             tuple: Coordonnées (i, j) de la cellule vide.
         """
         while True:
-            i = random.randint(0, self.nb_lignes - 1)
-            j = random.randint(0, self.nb_colonnes - 1)
-            if self.ocean.grille[i][j] is None:
-                return i, j
+            ligne = random.randint(0, self.nb_lignes - 1)
+            colonne = random.randint(0, self.nb_colonnes - 1)
+            coordonnees = Coordonnees(ligne, colonne)
+            if self.ocean.valeur_coordonnees(coordonnees) is None:
+                return coordonnees
             
     def executer_cycle(self)-> None:
         """Exécution d'un cycle pour l'ensemble des poissons
@@ -88,19 +89,25 @@ class Monde:
         print(f"Chronon {self.numero_chronon}")
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
-                if isinstance(self.ocean.grille[ligne][colonne], Requin):
-                    self.ocean.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.ocean)
+                coordonnees = Coordonnees(ligne, colonne)
+                poisson = self.ocean.valeur_coordonnees(coordonnees)
+                if isinstance(poisson, Requin):
+                    poisson.executer_cycle(coordonnees, self.ocean)
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
-                if isinstance(self.ocean.grille[ligne][colonne], Proie):
-                    self.ocean.grille[ligne][colonne].executer_cycle(Coordonnees(ligne, colonne), self.ocean)
+                coordonnees = Coordonnees(ligne, colonne)
+                poisson = self.ocean.valeur_coordonnees(coordonnees)
+                if isinstance(poisson, Proie):
+                    poisson.executer_cycle(coordonnees, self.ocean)
+
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
-                    valeur_cellule = self.ocean.valeur_coordonnees(Coordonnees(ligne, colonne))
-                    if valeur_cellule == None:
-                        print("·", end=" ") 
-                    else:
-                        print(valeur_cellule.caractere_symbole(), end=" ")
+                coordonnees = Coordonnees(ligne, colonne)
+                poisson = self.ocean.valeur_coordonnees(coordonnees)
+                if poisson is None:
+                    print("·", end=" ") 
+                else:
+                    print(poisson.caractere_symbole(), end=" ")
             print()
 
     def __repr__(self):
