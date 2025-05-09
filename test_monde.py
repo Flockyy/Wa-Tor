@@ -9,15 +9,15 @@ def test_monde():
     monde = Monde(5, 5)
 
     # Vérification de la taille de la grille
-    assert monde.lignes == 5, "Le nombre de lignes doit être 5"
-    assert monde.colonnes == 5, "Le nombre de colonnes doit être 5"
+    assert monde.nb_lignes == 5, "Le nombre de lignes doit être 5"
+    assert monde.nb_colonnes == 5, "Le nombre de colonnes doit être 5"
 
     # Vérification que la grille est vide au départ
 
-    for i in range(monde.lignes):
-        for j in range(monde.colonnes):
+    for i in range(monde.nb_lignes):
+        for j in range(monde.nb_colonnes):
             assert (
-                monde.grille.grille[i][j] is None
+                monde.ocean.grille[i][j] is None
             ), f"La cellule ({i}, {j}) ne doit pas contenir d'objet"
 
     # Création de poissons et requins
@@ -33,9 +33,9 @@ def test_monde():
 
     for proie in proies:
         found = False
-        for i in range(monde.lignes):
-            for j in range(monde.colonnes):
-                if monde.grille.grille[i][j] == proie:
+        for i in range(monde.nb_lignes):
+            for j in range(monde.nb_colonnes):
+                if monde.ocean.grille[i][j] == proie:
                     found = True
                     break
             if found:
@@ -44,9 +44,9 @@ def test_monde():
 
     for requin in requins:
         found = False
-        for i in range(monde.lignes):
-            for j in range(monde.colonnes):
-                if monde.grille.grille[i][j] == requin:
+        for i in range(monde.nb_lignes):
+            for j in range(monde.nb_colonnes):
+                if monde.ocean.grille[i][j] == requin:
                     found = True
                     break
             if found:
@@ -54,11 +54,11 @@ def test_monde():
         assert found, f"Le requin {requin} n'a pas été placé dans la grille"
 
     # Vérification que les cellules sont vides après le placement
-    for i in range(monde.lignes):
-        for j in range(monde.colonnes):
-            if monde.grille.grille[i][j] is not None:
+    for i in range(monde.nb_lignes):
+        for j in range(monde.nb_colonnes):
+            if monde.ocean.grille[i][j] is not None:
                 assert isinstance(
-                    monde.grille.grille[i][j], (Proie, Requin)
+                    monde.ocean.grille[i][j], (Proie, Requin)
                 ), f"La cellule ({i}, {j}) doit contenir un poisson ou un requin"
 
     # Vérification que le nombre de poissons et requins est correct
