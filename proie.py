@@ -20,7 +20,7 @@ class Proie(Poisson):
     def _nouvelle_instance(self):
         return Proie(self.cycle_reproduction)
     def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
-        self.vieillisement()
+        super().executer_cycle(coordonnees, ocean)
         nouvelles_coordonnees = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
         valeur = ocean.infos_coordonnees(nouvelles_coordonnees)
 
