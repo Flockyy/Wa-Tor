@@ -85,18 +85,21 @@ class Monde:
         Returns:
             None
         """
+        liste_poissons = [] # on récupère dans l'ordre les requins puis les proies…
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Requin):
-                    poisson.executer_cycle(coordonnees, self.ocean)
+                    liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Proie):
-                    poisson.executer_cycle(coordonnees, self.ocean)
+                    liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
+        for poisson in liste_poissons:
+            poisson["instance"].executer_cycle(poisson["coordonnes"], self.ocean)
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
