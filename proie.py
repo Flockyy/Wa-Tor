@@ -17,17 +17,18 @@ class Proie(Poisson):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
         return "P"
-    def executer_cycle(self, coordonnees: Coordonnees, grille: Grille)-> None:
-        nouvelles_coordonnees = grille.deplacer_coordonnees(coordonnees, Direction.Haut)
-        valeur = grille.valeur_coordonnees(nouvelles_coordonnees)
+    def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
+        self.vieillisement()
+        nouvelles_coordonnees = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
+        valeur = ocean.valeur_coordonnees(nouvelles_coordonnees)
 
         if valeur is None:
             if self.reproduction():
-                grille.grille[coordonnees.ligne][coordonnees.colonne] = Proie(self.cycle_reproduction)
+                ocean.grille[coordonnees.ligne][coordonnees.colonne] = Proie(self.cycle_reproduction)
                 self.reinitialisation_age()
             else:
-                grille.grille[coordonnees.ligne][coordonnees.colonne] = None
+                ocean.grille[coordonnees.ligne][coordonnees.colonne] = None
 
-            grille.grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self
+            ocean.grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self
                 
 # reproduction(), vieillissement a ajouter dans poisson
