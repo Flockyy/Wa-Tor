@@ -107,6 +107,9 @@ class Ocean:
             return self.__grille[coordonnees.ligne][coordonnees.colonne]
         else:
             raise IndexError("Position en dehors des limites de la grille.")
+    
+    def effacer_valeur(self, coordonnees: Coordonnees):
+        self.grille[coordonnees.ligne][coordonnees.colonne] = None
         
     def deplacer_coordonnees(self, coordonnees_initiales: Coordonnees, direction: Direction)-> Coordonnees:
         """Change les coordonnes en fonction de la direction.

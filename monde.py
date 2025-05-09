@@ -85,7 +85,6 @@ class Monde:
         Returns:
             None
         """
-        # self.__numero_chronon += self.__numero_chronon
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
