@@ -54,7 +54,7 @@ class Monde:
                 raise TypeError("L'objet doit être une proie")
             coordonnees = self._get_random_empty_cell()
             while self.ocean.valeur_coordonnees(coordonnees) is not None:
-                i, j = self._get_random_empty_cell()
+                coordonnees = self._get_random_empty_cell()
             self.ocean.placer_proie(proie, coordonnees)
 
         # place les requins dans la grille aleatoirement
@@ -63,7 +63,7 @@ class Monde:
                 raise TypeError("L'objet doit être un requin")
             coordonnees = self._get_random_empty_cell()
             while self.ocean.valeur_coordonnees(coordonnees) is not None:
-                i, j = self._get_random_empty_cell()
+                coordonnees = self._get_random_empty_cell()
             self.ocean.placer_requin(requin, coordonnees)
 
     def _get_random_empty_cell(self):
