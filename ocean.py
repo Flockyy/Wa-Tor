@@ -22,7 +22,11 @@ class Ocean:
 
         self.lignes = lignes
         self.colonnes = colonnes
-        self.grille = [[None for _ in range(colonnes)] for _ in range(lignes)]
+        self.__grille = [[None for _ in range(colonnes)] for _ in range(lignes)]
+
+    @property
+    def grille(self):
+        return self.__grille
 
     def placer_proie(self, proie, i: int, j: int):
         """Place une proie dans la grille à la position donnée.
@@ -33,7 +37,7 @@ class Ocean:
             j (int): La colonne de la grille.
         """
         if 0 <= i < self.lignes and 0 <= j < self.colonnes:
-            self.grille[i][j] = proie
+            self.__grille[i][j] = proie
         else:
             raise IndexError("Position en dehors des limites de la grille.")
 
@@ -46,7 +50,7 @@ class Ocean:
             j (int): La colonne de la grille.
         """
         if 0 <= i < self.lignes and 0 <= j < self.colonnes:
-            self.grille[i][j] = requin
+            self.__grille[i][j] = requin
         else:
             raise IndexError("Position en dehors des limites de la grille.")
 
@@ -58,8 +62,8 @@ class Ocean:
             nouvelles_coordonnees (Coordonnees): _description_
             enfant (any, optional): _description_. Defaults to None.
         """
-        self.grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
-        self.grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = enfant
+        self.__grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.__grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
+        self.__grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = enfant
 
     def infos_coordonnees(self, coordonnees: Coordonnees)-> None | str:
         """Retourne les informations d'une cellule de la grille.
@@ -76,8 +80,8 @@ class Ocean:
         if coordonnees.ligne < 0 or coordonnees.ligne >= self.lignes or coordonnees.colonne < 0 or coordonnees.colonne >= self.colonnes:
             raise IndexError("Coordonnées en dehors de la grille")
 
-        contenu_cellule = self.grille[coordonnees.ligne][coordonnees.colonne]
-        if self.grille[coordonnees.ligne][coordonnees.colonne] is None: #Alexis: is None ou == None ? ya une différence ?
+        contenu_cellule = self.__grille[coordonnees.ligne][coordonnees.colonne]
+        if self.__grille[coordonnees.ligne][coordonnees.colonne] is None: #Alexis: is None ou == None ? ya une différence ?
             return None
         else:
             return type(contenu_cellule).__name__
@@ -92,7 +96,7 @@ class Ocean:
             any: La valeur de la cellule.
         """
         if 0 <= coordonnees.ligne < self.lignes and 0 <= coordonnees.colonne < self.colonnes:
-            return self.grille[coordonnees.ligne][coordonnees.colonne]
+            return self.__grille[coordonnees.ligne][coordonnees.colonne]
         else:
             raise IndexError("Position en dehors des limites de la grille.")
         
@@ -131,12 +135,12 @@ class Ocean:
         return nouvelles_coordonnees
         
     def __repr__(self):
-        return f"Grille({self.lignes}, {self.colonnes}, {self.grille})"
+        return f"Grille({self.lignes}, {self.colonnes}, {self.__grille})"
 
     def __str__(self):
         """Retourne une représentation textuelle de la grille."""
         representation = ""
-        for ligne in self.grille:
+        for ligne in self.__grille:
             representation += (
                 " | ".join([str(cellule) if cellule else " " for cellule in ligne])
                 + "\n"
