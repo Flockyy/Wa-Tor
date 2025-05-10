@@ -29,10 +29,34 @@ class Requin(Poisson):
         self.__points_energie += self.__points_par_repas
     def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
         super().executer_cycle(coordonnees, ocean)
-        self.__points_energie -= 1
+        # ***********************************************  pour debugself.__points_energie -= 1
         if self.__points_energie == 0:
             ocean.effacer_valeur(coordonnees)
         else:
-            # on avance bêtement vers le haut
-            if ocean.infos_coordonnees(ocean.deplacer_coordonnees(coordonnees, Direction.Haut)) is None:
+            direction_choisie = Direction.Aucune
+            liste_orientations = []
+            coordonnees_proie = self.rechercher_poisson(ocean, coordonnees, Direction.Haut, "Proie")
+            if coordonnees_proie != None:
                 self.action_deplacement(coordonnees, Direction.Haut, ocean)
+                return
+                #liste_orientations.append(ocean.calculer_orientation(coordonnees, coordonnees_proie))
+            coordonnees_proie = self.rechercher_poisson(ocean, coordonnees, Direction.Bas, "Proie")
+            if coordonnees_proie != None:
+                self.action_deplacement(coordonnees, Direction.Bas, ocean)
+                return
+                #liste_orientations.append(ocean.calculer_orientation(coordonnees, coordonnees_proie))
+            coordonnees_proie = self.rechercher_poisson(ocean, coordonnees, Direction.Gauche, "Proie")
+            if coordonnees_proie != None:
+                self.action_deplacement(coordonnees, Direction.Gauche, ocean)
+                return
+                #liste_orientations.append(ocean.calculer_orientation(coordonnees, coordonnees_proie))
+            coordonnees_proie = self.rechercher_poisson(ocean, coordonnees, Direction.Droite, "Proie")
+            if coordonnees_proie != None:
+                self.action_deplacement(coordonnees, Direction.Droite, ocean)
+                return
+                #liste_orientations.append(ocean.calculer_orientation(coordonnees, coordonnees_proie))
+
+            #if len(liste_orientations) > 0:
+            #    liste_orientations.sort(key=lambda orientation: orientation.distance)
+            #    if ocean.infos_coordonnees(ocean.deplacer_coordonnees(coordonnees, liste_orientations[0].directions[0])) is None:
+            #        self.action_deplacement(coordonnees, liste_orientations[0].directions[0], ocean)
