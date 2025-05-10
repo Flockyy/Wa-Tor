@@ -38,7 +38,7 @@ def main():
         parser.add_argument(
             "--proie",
             type=int,
-            default=5,
+            default=15,
             help="Nombre de proies à placer dans la grille",
         )
         parser.add_argument(
