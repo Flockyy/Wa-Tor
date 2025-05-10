@@ -51,7 +51,7 @@ class Poisson(ABC):
             enfant = None
             if (self.__nb_cycles_depuis_derniere_repro >= self.__cycle_reproduction):
                 self.__nb_cycles_depuis_derniere_repro = 0
-                enfant = None # ********************************************** debug self._nouvelle_instance()
+                enfant = self._nouvelle_instance()
             ocean.effectuer_deplacement(
                 coordonnees_courantes,
                 ocean.deplacer_coordonnees(coordonnees_courantes, direction_choisie),
