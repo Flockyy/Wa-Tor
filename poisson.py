@@ -73,11 +73,11 @@ class Poisson(ABC):
         """
 
         def traiter_rang_suivant(coordonnees_precedentes: Coordonnees, distance_rang: int = 1)-> Coordonnees:
-            # Si on a parcouru toute la carte dans la direction demandée, on retourne None, on effectue le traitement.
+            # Si on a parcouru la moitié de la carte dans la direction demandée, on retourne None, on effectue le traitement.
             if (direction_observee in (Direction.Haut, Direction.Bas)):
-                limite_profondeur = ocean.lignes - 1
+                limite_profondeur = int(ocean.lignes / 2)
             else:
-                limite_profondeur = ocean.colonnes - 1
+                limite_profondeur = int(ocean.colonnes / 2)
             if distance_rang > limite_profondeur:
                 return None
             
@@ -93,11 +93,11 @@ class Poisson(ABC):
                 coordonnees_a = Coordonnees(coordonnees_observees.ligne, coordonnees_observees.colonne)
                 coordonnees_b = Coordonnees(coordonnees_observees.ligne, coordonnees_observees.colonne)
                 if (direction_observee in (Direction.Gauche, Direction.Droite)):
-                    direction_a = Direction.Gauche
-                    direction_b = Direction.Droite
-                else:
                     direction_a = Direction.Haut
                     direction_b = Direction.Bas
+                else:
+                    direction_a = Direction.Gauche
+                    direction_b = Direction.Droite
                 for position in range(int((longueur_rang - 1) / 2)):
                     coordonnees_a = ocean.deplacer_coordonnees(coordonnees_a, direction_a)
                     coordonnees_b = ocean.deplacer_coordonnees(coordonnees_b, direction_b)

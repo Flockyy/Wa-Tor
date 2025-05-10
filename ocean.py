@@ -40,9 +40,13 @@ class Direction(Enum):
                     return Direction.Haut
 
 class Orientation():
-    def __init__(self, distance: int = 0, directions: List[Direction] = []):
+    #def __init__(self, distance: int = 0, directions: List[Direction] = []):
+    #    self.distance = distance
+    #    self.directions = directions
+    #    print(f"Création Orientation : directions = {self.directions}")
+    def __init__(self, distance: int = 0):
         self.distance = distance
-        self.directions = directions
+        self.directions = []
     def ajouter_direction(self,direction: Direction):
         self.directions.append(direction)
 
@@ -222,12 +226,10 @@ class Ocean:
             else:
                 direction_verticale = Direction.Bas
         orientation = Orientation(distance = (distance_horizontale + distance_verticale))
-        if distance_verticale > distance_horizontale:
+        if direction_verticale != Direction.Aucune:
             orientation.ajouter_direction(direction_verticale)
+        if direction_horizontale != Direction.Aucune:
             orientation.ajouter_direction(direction_horizontale)
-        else:
-            orientation.ajouter_direction(direction_horizontale)
-            orientation.ajouter_direction(direction_verticale)
         return orientation
         
     def __repr__(self):
