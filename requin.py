@@ -33,7 +33,6 @@ class Requin(Poisson):
         if self.__points_energie == 0:
             ocean.effacer_valeur(coordonnees)
         else:
-            coordonnes_dessus = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
-            infos_cellule_dessus = ocean.infos_coordonnees(coordonnes_dessus)
-            if (infos_cellule_dessus == None) or (infos_cellule_dessus == 'Proie'):
-                ocean.effectuer_deplacement(coordonnees, coordonnes_dessus, self.gestion_reproduction())
+            # on avance bêtement vers le haut
+            if ocean.infos_coordonnees(ocean.deplacer_coordonnees(coordonnees, Direction.Haut)) is None:
+                self.action_deplacement(coordonnees, Direction.Haut, ocean)

@@ -9,7 +9,37 @@ class Coordonnees:
     def __repr__(self):
         return f"{__name__}({getattr(self)})" #TODO: Alexis: à vérifier...
 
-Direction = Enum('Direction', [('Haut'), ('Bas'), ('Gauche'), ('Droite')])
+#Direction = Enum('Direction', [('Aucune'), ('Haut'), ('Bas'), ('Gauche'), ('Droite')])
+
+class Direction(Enum):
+    Aucune = 0
+    Haut = 1
+    Droite = 2
+    Bas = 3
+    Gauche = 4
+    def tourner(direction_depart, sens_horaire: bool, direction_par_defaut = Aucune):
+        if direction_depart == Direction.Aucune:
+            return direction_par_defaut
+        else:  #TODO: Alexis: Trouver le moyen de passer par les valeurs ordinales, ce doit être forcément possible !
+            if sens_horaire:
+                if direction_depart == Direction.Haut:
+                    return Direction.Droite
+                elif direction_depart == Direction.Droite:
+                    return Direction.Bas
+                elif direction_depart == Direction.Bas:
+                    return Direction.Gauche
+                else:
+                    return Direction.Haut
+            else:
+                if direction_depart == Direction.Haut:
+                    return Direction.Gauche
+                elif direction_depart == Direction.Gauche:
+                    return Direction.Bas
+                elif direction_depart == Direction.Bas:
+                    return Direction.Droite
+                else:
+                    return Direction.Haut
+
 
 class Ocean:
     def __init__(self, lignes: int, colonnes: int):
@@ -70,8 +100,12 @@ class Ocean:
             nouvelles_coordonnees (Coordonnees): _description_
             enfant (any, optional): _description_. Defaults to None.
         """
-        self.__grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.__grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
-        self.__grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = enfant
+        if ((anciennes_coordonees.ligne == nouvelles_coordonnees.ligne) and (anciennes_coordonees.colonne == nouvelles_coordonnees.colonne)):
+            if (enfant != None):
+                raise Exception("Un enfant ne pas être ajouté dans l'océan sans déplacement.")
+        else:
+            self.__grille[nouvelles_coordonnees.ligne][nouvelles_coordonnees.colonne] = self.__grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne]
+            self.__grille[anciennes_coordonees.ligne][anciennes_coordonees.colonne] = enfant
 
     def infos_coordonnees(self, coordonnees: Coordonnees)-> None | str:
         """Retourne les informations d'une cellule de la grille.
@@ -120,34 +154,36 @@ class Ocean:
             Coordonnees
         """
         nouvelles_coordonnees = Coordonnees(coordonnees_initiales.ligne, coordonnees_initiales.colonne)
-        # utilisation ici du setter 
-        if direction == Direction.Haut:
-            if nouvelles_coordonnees.ligne - 1 < 0:
-                nouvelles_coordonnees.ligne = self.__lignes - 1
-            else:
-                nouvelles_coordonnees.ligne -= 1
-
-        elif direction == Direction.Bas:
-            if nouvelles_coordonnees.ligne + 1 >= self.__lignes:
-                nouvelles_coordonnees.ligne = 0
-            else:
-                nouvelles_coordonnees.ligne += 1
-
-        elif direction == Direction.Gauche:
-            if nouvelles_coordonnees.colonne - 1 < 0:
-                nouvelles_coordonnees.colonne = self.__colonnes - 1
-            else:
-                nouvelles_coordonnees.colonne -= 1     
-                 
-        elif direction == Direction.Droite:
-            if nouvelles_coordonnees.colonne + 1 >= self.__colonnes:
-                nouvelles_coordonnees.colonne = 0
-            else:
-                nouvelles_coordonnees.colonne += 1
+        if direction == Direction.Aucune:
+            return nouvelles_coordonnees
         else:
-            raise ValueError("Direction non valide.")
-        
-        return nouvelles_coordonnees
+            if direction == Direction.Haut:
+                if nouvelles_coordonnees.ligne - 1 < 0:
+                    nouvelles_coordonnees.ligne = self.__lignes - 1
+                else:
+                    nouvelles_coordonnees.ligne -= 1
+
+            elif direction == Direction.Bas:
+                if nouvelles_coordonnees.ligne + 1 >= self.__lignes:
+                    nouvelles_coordonnees.ligne = 0
+                else:
+                    nouvelles_coordonnees.ligne += 1
+
+            elif direction == Direction.Gauche:
+                if nouvelles_coordonnees.colonne - 1 < 0:
+                    nouvelles_coordonnees.colonne = self.__colonnes - 1
+                else:
+                    nouvelles_coordonnees.colonne -= 1     
+                    
+            elif direction == Direction.Droite:
+                if nouvelles_coordonnees.colonne + 1 >= self.__colonnes:
+                    nouvelles_coordonnees.colonne = 0
+                else:
+                    nouvelles_coordonnees.colonne += 1
+            else:
+                raise ValueError("Direction non valide.")
+            
+            return nouvelles_coordonnees
         
     def __repr__(self):
         return f"Grille({self.__lignes}, {self.__colonnes}, {self.__grille})"
