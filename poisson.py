@@ -29,13 +29,6 @@ class Poisson(ABC):
     def _nouvelle_instance(self)-> any:
         pass
 
-    def gestion_reproduction(self)-> any:
-        if (self.__nb_cycles_depuis_derniere_repro >= self.__cycle_reproduction):
-            self.__nb_cycles_depuis_derniere_repro = 0
-            return self._nouvelle_instance()
-        else:
-            return None
-
     @abstractmethod
     def caractere_symbole(self)-> str:
         pass
@@ -55,10 +48,14 @@ class Poisson(ABC):
         """
         self.__direction = direction_choisie
         if self.direction != Direction.Aucune:
+            enfant = None
+            if (self.__nb_cycles_depuis_derniere_repro >= self.__cycle_reproduction):
+                self.__nb_cycles_depuis_derniere_repro = 0
+                enfant = self._nouvelle_instance()
             ocean.effectuer_deplacement(
                 coordonnees_courantes,
                 ocean.deplacer_coordonnees(coordonnees_courantes, direction_choisie),
-                self.gestion_reproduction())
+                enfant)
 
     def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
         self.__nb_cycles_depuis_derniere_repro += 1
