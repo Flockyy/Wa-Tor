@@ -12,7 +12,7 @@ class Requin(Poisson):
         points_energie (int): 6 par défaut. Nombre de chronons possibles sans manger. Points de vie de départ.
         points_par_repas (int): 3 par défaut. Nombre de chronons ajoutés aux points de vie lors d'un repas. 
     """
-    def __init__(self, cycle_reproduction: int = 10, points_energie: int = 6, points_par_repas: int = 1):
+    def __init__(self, cycle_reproduction: int = 10, points_energie: int = 8, points_par_repas: int = 1):
         super().__init__(cycle_reproduction)
         self.__points_energie = points_energie
         self.__points_par_repas = points_par_repas
