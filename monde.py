@@ -54,7 +54,7 @@ class Monde:
                 raise TypeError("L'objet doit être une proie")
             coordonnees = self._get_random_empty_cell()
             while self.ocean.valeur_coordonnees(coordonnees) is not None:
-                i, j = self._get_random_empty_cell()
+                coordonnees = self._get_random_empty_cell()
             self.ocean.placer_proie(proie, coordonnees)
 
         # place les requins dans la grille aleatoirement
@@ -63,7 +63,7 @@ class Monde:
                 raise TypeError("L'objet doit être un requin")
             coordonnees = self._get_random_empty_cell()
             while self.ocean.valeur_coordonnees(coordonnees) is not None:
-                i, j = self._get_random_empty_cell()
+                coordonnees = self._get_random_empty_cell()
             self.ocean.placer_requin(requin, coordonnees)
 
     def _get_random_empty_cell(self):
@@ -85,19 +85,21 @@ class Monde:
         Returns:
             None
         """
-        # self.__numero_chronon += self.__numero_chronon
+        liste_poissons = [] # on récupère dans l'ordre les requins puis les proies…
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Requin):
-                    poisson.executer_cycle(coordonnees, self.ocean)
+                    liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Proie):
-                    poisson.executer_cycle(coordonnees, self.ocean)
+                    liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
+        for poisson in liste_poissons:
+            poisson["instance"].executer_cycle(poisson["coordonnes"], self.ocean)
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
