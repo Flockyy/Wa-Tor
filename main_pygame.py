@@ -5,7 +5,7 @@ from pygame_menu import themes
 from monde import Monde
 from requin import Requin
 from proie import Proie
-from ocean import Coordonnees
+from ocean import Ocean, Coordonnees
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
@@ -35,8 +35,8 @@ def start_game(nb_requins, nb_proies, nb_chronons, resolution, plein_ecran):
     # Création du monde
     monde = Monde(90, 60)
     # Création des proies et requins
-    proies = [Proie() for _ in range(nb_proies)]
-    requins = [Requin() for _ in range(nb_requins)]
+    proies = [Proie(monde.ocean) for _ in range(nb_proies)]
+    requins = [Requin(monde.ocean) for _ in range(nb_requins)]
     # Placement des proies et requins dans le monde
     
     monde.placer_poissons(proies, requins) 
@@ -75,7 +75,7 @@ def start_game(nb_requins, nb_proies, nb_chronons, resolution, plein_ecran):
 
         monde.executer_cycle()
 
-        sleep(0.1)  # Pause pour ralentir la simulation
+        sleep(0.05)  # Pause pour ralentir la simulation
             
 menu = pygame_menu.Menu(
     height=720,
