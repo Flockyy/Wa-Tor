@@ -5,6 +5,8 @@ import argparse
 from proie import Proie
 from requin import Requin
 from ocean import Coordonnees
+import os
+from time import sleep
 
 def main():
 
@@ -20,31 +22,31 @@ def main():
         parser.add_argument(
             "--chronon",
             type=int,
-            default=10,
+            default=30,
             help="Nombre d'étapes de simulation (cycle de vie)",
         )
         parser.add_argument(
             "--hauteur", 
             type=int, 
-            default=10, 
+            default=30, 
             help="Nombre de lignes dans la grille"
         )
         parser.add_argument(
             "--largeur", 
             type=int, 
-            default=10, 
+            default=30, 
             help="Nombre de colonnes dans la grille"
         )
         parser.add_argument(
             "--proie",
             type=int,
-            default=5,
+            default=20,
             help="Nombre de proies à placer dans la grille",
         )
         parser.add_argument(
             "--requin",
             type=int,
-            default=5,
+            default=10,
             help="Nombre de requins à placer dans la grille",
         )
         parser.add_argument(
@@ -70,6 +72,7 @@ def main():
     if args.auto.lower() == "oui":
         cnt = 0
         while cnt < args.chronon:
+            os.system("cls" if os.name == "nt" else "clear")
             print(f"Cycle {cnt + 1}/{args.chronon}")
             monde.executer_cycle()
             for ligne in range(args.hauteur):
@@ -80,9 +83,11 @@ def main():
                             print(monde.ocean.valeur_coordonnees(Coordonnees(ligne, colonne)).caractere_symbole(), end=" ")
                 print()
             cnt += 1
+            sleep(1)
     else:
         cnt = 0
         while True:
+            os.system("cls" if os.name == "nt" else "clear")
             monde.executer_cycle()
             print(f"Cycle {cnt + 1}")
             for ligne in range(args.hauteur):
