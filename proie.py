@@ -21,10 +21,15 @@ class Proie(Poisson):
         return Proie(self.cycle_reproduction)
     def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
         super().executer_cycle(coordonnees, ocean)
-        nouvelles_coordonnees = ocean.deplacer_coordonnees(coordonnees, Direction.Haut)
-        valeur = ocean.infos_coordonnees(nouvelles_coordonnees)
+        # Note : pas de gestion du viellissement de la proie (selon la doc).
+        #        Si on décide de la gérer, alors il faut déplacer la gestion du viuellissement de Requin vers Poisson.
 
-        if valeur is None:
-            ocean.effectuer_deplacement(coordonnees, nouvelles_coordonnees, self.gestion_reproduction())
-                
-# reproduction(), vieillissement a ajouter dans poisson
+        # on se déplace autant que possible en rond.
+        direction_choisie = self.direction
+        for _ in range(4):
+            direction_choisie = Direction.tourner(direction_choisie, True, Direction.Haut)
+            if ocean.infos_coordonnees(ocean.deplacer_coordonnees(coordonnees, direction_choisie)) is None:
+                break
+        else:
+            direction_choisie = Direction.Aucune
+        self.action_deplacement(coordonnees, direction_choisie, ocean)
