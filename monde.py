@@ -93,7 +93,7 @@ class Monde:
                 if isinstance(poisson, Requin):
                     liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
         for poisson in liste_poissons:
-            poisson["instance"].executer_cycle(poisson["coordonnes"], self.ocean)
+            poisson["instance"].executer_cycle(poisson["coordonnes"])
         liste_poissons = [] # les requins ont peut-être mangé... on passe la main aux proies survivantes.
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
@@ -102,7 +102,7 @@ class Monde:
                 if isinstance(poisson, Proie):
                     liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
         for poisson in liste_poissons:
-            poisson["instance"].executer_cycle(poisson["coordonnes"], self.ocean)
+            poisson["instance"].executer_cycle(poisson["coordonnes"])
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
