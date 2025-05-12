@@ -8,7 +8,8 @@ class Poisson(ABC):
     Args:
         cycle_reproduction (int): Nombre de cycle entre chaque reproduction
     """
-    def __init__(self, cycle_reproduction: int):
+    def __init__(self, ocean: Ocean , cycle_reproduction: int):
+        self._ocean = ocean
         self.__cycle_reproduction = cycle_reproduction
         self.__nb_cycles_depuis_derniere_repro = 0
         self.__direction = Direction.Aucune
@@ -33,7 +34,7 @@ class Poisson(ABC):
     def caractere_symbole(self)-> str:
         pass
 
-    def action_deplacement(self, coordonnees_courantes: Coordonnees, direction_choisie: Direction, ocean: Ocean):
+    def action_deplacement(self, coordonnees_courantes: Coordonnees, direction_choisie: Direction):
         """Action à effectuer à chaque cycle par le poisson, en décidant de la direction de déplacement choisie.
 
         Cette méthode
@@ -44,7 +45,6 @@ class Poisson(ABC):
         Args:
             coordonnees_courantes (Coordonnees): Coordonnées courantes avant déplacement.
             direction_choisie (Direction): Direction de déplacement choisie par le poisson
-            ocean (Ocean): Océan dans lequel évolue le poisson.
         """
         self.__direction = direction_choisie
         if self.direction != Direction.Aucune:
@@ -52,17 +52,16 @@ class Poisson(ABC):
             if (self.__nb_cycles_depuis_derniere_repro >= self.__cycle_reproduction):
                 self.__nb_cycles_depuis_derniere_repro = 0
                 enfant = self._nouvelle_instance()
-            ocean.effectuer_deplacement(
+            self._ocean.effectuer_deplacement(
                 coordonnees_courantes,
-                ocean.deplacer_coordonnees(coordonnees_courantes, direction_choisie),
+                self._ocean.deplacer_coordonnees(coordonnees_courantes, direction_choisie),
                 enfant)
 
-    def rechercher_poisson(self, ocean: Ocean, coordonnees_observation: Coordonnees, direction_observee: Direction, nom_classe_recherchee: str)-> Coordonnees | None:
+    def rechercher_poisson(self, coordonnees_observation: Coordonnees, direction_observee: Direction, nom_classe_recherchee: str)-> Coordonnees | None:
         """Recherche la position du poisson le plus proche (possédant la classe recherchée) dans la direction demandée.
         La recherche est effectuée en balayant un angle 90° dans la direction demandée.
 
         Args:
-            ocean (Ocean) : Océan dans lequel la recherche doit être faite
             coordonnees_observation (Coordonnees) : Coordonnees à partir desquelles la recherche est effectuée
             direction_observee (Direction): Direction dans laquelle la recherche est effectuée
             nom_classe_recherchee (str): Type de poisson (nom de classe) recherché.
@@ -75,9 +74,9 @@ class Poisson(ABC):
         def traiter_rang_suivant(coordonnees_precedentes: Coordonnees, distance_rang: int = 1)-> Coordonnees:
             # Si on a parcouru la moitié de la carte dans la direction demandée, on retourne None, on effectue le traitement.
             if (direction_observee in (Direction.Haut, Direction.Bas)):
-                limite_profondeur = int(ocean.lignes / 2)
+                limite_profondeur = int(self._ocean.lignes / 2)
             else:
-                limite_profondeur = int(ocean.colonnes / 2)
+                limite_profondeur = int(self._ocean.colonnes / 2)
             if distance_rang > limite_profondeur:
                 return None
             
@@ -86,8 +85,8 @@ class Poisson(ABC):
             #                 + 1 case en plus de chaque côté qui sont ajoutées au fur et à mesure qu'on s'éloigne.
             longueur_rang = 1 + (2 * distance_rang)
             # observe le rang, en partant du centre, puis en s'éloignant alternativement de chaque côté
-            coordonnees_observees = ocean.deplacer_coordonnees(coordonnees_precedentes, direction_observee) # on est au milieu du rang
-            if ocean.infos_coordonnees(coordonnees_observees) == nom_classe_recherchee:
+            coordonnees_observees = self._ocean.deplacer_coordonnees(coordonnees_precedentes, direction_observee) # on est au milieu du rang
+            if self._ocean.infos_coordonnees(coordonnees_observees) == nom_classe_recherchee:
                 resultat = coordonnees_observees
             else:
                 coordonnees_a = Coordonnees(coordonnees_observees.ligne, coordonnees_observees.colonne)
@@ -99,12 +98,12 @@ class Poisson(ABC):
                     direction_a = Direction.Gauche
                     direction_b = Direction.Droite
                 for position in range(int((longueur_rang - 1) / 2)):
-                    coordonnees_a = ocean.deplacer_coordonnees(coordonnees_a, direction_a)
-                    coordonnees_b = ocean.deplacer_coordonnees(coordonnees_b, direction_b)
-                    if ocean.infos_coordonnees(coordonnees_a) == nom_classe_recherchee:
+                    coordonnees_a = self._ocean.deplacer_coordonnees(coordonnees_a, direction_a)
+                    coordonnees_b = self._ocean.deplacer_coordonnees(coordonnees_b, direction_b)
+                    if self._ocean.infos_coordonnees(coordonnees_a) == nom_classe_recherchee:
                         resultat = coordonnees_a
                         break
-                    elif ocean.infos_coordonnees(coordonnees_b) == nom_classe_recherchee:
+                    elif self._ocean.infos_coordonnees(coordonnees_b) == nom_classe_recherchee:
                         resultat = coordonnees_b
                         break
                 if resultat == None:
@@ -115,5 +114,5 @@ class Poisson(ABC):
             raise Exception("La direction 'Aucune' ne peut pas être observée.")
         return traiter_rang_suivant(coordonnees_observation)
     
-    def executer_cycle(self, coordonnees: Coordonnees, ocean: Ocean)-> None:
+    def executer_cycle(self, coordonnees: Coordonnees)-> None:
         self.__nb_cycles_depuis_derniere_repro += 1
