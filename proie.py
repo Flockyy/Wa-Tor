@@ -17,7 +17,7 @@ class Proie(Poisson):
     def __str__(self):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
-        return "P"
+        return "o"
     def _nouvelle_instance(self):
         return Proie(self._ocean, self.cycle_reproduction)
     def executer_cycle(self, coordonnees: Coordonnees)-> None:

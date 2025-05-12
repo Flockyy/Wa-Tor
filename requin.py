@@ -25,7 +25,7 @@ class Requin(Poisson):
         return self.__points_energie
     
     def caractere_symbole(self)-> str:
-        return "R"
+        return "X"
     
     def _nouvelle_instance(self):
         return Requin(self._ocean, self.cycle_reproduction, self.points_energie, self.__points_par_repas)
@@ -60,21 +60,27 @@ class Requin(Poisson):
         # on ajoute en dernier la direction du cycle précédent (nage en ligne droite par défaut)
         liste_directions.append(self.direction)
 
+        # On a nos directions, on prend la première dont le déplacement est possible...
         for direction in liste_directions:
             if (self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) != "Requin"):
-                if self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction_choisie)) == "Proie":
+                if self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) == "Proie":
                     if self.points_energie < self.__point_total_vie:
                         direction_choisie = direction
                         break
                 else:
                     direction_choisie = direction
                     break
-            # et si les requins se bousculent, alors on prend la première direction possible
-            if direction_choisie == Direction.Aucune:
-                for direction in Direction:
-                    if (self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) != "Requin"):
+        # et si les requins se bousculent, alors on prend la première direction possible
+        if direction_choisie == Direction.Aucune:
+            for direction in Direction:
+                if (self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) != "Requin"):
+                    if self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) == "Proie":
+                        if self.points_energie < self.__point_total_vie:
+                            direction_choisie = direction
+                            break
+                    else:
                         direction_choisie = direction
                         break
-            if (self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction_choisie)) == "Proie"):            
-                self.__points_energie += self.__points_par_repas
-            self.action_deplacement(coordonnees, direction_choisie)
+        if (self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction_choisie)) == "Proie"):            
+            self.__points_energie += self.__points_par_repas
+        self.action_deplacement(coordonnees, direction_choisie)
