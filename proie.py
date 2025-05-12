@@ -10,7 +10,7 @@ class Proie(Poisson):
     Args:
         cycle_reproduction (int): 8 par défaut. Nombre de cycle entre chaque reproduction.
     """
-    def __init__(self, cycle_reproduction: int = 8):
+    def __init__(self, cycle_reproduction: int = 4):
         super().__init__(cycle_reproduction)
         self._age = 0
     def __str__(self):

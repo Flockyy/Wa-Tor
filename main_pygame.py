@@ -1,101 +1,104 @@
-from proie import Proie
-from requin import Requin
+import argparse
 from monde import Monde
-import pygame, random, argparse, sys
+from ocean import Ocean
+from requin import Requin
+from proie import Proie
+from ocean import Coordonnees
+import pygame
 
-# Color setup
-BACKGROUND = ( 62,  70,  73)
-OCEAN      = ( 47,  47,  49)
-FISH       = ( 34, 168, 109)
-SHARK      = (233, 110,  68)
 
-# Constant setup
-CELLSIZE = 8
-MARGIN = 2
-WIDTH = 90
-HEIGHT = 60
-WINDOW_X = 900
-WINDOW_Y = 600
+def main():
 
-def draw_grid(screen, monde):
-    """Draw the grid on the screen."""
-    for i in range(monde.lignes):
-        for j in range(monde.colonnes):
-            color = OCEAN
-            if isinstance(monde.grille.grille[i][j], Proie):
-                color = FISH
-            elif isinstance(monde.grille.grille[i][j], Requin):
-                color = SHARK
+    def parse_args():
+        """Parse les arguments de la ligne de commande."""
+        parser = argparse.ArgumentParser(description="Wa-tor simulation")
+        parser.add_argument(
+            "--chronon",
+            type=int,
+            default=30,
+            help="Nombre d'étapes de simulation (cycle de vie)",
+        )
+        parser.add_argument(
+            "--hauteur", type=int, default=90, help="Nombre de lignes dans la grille"
+        )
+        parser.add_argument(
+            "--largeur", type=int, default=60, help="Nombre de colonnes dans la grille"
+        )
+        parser.add_argument(
+            "--proie",
+            type=int,
+            default=500,
+            help="Nombre de proies à placer dans la grille",
+        )
+        parser.add_argument(
+            "--requin",
+            type=int,
+            default=400,
+            help="Nombre de requins à placer dans la grille",
+        )
+        parser.add_argument(
+            "--fichier",
+            type=str,
+            help="Fichier de sortie pour les résultats de la simulation",
+        )
 
-            pygame.draw.rect(
-                screen,
-                color,
-                [
-                    j * (CELLSIZE + MARGIN),
-                    i * (CELLSIZE + MARGIN),
-                    CELLSIZE,
-                    CELLSIZE,
-                ],
-            )
+        return parser.parse_args()
 
-def parse_args():
-    
-    """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description="Wa-tor simulation")
-    parser.add_argument(
-        "--hauteur", type=int, default=10, help="Nombre de lignes dans la grille"
-    )
-    parser.add_argument(
-        "--largeur", type=int, default=10, help="Nombre de colonnes dans la grille"
-    )
-    parser.add_argument(
-        "--chronon", type=int, default=10, help="Nombre d'étapes de simulation"
-    )
-    parser.add_argument(
-        "--proie",
-        type=int,
-        default=5,
-        help="Nombre de proies à placer dans la grille",
-    )
-    parser.add_argument(
-        "--requin",
-        type=int,
-        default=5,
-        help="Nombre de requins à placer dans la grille",
-    )
-    return parser.parse_args()
+    args = parse_args()
 
-def main(args):
-    """Main function to run the simulation."""
-    pygame.init()
-    screen = pygame.display.set_mode((WINDOW_X, WINDOW_Y))
-    pygame.display.set_caption("Wa-tor Simulation")
-
-    # Create the world
+    # Création du monde
     monde = Monde(args.hauteur, args.largeur)
+    # Création des proies et requins
+
     proies = [Proie() for _ in range(args.proie)]
     requins = [Requin() for _ in range(args.requin)]
-    monde.placer_poissons(proies, requins)
 
-    # Main loop
+    # Initialisation de Pygame et création de la fenêtre
+    pygame.init()
+    screen = pygame.display.set_mode((900, 600))
+    pygame.display.set_caption("Simulation Wa-tor")
+    clock = pygame.time.Clock()
     running = True
+    chronon = 0
+    
+    # Placement des proies et requins dans le monde
+    monde.placer_poissons(proies, requins)
+    
     while running:
+        
+        # Gérer les événements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill(BACKGROUND)
-        draw_grid(screen, monde)
+        # Remplir l'écran avec une couleur
+        screen.fill((0, 0, 0))
+
+        # Limiter le nombre de frames par seconde
+        clock.tick(60)
+
+        # Afficher la grille
+        for i in range(monde.nb_lignes):
+            for j in range(monde.nb_colonnes):
+                cell = monde.ocean.valeur_coordonnees(Coordonnees(i, j))
+                if isinstance(cell, Proie):
+                    pygame.draw.rect(screen, (0, 255, 0), (j * 20, i * 20, 20, 20))
+                elif isinstance(cell, Requin):
+                    pygame.draw.rect(screen, (255, 0, 0), (j * 20, i * 20, 20, 20))
+                else:
+                    pygame.draw.rect(screen, (0, 0, 255), (j * 20, i * 20, 20, 20))
+
+
+        # Mettre à jour l'affichage
         pygame.display.flip()
 
-        # Simulation step
-        monde.simuler()
+        # Exécuter un cycle de simulation
+        monde.executer_cycle()
 
-        # Delay for visualization
-        pygame.time.delay(100)
+        # Incrémenter le chronon
+        chronon += 1
 
     pygame.quit()
 
 if __name__ == "__main__":
-    args = parse_args()
-    main(args)
+    main()
