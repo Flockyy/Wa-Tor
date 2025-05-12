@@ -11,7 +11,7 @@ class Proie(Poisson):
         ocean (Ocean) : Océan dans lequel se trouve la proie.
         cycle_reproduction (int): 8 par défaut. Nombre de cycle entre chaque reproduction.
     """
-    def __init__(self, ocean: Ocean, cycle_reproduction: int = 4):
+    def __init__(self, ocean: Ocean, cycle_reproduction: int = 8):
         super().__init__(ocean, cycle_reproduction)
         self._age = 0
     def __str__(self):
