@@ -63,8 +63,8 @@ def main():
     monde = Monde(args.hauteur, args.largeur)
 
     # Instanciation des poissons et requins
-    proie = [Proie() for _ in range(args.proie)]
-    requins = [Requin() for _ in range(args.requin)]
+    proie = [Proie(monde.ocean) for _ in range(args.proie)]
+    requins = [Requin(monde.ocean) for _ in range(args.requin)]
 
     # Placement des poissons et requins dans la grille
     monde.placer_poissons(proie, requins)
