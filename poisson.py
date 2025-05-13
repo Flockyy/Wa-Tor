@@ -77,11 +77,12 @@ class Poisson(ABC):
         """
 
         def traiter_rang_suivant(coordonnees_precedentes: Coordonnees, distance_rang: int = 1)-> Coordonnees:
-            # Si on a parcouru la moitié de la carte dans la direction demandée, on retourne None, on effectue le traitement.
+            # Si on a parcouru la moitié de la carte dans la direction demandée, ou qu'on a atteint la limite de la vision,
+            # alors on retourne None, sinon on effectue le traitement.
             if (direction_observee in (Direction.Haut, Direction.Bas)):
-                limite_profondeur = int(self._ocean.lignes / 2)
+                limite_profondeur = min(int(self._ocean.lignes / 2), self.visibilite)
             else:
-                limite_profondeur = int(self._ocean.colonnes / 2)
+                limite_profondeur = min(int(self._ocean.colonnes / 2), self.visibilite)
             if distance_rang > limite_profondeur:
                 return None
             
