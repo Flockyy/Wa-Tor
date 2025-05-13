@@ -10,49 +10,55 @@ from ocean import Coordonnees
 
 MODE_DEBUG = False  # (getattr(sys, 'gettrace', None) is not None)
 
-
 def main():
 
     def parse_args():
         """Parse les arguments de la ligne de commande."""
         parser = argparse.ArgumentParser(description="Wa-tor simulation")
         parser.add_argument(
+            "-a",
             "--auto",
             type=str,
             default="NON",
             help="Automatiser la simulation (OUI ou NON)",
         )
         parser.add_argument(
+            "-c",
             "--chronon",
             type=int,
             default=30,
             help="Nombre d'étapes de simulation (cycle de vie)",
         )
         parser.add_argument(
+            "-H",
             "--hauteur",
             type=int,
             default=(10 if MODE_DEBUG else 30),
             help="Nombre de lignes dans la grille",
         )
         parser.add_argument(
+            "-l",
             "--largeur",
             type=int,
             default=(10 if MODE_DEBUG else 30),
             help="Nombre de colonnes dans la grille",
         )
         parser.add_argument(
+            "-p",
             "--proie",
             type=int,
             default=(3 if MODE_DEBUG else 30),
             help="Nombre de proies à placer dans la grille",
         )
         parser.add_argument(
+            "-r",
             "--requin",
             type=int,
             default=(1 if MODE_DEBUG else 10),
             help="Nombre de requins à placer dans la grille",
         )
         parser.add_argument(
+            "-f",
             "--fichier",
             type=str,
             help="Fichier de sortie pour les résultats de la simulation",
@@ -94,7 +100,7 @@ def main():
                         )
                 print()
             cnt += 1
-            sleep(1)
+            sleep(0.1)
     else:
         cnt = 0
         while True:

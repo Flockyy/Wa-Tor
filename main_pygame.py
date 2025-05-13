@@ -6,10 +6,30 @@ from monde import Monde
 from requin import Requin
 from proie import Proie
 from ocean import Ocean, Coordonnees
+import argparse
+
+# Color setup
+FOND = (62, 70, 73)
+OCEAN = (47, 47, 49)
+PROIE = (34, 168, 109)
+SHARK = (233, 110, 68)
+
+# Constant setup
+CELLSIZE = 8
+MARGIN = 2
+WIDTH = 90
+HEIGHT = 60
+WINDOW_X = 1280
+WINDOW_Y = 720
 
 pygame.init()
-ecran = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
-    
+
+ecran = pygame.display.set_mode((WINDOW_X, WINDOW_Y), pygame.RESIZABLE)
+
+parser = argparse.ArgumentParser(description="Wa-tor simulation")
+parser.add_argument("-fps", "--framerate", type=int, default=60, help="Frame rate")
+args = parser.parse_args()
+
 def demarrer_jeu():
     """Fonction pour démarrer le jeu."""
     global nb_requins
@@ -58,17 +78,20 @@ def demarrer_jeu():
                 return
         
         # Remplir l'écran avec une couleur
-        ecran.fill((0, 0, 0))
+        ecran.fill(FOND)
         
         # Afficher la grille
         for i in range(monde.nb_lignes):
             for j in range(monde.nb_colonnes):
                 cell = monde.ocean.valeur_coordonnees(Coordonnees(i, j))
                 if isinstance(cell, Proie):
-                    pygame.draw.rect(ecran, (0, 255, 0), (j * 10, i * 10, 10, 10))
+                    color = PROIE
+                    
                 elif isinstance(cell, Requin):
-                    pygame.draw.rect(ecran, (255, 0, 0), (j * 10, i * 10, 10, 10))
-        
+                    color = SHARK
+                else:
+                    color = OCEAN
+                pygame.draw.rect(ecran, color, (j * CELLSIZE + MARGIN, i * CELLSIZE + MARGIN, CELLSIZE - MARGIN, CELLSIZE - MARGIN))
                     
         # récupérer le nombre de requins et de proies restantes
         nb_requins_restants = sum(1 for i in range(monde.nb_lignes) for j in range(monde.nb_colonnes) if isinstance(monde.ocean.valeur_coordonnees(Coordonnees(i, j)), Requin))
@@ -87,9 +110,6 @@ def demarrer_jeu():
         
         # Mettre à jour l'affichage
         pygame.display.flip()
-        
-        # Limiter le nombre de frames par seconde
-        horloge.tick(60)
         
         # Exécuter un cycle de simulation
 
@@ -142,11 +162,11 @@ vie_par_repas_requins = menu3.add.range_slider('Point de vie par repas :', defau
 temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :', default=4, range_values=(1,30), increment=1, value_format= lambda x: f"{x:.0f}")
 
 # Paramètres du jeu
-plein_ecran = menu.add.selector('Mode plein écran :', [('OUI', True), ('NON', False)], default=True)
-resolution = menu.add.selector('Résolution :', [('1280x720', (1280, 720)), ('1920x1080', (1920, 1080))], default=0)
-nb_requins = menu.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format= lambda x: f"{x:.0f}")
-nb_proies = menu.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format= lambda x: f"{x:.0f}")
-nb_chronons = menu.add.range_slider('Nombre de chronons :', default=1000, range_values=(1,10000), increment=1, value_format= lambda x: f"{x:.0f}")
+plein_ecran = menu2.add.selector('Mode plein écran :', [('OUI', True), ('NON', False)], default=True)
+resolution = menu2.add.selector('Résolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
+nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format= lambda x: f"{x:.0f}")
+nb_proies = menu2.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format= lambda x: f"{x:.0f}")
+nb_chronons = menu2.add.range_slider('Nombre de chronons :', default=1000, range_values=(1,10000), increment=1, value_format= lambda x: f"{x:.0f}")
 
 # Ajout des boutons au menu
 menu.add.button('Jouer', demarrer_jeu)
@@ -156,9 +176,10 @@ menu2.add.button('Paramètres proies', action=menu4)
 menu.add.button('Quitter', pygame_menu.events.EXIT)
 update_loading = pygame.USEREVENT + 1
 
+
 while True:
     
-    pygame.time.Clock().tick(60)
+    pygame.time.Clock().tick(args.framerate)
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
