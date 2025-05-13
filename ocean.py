@@ -17,36 +17,13 @@ class Direction(Enum):
     Droite = 2
     Bas = 3
     Gauche = 4
-
-    def tourner(direction_depart, sens_horaire: bool, direction_par_defaut = Aucune):
-        if direction_depart == Direction.Aucune:
-            return direction_par_defaut
-        else:  #TODO: Alexis: Trouver le moyen de passer par les valeurs ordinales, ce doit être forcément possible !
-            if sens_horaire:
-                if direction_depart == Direction.Haut:
-                    return Direction.Droite
-                elif direction_depart == Direction.Droite:
-                    return Direction.Bas
-                elif direction_depart == Direction.Bas:
-                    return Direction.Gauche
-                else:
-                    return Direction.Haut
-            else:
-                if direction_depart == Direction.Haut:
-                    return Direction.Gauche
-                elif direction_depart == Direction.Gauche:
-                    return Direction.Bas
-                elif direction_depart == Direction.Bas:
-                    return Direction.Droite
-                else:
-                    return Direction.Haut
                 
-    def liste_directions_melangees()-> list:
+    def liste_directions_melangees()-> list["Direction"]:
         liste_melangee = [direction for direction in Direction]
         random.shuffle(liste_melangee)
         return liste_melangee
     
-    def direction_inverse(direction):
+    def direction_inverse(direction)-> "Direction":
         match direction:
             case Direction.Haut:
                 return Direction.Bas
@@ -91,9 +68,9 @@ class Ocean:
     def colonnes(self):
         return self.__colonnes
 
-    @property
-    def grille(self):
-        return self.__grille
+    #@property
+    #def grille(self):
+    #    return self.__grille
 
     def placer_proie(self, proie, coordonnees: Coordonnees):
         """Place une proie dans la grille à la position donnée.
@@ -172,7 +149,7 @@ class Ocean:
             raise IndexError("Position en dehors des limites de la grille.")
     
     def effacer_valeur(self, coordonnees: Coordonnees):
-        self.grille[coordonnees.ligne][coordonnees.colonne] = None
+        self.__grille[coordonnees.ligne][coordonnees.colonne] = None
         
     def deplacer_coordonnees(self, coordonnees_initiales: Coordonnees, direction: Direction)-> Coordonnees:
         """Change les coordonnes en fonction de la direction.
@@ -284,7 +261,7 @@ class Ocean:
         return False
         
     def __repr__(self):
-        return f"Grille({self.__lignes}, {self.__colonnes}, {self.__grille})"
+        return f"Ocean({self.__lignes}, {self.__colonnes}, {self.__grille})"
 
     def __str__(self):
         """Retourne une représentation textuelle de la grille."""

@@ -104,6 +104,8 @@ class Monde:
         for poisson in liste_poissons:
             poisson["instance"].executer_cycle(poisson["coordonnes"])
 
+    #def liste_scenarii
+
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
         return f"Monde({self.lignes}, {self.colonnes}, {self.ocean})"

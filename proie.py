@@ -26,16 +26,6 @@ class Proie(Poisson):
         # Note : pas de gestion du viellissement de la proie (selon la doc).
         #        Si on décide de la gérer, alors il faut déplacer la gestion du viuellissement de Requin vers Poisson.
 
-        ## on se déplace autant que possible en rond.
-        #direction_choisie = self.direction
-        #for _ in range(4):
-        #    direction_choisie = Direction.tourner(direction_choisie, True, Direction.Haut)
-        #    if self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction_choisie)) is None:
-        #        break
-        #else:
-        #    direction_choisie = Direction.Aucune
-        #self.action_deplacement(coordonnees, direction_choisie)
-
         # recherche direction souhaitée
         direction_choisie = self.direction
         set_directions_sures = set(Direction.liste_directions_melangees()) # on mélange
