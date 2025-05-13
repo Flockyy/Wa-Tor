@@ -46,7 +46,6 @@ Wa-Tor/
 ├── main_pygame.py         # Script principal pour exécuter la simulation avec interface pygame
 ├── requirements.txt       # Fichier listant les dépendances nécessaires
 ├── README.md              # Documentation du projet
-├── src/                   # Dossier contenant le code source
 ├── monde.py               # Module définissant la logique de simulation
 ├── ocean.py               # Module définissant la grille du jeu
 ├── poisson                # Module parent de proie et requins définissant leur logiques communes
