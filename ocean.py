@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import List
+import random
 
 class Coordonnees:
     def __init__(self, ligne: int, colonne: int):
@@ -38,6 +39,10 @@ class Direction(Enum):
                     return Direction.Droite
                 else:
                     return Direction.Haut
+    def liste_directions_melangees():
+        liste_melangee = [direction for direction in Direction]
+        random.shuffle(liste_melangee)
+        return liste_melangee
 
 class Orientation():
     #def __init__(self, distance: int = 0, directions: List[Direction] = []):

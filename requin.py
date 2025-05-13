@@ -71,9 +71,9 @@ class Requin(Poisson):
                         direction_choisie = direction
                         break
 
-            # et si les requins se bousculent, alors on prend la première direction possible
+            # et si les requins se bousculent, alors on prend une direction possible au hasard
             if direction_choisie == Direction.Aucune:
-                for direction in Direction:
+                for direction in Direction.liste_directions_melangees():
                     valeur_destination = self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction))
                     if not((valeur_destination == "Requin") or ((valeur_destination == "Proie") and (self.points_energie >= self.__point_total_vie))):
                         direction_choisie = direction
