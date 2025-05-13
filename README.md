@@ -12,6 +12,15 @@ pip install -r requirements.txt
 
 # ⚙️ Arguments disponibles
 Le programme peut être exécuté avec les arguments suivants :
+```plaintext
+--auto [oui/non]          # Active ou désactive le mode automatique
+--hauteur [int]           # Définit la hauteur de la grille
+--largeur [int]           # Définit la largeur de la grille
+--chronon [int]           # Nombre de cycles de simulation
+--proie [int]             # Nombre initial de poissons
+--requin [int]            # Nombre initial de requins
+--fps [int]               # Images par seconde pour l'affichage pygame
+```
 
 
 
@@ -30,7 +39,7 @@ Exécution avec interface en pygame :
 python main_pygame.py 
 ``` 
 
-# 📁 Structure suggérée du projet
+# 📁 Structure du projet
 ```plaintext
 Wa-Tor/
 ├── main.py                # Script principal pour exécuter la simulation en ligne de commande
