@@ -13,14 +13,14 @@ class Proie(Poisson):
         ocean (Ocean) : Océan dans lequel se trouve la proie.
         cycle_reproduction (int): 8 par défaut. Nombre de cycle entre chaque reproduction.
     """
-    def __init__(self, ocean: Ocean, cycle_reproduction: int = 8, visibilite: int = 2):
-        super().__init__(ocean, cycle_reproduction, visibilite)
+    def __init__(self, ocean: Ocean, cycle_reproduction: int = 8, visibilite: int = 2, vue_arriere: bool = True):
+        super().__init__(ocean, cycle_reproduction, visibilite, vue_arriere)
     def __str__(self):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
         return "o"
     def _nouvelle_instance(self):
-        return Proie(self._ocean, self.cycle_reproduction, self.visibilite)
+        return Proie(self._ocean, self.cycle_reproduction, self.visibilite, self.vue_arriere)
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
         super().executer_cycle(coordonnees)
         # Note : pas de gestion du viellissement de la proie (selon la doc).
@@ -45,9 +45,10 @@ class Proie(Poisson):
         liste_orientations_requins = []
         for direction in Direction:
             if direction != Direction.Aucune:
-                coordonnees_requin = self.rechercher_poisson(coordonnees, direction, "Requin")
-                if coordonnees_requin:
-                    liste_orientations_requins.append(self._ocean.calculer_orientation(coordonnees, coordonnees_requin))
+                if (self.vue_arriere or (direction != Direction.direction_inverse(direction))):
+                    coordonnees_requin = self.rechercher_poisson(coordonnees, direction, "Requin")
+                    if coordonnees_requin:
+                        liste_orientations_requins.append(self._ocean.calculer_orientation(coordonnees, coordonnees_requin))
         if len(liste_orientations_requins) > 0:
             liste_orientations_requins.sort(key=lambda orientation: orientation.distance)
             for orientation in liste_orientations_requins:
