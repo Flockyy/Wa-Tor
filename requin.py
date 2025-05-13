@@ -13,8 +13,8 @@ class Requin(Poisson):
         points_total_vie (int): 6 par défaut. Nombre de chronons possibles sans manger. Points de vie de départ.
         points_par_repas (int): 3 par défaut. Nombre de chronons ajoutés aux points de vie lors d'un repas. 
     """
-    def __init__(self, ocean: Ocean, cycle_reproduction: int = 12, visibilite: int = 2, points_total_vie: int = 12, points_par_repas: int = 6):
-        super().__init__(ocean, cycle_reproduction, visibilite)
+    def __init__(self, ocean: Ocean, cycle_reproduction: int = 12, visibilite: int = 2, vue_arriere: bool = True, points_total_vie: int = 12, points_par_repas: int = 6):
+        super().__init__(ocean, cycle_reproduction, visibilite, vue_arriere)
         self.__points_energie = points_total_vie
         self.__point_total_vie = points_total_vie
         self.__points_par_repas = points_par_repas
@@ -31,7 +31,7 @@ class Requin(Poisson):
         return (self.points_energie < self.__point_total_vie)
     
     def _nouvelle_instance(self):
-        return Requin(self._ocean, self.cycle_reproduction, self.visibilite, self.points_energie, self.__points_par_repas)
+        return Requin(self._ocean, self.cycle_reproduction, self.visibilite, self.vue_arriere, self.points_energie, self.__points_par_repas)
 
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
         super().executer_cycle(coordonnees)
@@ -49,10 +49,11 @@ class Requin(Poisson):
                 # Mode morfal : le requin détecte pour chaque directions quelle est la proie la plus proche...
                 for direction in Direction:
                     if direction != Direction.Aucune:
-                        coordonnees_proie = self.rechercher_poisson(coordonnees, direction, "Proie")
-                        if coordonnees_proie != None:
-                            #... il calcule alors le chemin le plus court pour la choper...
-                            liste_orientations.append(self._ocean.calculer_orientation(coordonnees, coordonnees_proie))
+                        if (self.vue_arriere or (direction != Direction.direction_inverse(direction))):
+                            coordonnees_proie = self.rechercher_poisson(coordonnees, direction, "Proie")
+                            if coordonnees_proie != None:
+                                #... il calcule alors le chemin le plus court pour la choper...
+                                liste_orientations.append(self._ocean.calculer_orientation(coordonnees, coordonnees_proie))
                 if len(liste_orientations) > 0:
                     # Il déduit les directions possibles triées par diner le plus proche...
                     liste_orientations.sort(key=lambda orientation: orientation.distance)

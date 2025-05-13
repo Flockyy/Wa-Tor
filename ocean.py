@@ -17,6 +17,7 @@ class Direction(Enum):
     Droite = 2
     Bas = 3
     Gauche = 4
+
     def tourner(direction_depart, sens_horaire: bool, direction_par_defaut = Aucune):
         if direction_depart == Direction.Aucune:
             return direction_par_defaut
@@ -39,10 +40,24 @@ class Direction(Enum):
                     return Direction.Droite
                 else:
                     return Direction.Haut
-    def liste_directions_melangees():
+                
+    def liste_directions_melangees()-> list:
         liste_melangee = [direction for direction in Direction]
         random.shuffle(liste_melangee)
         return liste_melangee
+    
+    def direction_inverse(direction):
+        match direction:
+            case Direction.Haut:
+                return Direction.Bas
+            case Direction.Bas:
+                return Direction.Haut
+            case Direction.Gauche:
+                return Direction.Droite
+            case Direction.Droite:
+                return Direction.Gauche
+            case _:
+                return Direction.Aucune
 
 class Orientation():
     #def __init__(self, distance: int = 0, directions: List[Direction] = []):
