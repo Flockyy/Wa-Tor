@@ -13,15 +13,14 @@ class Proie(Poisson):
         ocean (Ocean) : Océan dans lequel se trouve la proie.
         cycle_reproduction (int): 8 par défaut. Nombre de cycle entre chaque reproduction.
     """
-    def __init__(self, ocean: Ocean, cycle_reproduction: int = 8):
-        super().__init__(ocean, cycle_reproduction)
-        self._age = 0
+    def __init__(self, ocean: Ocean, cycle_reproduction: int = 8, visibilite: int = 2):
+        super().__init__(ocean, cycle_reproduction, visibilite)
     def __str__(self):
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
         return "o"
     def _nouvelle_instance(self):
-        return Proie(self._ocean, self.cycle_reproduction)
+        return Proie(self._ocean, self.cycle_reproduction, self.visibilite)
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
         super().executer_cycle(coordonnees)
         # Note : pas de gestion du viellissement de la proie (selon la doc).

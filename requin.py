@@ -13,8 +13,8 @@ class Requin(Poisson):
         points_total_vie (int): 6 par défaut. Nombre de chronons possibles sans manger. Points de vie de départ.
         points_par_repas (int): 3 par défaut. Nombre de chronons ajoutés aux points de vie lors d'un repas. 
     """
-    def __init__(self, ocean: Ocean, cycle_reproduction: int = 12, points_total_vie: int = 12, points_par_repas: int = 6):
-        super().__init__(ocean, cycle_reproduction)
+    def __init__(self, ocean: Ocean, cycle_reproduction: int = 12, visibilite: int = 2, points_total_vie: int = 12, points_par_repas: int = 6):
+        super().__init__(ocean, cycle_reproduction, visibilite)
         self.__points_energie = points_total_vie
         self.__point_total_vie = points_total_vie
         self.__points_par_repas = points_par_repas
@@ -28,7 +28,7 @@ class Requin(Poisson):
         return "X"
     
     def _nouvelle_instance(self):
-        return Requin(self._ocean, self.cycle_reproduction, self.points_energie, self.__points_par_repas)
+        return Requin(self._ocean, self.cycle_reproduction, self.visibilite, self.points_energie, self.__points_par_repas)
 
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
         super().executer_cycle(coordonnees)
