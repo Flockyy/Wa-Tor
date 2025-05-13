@@ -28,14 +28,15 @@ class Proie(Poisson):
 
         # recherche direction souhaitée
         direction_choisie = self.direction
-        set_directions_sures = set(Direction.liste_directions_melangees()) # on mélange
-        set_directions_sures.remove(Direction.Aucune)
+        liste_directions = []
+        liste_directions.extend(Direction.liste_directions_melangees()) # on mélange
+        liste_directions.remove(Direction.Aucune)
         # Mode fuite : on detecte les requins les plus proches dans chaque direction
         # et on retire leurs directions de la liste des directions sûres
         liste_orientations_requins = []
         for direction in Direction:
             if direction != Direction.Aucune:
-                if (self.vue_arriere or (direction != Direction.direction_inverse(direction))):
+                if (self.vue_arriere or (direction != Direction.direction_inverse(direction_choisie))):
                     coordonnees_requin = self.rechercher_poisson(coordonnees, direction, "Requin")
                     if coordonnees_requin:
                         liste_orientations_requins.append(self._ocean.calculer_orientation(coordonnees, coordonnees_requin))
@@ -43,28 +44,28 @@ class Proie(Poisson):
             liste_orientations_requins.sort(key=lambda orientation: orientation.distance)
             for orientation in liste_orientations_requins:
                 for direction in orientation.directions:
-                    set_directions_sures.discard(direction)
-        if ((direction_choisie not in set_directions_sures) or (direction_choisie == Direction.Aucune)):
-            if len(set_directions_sures) == 0:
-                # Les requins se trouvent dans toutes les directions.
-                # Alors on se déplace sur n'importe quelle case vide qui n'a pas de requin comme voisin
-                direction_choisie = Direction.Aucune
-                for direction in Direction.liste_directions_melangees():
-                    coordonnees_testees = self._ocean.deplacer_coordonnees(coordonnees, direction)
-                    valeur_testees = self._ocean.infos_coordonnees(coordonnees_testees)
-                    if (valeur_testees is None):
-                        if not self._ocean.coordonnes_jouxtent_objet(coordonnees_testees, "Requin"):
-                            direction_choisie = direction
+                    if direction in liste_directions:
+                        liste_directions.remove(direction)
+        # on teste tous les choix possibles en priorisant les directions sans requins (s'il y en a).
+        # Si l'ancienne direction est sûre, on la teste en premier
+        if (direction_choisie in liste_directions):
+            liste_directions.remove(direction_choisie)
+            liste_directions.insert(0,direction_choisie)
+        direction_choisie = Direction.Aucune
+        # on ajoute à la fin les directions manquantes (qui ont été virées à cause des requins)
+        for direction in Direction.liste_directions_melangees():
+            if ((direction != Direction.Aucune) and (direction not in liste_directions)):
+                liste_directions.append(direction)
+        for direction in liste_directions:
+            if self._ocean.coordonnees_libres(self._ocean.deplacer_coordonnees(coordonnees, direction)):
+                coordonnees_testees = self._ocean.deplacer_coordonnees(coordonnees, direction)
+                if self._ocean.coordonnees_libres(coordonnees_testees):
+                    if not self._ocean.coordonnes_jouxtent_objet(coordonnees_testees, "Requin"):
+                        direction_choisie = direction
                         break
-            else:
-                direction_choisie = set_directions_sures.pop()
 
         # Si direction_choisie == Direction.Aucune
-        # alors cela, signifie que quelque soit la direction, on se retrouve à côté d'un requin...
-            
-        # On vérifie le choix final pour s'assurer qu'on n'écrase pas d'autres poissons.
-        if direction_choisie != Direction.Aucune:
-            if not self._ocean.coordonnees_libres(self._ocean.deplacer_coordonnees(coordonnees, direction_choisie)):
-                direction_choisie = Direction.Aucune
+        # alors cela signifie que la proie est complètement entourée,
+        # ou que quelque soit la direction, on se retrouve à côté d'un requin...
 
         self.action_deplacement(coordonnees, direction_choisie)

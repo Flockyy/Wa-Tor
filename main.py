@@ -43,13 +43,13 @@ def main():
         parser.add_argument(
             "--proie",
             type=int,
-            default=(3 if MODE_DEBUG else 30),
+            default=(1 if MODE_DEBUG else 40),
             help="Nombre de proies à placer dans la grille",
         )
         parser.add_argument(
             "--requin",
             type=int,
-            default=(1 if MODE_DEBUG else 10),
+            default=(0 if MODE_DEBUG else 10),
             help="Nombre de requins à placer dans la grille",
         )
         parser.add_argument(
