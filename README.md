@@ -16,14 +16,36 @@ Le programme peut être exécuté avec les arguments suivants :
 
 
 # ▶️ Exemple d'utilisation
-Exécution simple avec les paramètres par défaut :
+Exécution simple, affichage en ligne de commande avec les paramètres par défaut :
 ```bash
-python main_pygame.py 
+python main.py 
 ``` 
 Simulation avec des paramètres personnalisés :
 ```bash
-python main_pygame.py --hauteur 20 --largeur 30 --chronon 50 --proie 40 --requin 10
+python main.py --auto oui --hauteur 20 --largeur 30 --chronon 50 --proie 40 --requin 10
 ```
 
+Exécution avec interface en pygame :
+```bash
+python main_pygame.py 
+``` 
 
 # 📁 Structure suggérée du projet
+```plaintext
+Wa-Tor/
+├── main.py                # Script principal pour exécuter la simulation en ligne de commande
+├── main_pygame.py         # Script principal pour exécuter la simulation avec interface pygame
+├── requirements.txt       # Fichier listant les dépendances nécessaires
+├── README.md              # Documentation du projet
+├── src/                   # Dossier contenant le code source
+│   ├── __init__.py        # Fichier d'initialisation du package
+│   ├── simulation.py      # Module contenant la logique de simulation
+│   ├── agents.py          # Module définissant les classes pour les poissons et les requins
+│   └── utils.py           # Module utilitaire pour des fonctions auxiliaires
+├── tests/                 # Dossier contenant les tests unitaires
+│   ├── __init__.py        # Fichier d'initialisation des tests
+│   ├── test_simulation.py # Tests pour la logique de simulation
+│   └── test_agents.py     # Tests pour les classes des agents
+└── assets/                # Dossier pour les ressources (images, sons, etc.)
+    └── sprites/           # Dossier pour les sprites utilisés dans pygame
+```
