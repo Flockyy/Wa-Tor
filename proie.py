@@ -56,19 +56,22 @@ class Proie(Poisson):
                         liste_directions_requins.append(direction)
         if ((direction_choisie in liste_directions_requins) or (direction_choisie == Direction.Aucune)):
             liste_directions_sures = []
-            #print([direction.name for direction in Direction])
-            for direction in Direction:
+            for direction in Direction.liste_directions_melangees():
                 if direction != Direction.Aucune:
                     if direction not in liste_directions_requins:
                         liste_directions_sures.append(direction)
-
+            # Aiucune direction n'est sûre...
+            # On se déplace sur n'importe quelle case vide
+            # TODO: Alexis: il faudrait une boucle intermédiaire pour vérifier si un requin est à côté de la case choisie !
             if len(liste_directions_sures) > 0:
                 for direction in liste_directions_sures:
                     valeur_destination = self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction))
 
-                    if (valeur_destination == None):
+                    if (valeur_destination is None):
                         direction_choisie = direction
                         break
                     else:
                         direction_choisie = Direction.Aucune
+            else:
+                direction_choisie = random.choice(list(Direction))
         self.action_deplacement(coordonnees, direction_choisie)
