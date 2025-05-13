@@ -27,6 +27,9 @@ class Requin(Poisson):
     def caractere_symbole(self)-> str:
         return "X"
     
+    def en_chasse(self)-> bool:
+        return (self.points_energie < self.__point_total_vie)
+    
     def _nouvelle_instance(self):
         return Requin(self._ocean, self.cycle_reproduction, self.visibilite, self.points_energie, self.__points_par_repas)
 
@@ -41,7 +44,7 @@ class Requin(Poisson):
             direction_choisie = Direction.Aucune
             liste_directions = []
 
-            if self.points_energie < self.__point_total_vie:
+            if self.en_chasse():
                 liste_orientations = []
                 # Mode morfal : le requin détecte pour chaque directions quelle est la proie la plus proche...
                 for direction in Direction:
@@ -64,7 +67,7 @@ class Requin(Poisson):
             for direction in liste_directions:
                 if (self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) != "Requin"):
                     if self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction)) == "Proie":
-                        if self.points_energie < self.__point_total_vie:
+                        if self.en_chasse():
                             direction_choisie = direction
                             break
                     else:
@@ -75,7 +78,7 @@ class Requin(Poisson):
             if direction_choisie == Direction.Aucune:
                 for direction in Direction.liste_directions_melangees():
                     valeur_destination = self._ocean.infos_coordonnees(self._ocean.deplacer_coordonnees(coordonnees, direction))
-                    if not((valeur_destination == "Requin") or ((valeur_destination == "Proie") and (self.points_energie >= self.__point_total_vie))):
+                    if not((valeur_destination == "Requin") or ((valeur_destination == "Proie") and (not self.en_chasse()))):
                         direction_choisie = direction
                         break
                     
