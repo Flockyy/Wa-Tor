@@ -47,14 +47,18 @@ Wa-Tor/
 ├── requirements.txt       # Fichier listant les dépendances nécessaires
 ├── README.md              # Documentation du projet
 ├── src/                   # Dossier contenant le code source
-│   ├── __init__.py        # Fichier d'initialisation du package
-│   ├── simulation.py      # Module contenant la logique de simulation
-│   ├── agents.py          # Module définissant les classes pour les poissons et les requins
-│   └── utils.py           # Module utilitaire pour des fonctions auxiliaires
+├── monde.py               # Module définissant la logique de simulation
+├── ocean.py               # Module définissant la grille du jeu
+├── poisson                # Module parent de proie et requins définissant leur logiques communes
+├── proie.py               # Module définissant la classe proie
+├── requin.py              # Module définissant la classe requin
 ├── tests/                 # Dossier contenant les tests unitaires
 │   ├── __init__.py        # Fichier d'initialisation des tests
-│   ├── test_simulation.py # Tests pour la logique de simulation
-│   └── test_agents.py     # Tests pour les classes des agents
+│   ├── test_monde.py      # Tests pour la logique de simulation
+│   ├── test_ocean.py      # Tests pour la logique de la grille
+│   ├── test_poisson.py    # Tests pour les classes des poissons
+│   ├── test_proie.py      # Tests pour les classes des proies
+│   └── test_requin.py     # Tests pour les classes des requins
 └── assets/                # Dossier pour les ressources (images, sons, etc.)
     └── sprites/           # Dossier pour les sprites utilisés dans pygame
 ```
