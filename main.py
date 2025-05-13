@@ -28,25 +28,25 @@ def main():
         parser.add_argument(
             "--hauteur", 
             type=int, 
-            default=30, 
+            default=10, 
             help="Nombre de lignes dans la grille"
         )
         parser.add_argument(
             "--largeur", 
             type=int, 
-            default=30, 
+            default=10, 
             help="Nombre de colonnes dans la grille"
         )
         parser.add_argument(
             "--proie",
             type=int,
-            default=15,
+            default=1,
             help="Nombre de proies à placer dans la grille",
         )
         parser.add_argument(
             "--requin",
             type=int,
-            default=10,
+            default=3,
             help="Nombre de requins à placer dans la grille",
         )
         parser.add_argument(
