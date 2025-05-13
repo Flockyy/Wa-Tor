@@ -71,4 +71,6 @@ class Proie(Poisson):
                         break
                     else:
                         direction_choisie = Direction.Aucune
+            else:
+                direction_choisie = random.choice(list(Direction))
         self.action_deplacement(coordonnees, direction_choisie)
