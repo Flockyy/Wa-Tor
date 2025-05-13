@@ -236,6 +236,37 @@ class Ocean:
         if direction_horizontale != Direction.Aucune:
             orientation.ajouter_direction(direction_horizontale)
         return orientation
+    
+    def coordonnees_libres(self, coordonnees: Coordonnees)-> bool:
+        return (self.infos_coordonnees(coordonnees) is None)
+    
+    def coordonnes_jouxtent_objet(self, coordonnees: Coordonnees, nom_classe: str)-> bool:
+        """Recherche la présence d'un type d'objet jouxtant les coordonnées fournies
+
+        Args:
+            coordonnees (Coordonnees): Coordonnées autour de laquelle la recherche est effectuée
+            nom_classe (str): Nom de la classe recherchée
+
+        Returns:
+            bool: Retourne True si un objet dont le nom de la classe fourni est trouvé dans une cellule jouxtant celle des coordonnées fournies.
+        """
+        # au dessus
+        coordonnees_testees = self.deplacer_coordonnees(coordonnees, Direction.Haut)
+        if self.infos_coordonnees(coordonnees_testees) == nom_classe:
+            return True
+        # à droite
+        coordonnees_testees = self.deplacer_coordonnees(coordonnees, Direction.Droite)
+        if self.infos_coordonnees(coordonnees_testees) == nom_classe:
+            return True
+        # en bas
+        coordonnees_testees = self.deplacer_coordonnees(coordonnees, Direction.Bas)
+        if self.infos_coordonnees(coordonnees_testees) == nom_classe:
+            return True
+        # à gauche
+        coordonnees_testees = self.deplacer_coordonnees(coordonnees, Direction.Gauche)
+        if self.infos_coordonnees(coordonnees_testees) == nom_classe:
+            return True
+        return False
         
     def __repr__(self):
         return f"Grille({self.__lignes}, {self.__colonnes}, {self.__grille})"

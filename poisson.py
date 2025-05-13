@@ -8,10 +8,11 @@ class Poisson(ABC):
     Args:
         cycle_reproduction (int): Nombre de cycle entre chaque reproduction
     """
-    def __init__(self, ocean: Ocean , cycle_reproduction: int):
+    def __init__(self, ocean: Ocean , cycle_reproduction: int, visibilite: int):
         self._ocean = ocean
         self.__cycle_reproduction = cycle_reproduction
         self.__nb_cycles_depuis_derniere_repro = 0
+        self.__visibilite = visibilite
         self.__direction = Direction.Aucune
 
     @property
@@ -21,6 +22,10 @@ class Poisson(ABC):
     @property
     def nb_cycles_depuis_derniere_repro(self)-> int:
         return self.__nb_cycles_depuis_derniere_repro
+    
+    @property
+    def visibilite(self):
+        return self.__visibilite
     
     @property
     def direction(self)-> Direction:
@@ -72,11 +77,12 @@ class Poisson(ABC):
         """
 
         def traiter_rang_suivant(coordonnees_precedentes: Coordonnees, distance_rang: int = 1)-> Coordonnees:
-            # Si on a parcouru la moitié de la carte dans la direction demandée, on retourne None, on effectue le traitement.
+            # Si on a parcouru la moitié de la carte dans la direction demandée, ou qu'on a atteint la limite de la vision,
+            # alors on retourne None, sinon on effectue le traitement.
             if (direction_observee in (Direction.Haut, Direction.Bas)):
-                limite_profondeur = int(self._ocean.lignes / 2)
+                limite_profondeur = min(int(self._ocean.lignes / 2), self.visibilite)
             else:
-                limite_profondeur = int(self._ocean.colonnes / 2)
+                limite_profondeur = min(int(self._ocean.colonnes / 2), self.visibilite)
             if distance_rang > limite_profondeur:
                 return None
             
