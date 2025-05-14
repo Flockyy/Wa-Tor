@@ -1,15 +1,15 @@
-from time import sleep
+import argparse
+import os
 import pygame
 import pygame_menu
 import pygame_menu.font
+from time import sleep
 from monde import Monde
 from requin import Requin
 from proie import Proie
 from ocean import Coordonnees
 from scenari import Scenari
 
-import argparse
-import os
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
 # Color setup
