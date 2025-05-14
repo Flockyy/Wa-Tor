@@ -29,7 +29,7 @@ class Scenari:
         scenario = self.ajouter_scenario('Scenario par défaut')
         scenario.commentaires ='''
 Un océan de 30x30 avec des valeurs par défaut.
-Les requins et les proies n'ont aucune visibilité : ils ne détectent que les poissons à côté d\eux !'''
+Les requins et les proies n'ont aucune visibilité : ils ne détectent que les poissons à côté d\'eux !'''
         scenario.nb_lignes = 30
         scenario.nb_colonnes = 30
         scenario.nb_proies = 40
@@ -82,6 +82,38 @@ Durée de vie des requins : 25 chronon...'''
         scenario.points_vie_requin = 25
         scenario.points_par_repas_requin = 6
     
+        scenario = self.ajouter_scenario('Mode infinie vague')
+        scenario.commentaires ='''
+        '''
+        scenario.nb_lignes = 60
+        scenario.nb_colonnes = 90
+        scenario.nb_proies = 900
+        scenario.nb_requins = 100
+        scenario.cycle_reproduction_requin = 12
+        scenario.cycle_reproduction_proie = 4
+        scenario.visibilite_requin = 2
+        scenario.visibilite_proie = 2
+        scenario.vue_arriere_requin = True
+        scenario.vue_arriere_proie = True
+        scenario.points_vie_requin = 12
+        scenario.points_par_repas_requin = 1
+
+        scenario = self.ajouter_scenario('Mode infinie brasier')
+        scenario.commentaires ='''
+        '''
+        scenario.nb_lignes = 60
+        scenario.nb_colonnes = 90
+        scenario.nb_proies = 900
+        scenario.nb_requins = 100
+        scenario.cycle_reproduction_requin = 12
+        scenario.cycle_reproduction_proie = 6
+        scenario.visibilite_requin = 2
+        scenario.visibilite_proie = 2
+        scenario.vue_arriere_requin = True
+        scenario.vue_arriere_proie = True
+        scenario.points_vie_requin = 12
+        scenario.points_par_repas_requin = 2
+        
     @property
     def liste_scenari(self)-> list[Scenario]:
         return self.__liste_scenari

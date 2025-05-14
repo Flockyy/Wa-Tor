@@ -22,8 +22,6 @@ Le programme peut être exécuté avec les arguments suivants :
 --fps [int]               # Images par seconde pour l'affichage pygame
 ```
 
-
-
 # ▶️ Exemple d'utilisation
 Exécution simple, affichage en ligne de commande avec les paramètres par défaut :
 ```bash
@@ -51,6 +49,8 @@ Wa-Tor/
 ├── poisson                # Module parent de proie et requins définissant leur logiques communes
 ├── proie.py               # Module définissant la classe proie
 ├── requin.py              # Module définissant la classe requin
+├── scenari.py             # Module définissant les différents scénarios possible
+├── installeur.py          # Script de création de l'executable
 ├── tests/                 # Dossier contenant les tests unitaires
 │   ├── __init__.py        # Fichier d'initialisation des tests
 │   ├── test_monde.py      # Tests pour la logique de simulation
@@ -61,3 +61,15 @@ Wa-Tor/
 └── assets/                # Dossier pour les ressources (images, sons, etc.)
     └── sprites/           # Dossier pour les sprites utilisés dans pygame
 ```
+
+# 🤝👥 Membres et contributions
+
+
+Tout le monde a plus ou moin toucher à toutes les classes mais dans les grandes lignes :
+
+    Alexis : 
+
+    Florian : Gestion du monde, de l'ocean, base de l'affichage console, Pygame
+    
+    Vincent : 
+

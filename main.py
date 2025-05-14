@@ -167,7 +167,7 @@ def lancer(
                         )
                 print()
             cnt += 1
-            sleep(1)
+            sleep(0.1)
     else:
         cnt = 0
         while True:
