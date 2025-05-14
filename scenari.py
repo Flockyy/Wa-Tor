@@ -61,6 +61,26 @@ Durée de vie des requins : 25 chronon...'''
         scenario.vue_arriere_proie = True
         scenario.points_vie_requin = 25
         scenario.points_par_repas_requin = 6
+
+        # Scenario Rambo
+        scenario = self.ajouter_scenario('Rambo s\'évade !')
+        scenario.commentaires ='''
+Comme pour dans le scenario "Chasse au fugitif", une proie rescapée se retrouve chassée...
+C'est contre 4 requins à la vue affûtée et à la grande endurance qu'il faudra survivre !
+Mais cette fois, la proie a la vue aussi affûtée que celle des requins... Rambo saura-t-il s'en sortir ?
+Durée de vie des requins : 25 chronon...'''
+        scenario.nb_lignes = 30
+        scenario.nb_colonnes = 30
+        scenario.nb_proies = 1
+        scenario.nb_requins = 4
+        scenario.cycle_reproduction_requin = 26
+        scenario.cycle_reproduction_proie = 26
+        scenario.visibilite_requin = 15
+        scenario.visibilite_proie = 15
+        scenario.vue_arriere_requin = True
+        scenario.vue_arriere_proie = True
+        scenario.points_vie_requin = 25
+        scenario.points_par_repas_requin = 6
     
     @property
     def liste_scenari(self)-> list[Scenario]:
