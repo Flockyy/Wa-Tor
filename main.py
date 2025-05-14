@@ -8,7 +8,7 @@ from proie import Proie
 from requin import Requin
 from ocean import Coordonnees
 
-MODE_DEBUG = False  # (getattr(sys, 'gettrace', None) is not None)
+MODE_DEBUG = False  # ça marche pas. (getattr(sys, 'gettrace', None) is not None)
 
 
 def main():
@@ -128,20 +128,20 @@ def main():
             ):
                 break
 
-    # Sauvegarde des résultats dans un fichier
-    if args.fichier:
-        with open(args.fichier, "w") as f:
-            for i in range(args.hauteur):
-                for j in range(args.largeur):
-                    if isinstance(monde.ocean.grille[i][j], Proie):
-                        f.write("P ")
-                    elif isinstance(monde.ocean.grille[i][j], Requin):
-                        f.write("R ")
-                    else:
-                        f.write(". ")
-                f.write("\n")
-    else:
-        print("Aucun fichier de sortie spécifié.")
+    ## Sauvegarde des résultats dans un fichier
+    #if args.fichier:
+    #    with open(args.fichier, "w") as f:
+    #        for i in range(args.hauteur):
+    #            for j in range(args.largeur):
+    #                if isinstance(monde.ocean.grille[i][j], Proie):
+    #                    f.write("P ")
+    #                elif isinstance(monde.ocean.grille[i][j], Requin):
+    #                    f.write("R ")
+    #                else:
+    #                    f.write(". ")
+    #            f.write("\n")
+    #else:
+    #    print("Aucun fichier de sortie spécifié.")
 
     print("Simulation terminée.")
 
