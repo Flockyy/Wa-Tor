@@ -1,14 +1,15 @@
 from time import sleep
 import pygame
 import pygame_menu
-from pygame_menu import themes
 import pygame_menu.font
 from monde import Monde
 from requin import Requin
 from proie import Proie
-from ocean import Ocean, Coordonnees
+from ocean import Coordonnees
+
 import argparse
-from pygame._sdl2 import Window
+import os
+os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
 # Color setup
 FOND = (62, 70, 73)
@@ -31,7 +32,13 @@ pygame.mixer.init()
 ecran = pygame.display.set_mode((WINDOW_X, WINDOW_Y), pygame.RESIZABLE)
 
 parser = argparse.ArgumentParser(description="Wa-tor simulation")
-parser.add_argument("-fps", "--framerate", type=int, default=60, help="Frame rate")
+parser.add_argument(
+    "-fps", 
+    "--framerate", 
+    type=int,
+    default=60, 
+    help="Frame rate"
+)
 args = parser.parse_args()
 background = pygame.image.load("assets/bg.png")
 
@@ -57,11 +64,12 @@ def demarrer_jeu():
     global scenario
     
     
-    if plein_ecran.get_value()[0][1]:
+    if plein_ecran.get_value()[0][1] == 'PE':
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.FULLSCREEN)
+    elif plein_ecran.get_value()[0][1] == 'PEF':
+        ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.NOFRAME)
     else:
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.RESIZABLE)
-        Window.from_display_module().maximize()
     
     pygame.display.set_caption("Wa-tor")
     lancer, pause = True, False
@@ -203,7 +211,7 @@ vie_par_repas_requins = menu3.add.range_slider('Point de vie par repas :', defau
 temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :', default=4, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
 
 # Paramètres du jeu
-plein_ecran = menu2.add.dropselect('Plein ecran :', [('Non', False), ('Oui', True)], default=0)
+plein_ecran = menu2.add.dropselect('Affichage :', [('Plein ecran', 'PE'), ('Fenetre', 'F'), ('Plein ecran fenetre', 'PEF')], default=0)
 resolution = menu2.add.dropselect('Resolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
 scenario = menu2.add.dropselect('Scenario :', [('Mode vague', 1), ('Scenario 2', 2), ('Scenario 3', 3)], default=0)
 nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
