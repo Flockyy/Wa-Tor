@@ -1,4 +1,5 @@
 #from typing import
+import random
 from ocean import Ocean, Coordonnees, Direction
 from poisson import Poisson
 
@@ -58,7 +59,10 @@ class Requin(Poisson):
                     # Il déduit les directions possibles triées par diner le plus proche...
                     liste_orientations.sort(key=lambda orientation: orientation.distance)
                     for orientation in liste_orientations:
-                        for direction in orientation.directions:
+                        liste_melangee = []
+                        liste_melangee.extend(orientation.directions)
+                        random.shuffle(liste_melangee)
+                        for direction in liste_melangee:
                             if not (direction in liste_directions):
                                 liste_directions.append(direction)
 
