@@ -8,11 +8,12 @@ class Poisson(ABC):
     Args:
         cycle_reproduction (int): Nombre de cycle entre chaque reproduction
     """
-    def __init__(self, ocean: Ocean , cycle_reproduction: int, visibilite: int):
+    def __init__(self, ocean: Ocean, cycle_reproduction: int, visibilite: int, vue_arriere: bool):
         self._ocean = ocean
         self.__cycle_reproduction = cycle_reproduction
         self.__nb_cycles_depuis_derniere_repro = 0
         self.__visibilite = visibilite
+        self.__vue_arriere = vue_arriere
         self.__direction = Direction.Aucune
 
     @property
@@ -24,8 +25,12 @@ class Poisson(ABC):
         return self.__nb_cycles_depuis_derniere_repro
     
     @property
-    def visibilite(self):
+    def visibilite(self)-> int:
         return self.__visibilite
+    
+    @property
+    def vue_arriere(self)-> bool:
+        return self.__vue_arriere
     
     @property
     def direction(self)-> Direction:
