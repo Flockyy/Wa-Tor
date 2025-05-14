@@ -2,6 +2,7 @@ from time import sleep
 import pygame
 import pygame_menu
 from pygame_menu import themes
+import pygame_menu.font
 from monde import Monde
 from requin import Requin
 from proie import Proie
@@ -22,16 +23,23 @@ HEIGHT = 60
 WINDOW_X = 1280
 WINDOW_Y = 720
 
+# Initialisation de Pygame et création de la fenêtre
 pygame.init()
+pygame.mixer.init()
 
 ecran = pygame.display.set_mode((WINDOW_X, WINDOW_Y), pygame.RESIZABLE)
 
 parser = argparse.ArgumentParser(description="Wa-tor simulation")
 parser.add_argument("-fps", "--framerate", type=int, default=60, help="Frame rate")
 args = parser.parse_args()
+background = pygame.image.load("assets/bg.png")
 
 def demarrer_jeu():
     """Fonction pour démarrer le jeu."""
+    
+    pygame.mixer.music.load("assets/music2.mp3")
+    pygame.mixer.music.play(-1)
+
     global nb_requins
     global nb_proies
     global nb_chronons
@@ -41,9 +49,9 @@ def demarrer_jeu():
     global temps_reprod_requins
     global vie_par_repas_requins
     global temps_reprod_proies
+    global scenario
     
     
-    # Initialisation de Pygame et création de la fenêtre
     if plein_ecran.get_value()[0][1]:
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.FULLSCREEN)
     else:
@@ -51,8 +59,8 @@ def demarrer_jeu():
     
     pygame.display.set_caption("Simulation Wa-tor")
     lancer = True
-    horloge = pygame.time.Clock()
     chronon = round(nb_chronons.get_value())
+
     # Création du monde
     monde = Monde(60, 90)
     
@@ -122,64 +130,69 @@ def demarrer_jeu():
             
         chronon -= 1
 
-        
-# Menu principal         
+# Menu principal       
+font = pygame_menu.font.FONT_MUNRO
+my_theme  = pygame_menu.themes.THEME_DARK.copy()
+my_theme.widget_font = font
+my_theme.widget_font_color = (255, 255, 255)
+
 menu = pygame_menu.Menu(
     height=720,
     width=1280,
     title='Simulation Wa-tor',
-    theme=themes.THEME_DARK
+    theme=my_theme
 )
 
 # Menu paramètres
 menu2 = pygame_menu.Menu(
     height=720,
     width=1280,
-    title='Paramètres',
-    theme=themes.THEME_DARK
+    title='Parametres',
+    theme=my_theme
 )
 
 # Menu paramètres requins
 menu3 = pygame_menu.Menu(
     height=720,
     width=1280,
-    title='Paramètres requins',
-    theme=themes.THEME_DARK
+    title='Parametres requins',
+    theme=my_theme
 )
 
 # Menu paramètres proies
 menu4 = pygame_menu.Menu(
     height=720,
     width=1280,
-    title='Paramètres proies',
-    theme=themes.THEME_DARK
+    title='Parametres proies',
+    theme=my_theme
 )
 
 # Paramètres requins et proies
-nb_vie_requins = menu3.add.range_slider('Points de vie :', default=12, range_values=(1,30), increment=1, value_format= lambda x: f"{x:.0f}")
-temps_reprod_requins = menu3.add.range_slider('Temps de reproduction des requins :', default=12, range_values=(1,30), increment=1, value_format= lambda x: f"{x:.0f}")
-vie_par_repas_requins = menu3.add.range_slider('Point de vie par repas :', default=1, range_values=(1,30), increment=1, value_format= lambda x: f"{x:.0f}")
-temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :', default=4, range_values=(1,30), increment=1, value_format= lambda x: f"{x:.0f}")
+nb_vie_requins = menu3.add.range_slider('Points de vie :', default=12, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
+temps_reprod_requins = menu3.add.range_slider('Temps de reproduction des requins :', default=12, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
+vie_par_repas_requins = menu3.add.range_slider('Point de vie par repas :', default=1, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
+temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :', default=4, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
 
 # Paramètres du jeu
-plein_ecran = menu2.add.selector('Mode plein écran :', [('OUI', True), ('NON', False)], default=True)
-resolution = menu2.add.selector('Résolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
-nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format= lambda x: f"{x:.0f}")
-nb_proies = menu2.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format= lambda x: f"{x:.0f}")
-nb_chronons = menu2.add.range_slider('Nombre de chronons :', default=1000, range_values=(1,10000), increment=1, value_format= lambda x: f"{x:.0f}")
+plein_ecran = menu2.add.selector('Mode plein ecran :', [('OUI', True), ('NON', False)], default=True)
+resolution = menu2.add.selector('Resolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
+scenario = menu2.add.selector('Scenario :', [('Mode infinie', 1), ('Scenario 2', 2), ('Scenario 3', 3)], default=0)
+nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
+nb_proies = menu2.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
+nb_chronons = menu2.add.range_slider('Nombre de chronons :', default=1000, range_values=(1,10000), increment=1, value_format=lambda x: f"{x:.0f}")
 
 # Ajout des boutons au menu
 menu.add.button('Jouer', demarrer_jeu)
-menu.add.button('Paramètres', action=menu2)
-menu2.add.button('Paramètres requins', action=menu3)
-menu2.add.button('Paramètres proies', action=menu4)
+menu.add.button('Parametres', action=menu2)
+menu2.add.button('Parametres requins', action=menu3)
+menu2.add.button('Parametres proies', action=menu4)
 menu.add.button('Quitter', pygame_menu.events.EXIT)
 update_loading = pygame.USEREVENT + 1
 
 
+# Boucle principale
 while True:
-    
-    pygame.time.Clock().tick(args.framerate)
+    ecran.blit(background, background.get_rect())
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
