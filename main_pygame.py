@@ -63,7 +63,6 @@ def demarrer_jeu():
     global temps_reprod_proies
     global scenario
     
-    
     if plein_ecran.get_value()[0][1] == 'PE':
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.FULLSCREEN)
     elif plein_ecran.get_value()[0][1] == 'PEF':
@@ -211,8 +210,8 @@ vie_par_repas_requins = menu3.add.range_slider('Point de vie par repas :', defau
 temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :', default=4, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
 
 # Paramètres du jeu
-plein_ecran = menu2.add.dropselect('Affichage :', [('Plein ecran', 'PE'), ('Fenetre', 'F'), ('Plein ecran fenetre', 'PEF')], default=0)
-resolution = menu2.add.dropselect('Resolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
+plein_ecran = menu2.add.dropselect('Affichage :', [('Plein ecran', 'PE'), ('Fenetre', 'F'), ('Plein ecran fenetre', 'PEF')], default=2)
+resolution = menu2.add.dropselect('Resolution :', [('1920x1080', (1920, 1080)), ('1280x720', (1280, 720)), ('900x600', (900, 600))], default=1)
 scenario = menu2.add.dropselect('Scenario :', [('Mode vague', 1), ('Scenario 2', 2), ('Scenario 3', 3)], default=0)
 nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
 nb_proies = menu2.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
