@@ -40,6 +40,10 @@ def demarrer_jeu():
     pygame.mixer.music.load("assets/music2.mp3")
     pygame.mixer.music.play(-1)
 
+    # Initialisation des variables globales
+    global police
+    global pause
+    global lancer
     global nb_requins
     global nb_proies
     global nb_chronons
@@ -57,8 +61,8 @@ def demarrer_jeu():
     else:
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.RESIZABLE)
     
-    pygame.display.set_caption("Simulation Wa-tor")
-    lancer = True
+    pygame.display.set_caption("Wa-tor")
+    lancer, pause = True, False
     chronon = round(nb_chronons.get_value())
 
     # Création du monde
@@ -75,15 +79,32 @@ def demarrer_jeu():
     while lancer:
         # Gérer les événements
         for evenement in pygame.event.get():
+            
             if evenement.type == pygame.QUIT:
                 exit()
                 
             if evenement.type == pygame.KEYDOWN and evenement.key == pygame.K_F1:
                 # Toggle fullscreen mode
                 pygame.display.toggle_fullscreen()
+                
             if evenement.type == pygame.KEYDOWN and evenement.key == pygame.K_ESCAPE:
                 menu.enable()
-                return
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load("assets/music.mp3")
+                pygame.mixer.music.play(-1)
+                return 
+            
+            #pause game
+            if evenement.type == pygame.KEYDOWN and evenement.key == pygame.K_SPACE:
+                pause = not pause
+                if pause:
+                    pygame.mixer.music.pause()
+                else:
+                    pygame.mixer.music.unpause()
+        # Vérifier si le jeu est en pause
+        if pause:
+            continue
+                
         
         # Remplir l'écran avec une couleur
         ecran.fill(FOND)
@@ -106,7 +127,7 @@ def demarrer_jeu():
         nb_proies_restantes = sum(1 for i in range(monde.nb_lignes) for j in range(monde.nb_colonnes) if isinstance(monde.ocean.valeur_coordonnees(Coordonnees(i, j)), Proie))
 
         # Afficher le nombre de requins et de proies restantes sur pygame
-        police = pygame.font.Font(None, 36)
+
         texte_requins = police.render(f"Requins restants : {nb_requins_restants}", True, (255, 255, 255))
         texte_proies = police.render(f"Proies restantes : {nb_proies_restantes}", True, (255, 255, 255))
         ecran.blit(texte_requins, (10, 10))
@@ -131,6 +152,8 @@ def demarrer_jeu():
         chronon -= 1
 
 # Menu principal       
+
+police = pygame.font.Font(None, 36)
 font = pygame_menu.font.FONT_MUNRO
 my_theme  = pygame_menu.themes.THEME_DARK.copy()
 my_theme.widget_font = font
@@ -189,20 +212,20 @@ menu2.add.button('Parametres proies', action=menu4)
 menu.add.button('Quitter', pygame_menu.events.EXIT)
 update_loading = pygame.USEREVENT + 1
 
-
 # Boucle principale
-while True:
-    ecran.blit(background, background.get_rect())
+lancer, pause = True, False
+while lancer:
+
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
+    
     if menu.is_enabled():
         menu.mainloop(ecran)
     
     if menu2.is_enabled():
         menu2.mainloop(ecran)
-            
+    
     pygame.display.flip()
