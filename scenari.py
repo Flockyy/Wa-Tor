@@ -3,14 +3,15 @@ from typing import List
 class Scenario:
     def __init__(self, libelle: str):
         self.__libelle = libelle
+        self.commentaires = ""
         self.nb_lignes = 0
         self.nb_colonnes = 0 
         self.nb_requins = 0
         self.nb_proies = 0
         self.cycle_reproduction_requin = 0
         self.cycle_reproduction_proie = 0
-        self.visibilite_requin = False
-        self.visibilite_proie = False
+        self.visibilite_requin = 1
+        self.visibilite_proie = 1
         self.vue_arriere_requin = False
         self.vue_arriere_proie = False
         self.points_vie_requin = 0
@@ -24,15 +25,17 @@ class Scenari:
     def __init__(self):
         self.__liste_scenari = []
 
-        scenario = self.ajouter_scenario('Scenario 1')
+        scenario = self.ajouter_scenario('Scenario par défaut')
+        scenario.commentaires = '''Un océan de 30x30 avec des valeurs par défaut.
+        Les requins et les proies n\'ont aucune visibilité : ils ne détectent que les poissons à côté d\eux !'''
         scenario.nb_lignes = 30
         scenario.nb_colonnes = 30
         scenario.nb_proies = 40
         scenario.nb_requins = 10
         scenario.cycle_reproduction_requin = 12
         scenario.cycle_reproduction_proie = 8
-        scenario.visibilite_requin = True
-        scenario.visibilite_proie = True
+        scenario.visibilite_requin = 1
+        scenario.visibilite_proie = 1
         scenario.vue_arriere_requin = True
         scenario.vue_arriere_proie = True
         scenario.points_vie_requin = 12

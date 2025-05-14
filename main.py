@@ -28,7 +28,7 @@ def demander_choix_menu(liste_choix: list) -> int:
         choix = input("Votre choix : ")
         if choix.isnumeric():
             valeur_numerique = int(choix)
-            if 1 <= valeur_numerique <= (len(liste_choix) + 1):
+            if 1 <= valeur_numerique <= len(liste_choix):
                 return valeur_numerique - 1
         print("Numéro non reconnu.")
     
@@ -96,14 +96,14 @@ def parse_args():
     )
     parser.add_argument(
         "--visibilite-requin",
-        type=str,
-        default=("OUI" if MODE_DEBUG else "OUI"),
+        type=int,
+        default=1,
         help="Distance en cellules pour la vision des requins"
     )
     parser.add_argument(
         "--visibilite-proie",
-        type=str,
-        default=("OUI" if MODE_DEBUG else "OUI"),
+        type=int,
+        default=1,
         help="Distance en cellules pour la vision des proies"
     )
     parser.add_argument(
@@ -218,32 +218,46 @@ def lancer(
 
     print("Simulation terminée.")
 
+def selection_scenario(scenario: Scenario)-> None:
+    print(f"Scenario sélectionné : {scenario.libelle}")
+    print("Commentaires :")
+    print(scenario.commentaires)
+    print("")
+    liste_choix = ["Lancer le scenario", "Revenir au menu principal"]
+    choix = demander_choix_menu(liste_choix)
+    if choix == 0:
+        lancer(
+            False, 0,
+            scenario.nb_lignes, scenario.nb_colonnes,
+            scenario.nb_requins, scenario.nb_proies,
+            scenario.cycle_reproduction_requin, scenario.cycle_reproduction_proie,
+            scenario.visibilite_requin, scenario.visibilite_proie,
+            scenario.vue_arriere_requin, scenario.vue_arriere_proie,
+            scenario.points_vie_requin, scenario.points_par_repas_requin)
+    else:
+        return
+
 def main():
     args = parse_args()
     if (args.menu == "OUI"):
         scenari = Scenari()
         print("Bienvenue dans WA-TOR !")
-        print("Choisissez un scenario :")
-        liste_libelles = scenari.liste_libelles()
-        liste_libelles.append("Quitter le programme")
-        choix = demander_choix_menu(liste_libelles)
-        if choix != (len(liste_libelles) - 1):
-            scenario = scenari.scenario(choix)
-            lancer(
-                False, 0,
-                scenario.nb_lignes, scenario.nb_colonnes,
-                scenario.nb_requins, scenario.nb_proies,
-                scenario.cycle_reproduction_requin, scenario.cycle_reproduction_proie,
-                scenario.visibilite_requin, scenario.visibilite_proie,
-                scenario.vue_arriere_requin, scenario.vue_arriere_proie,
-                scenario.points_vie_requin, scenario.points_par_repas_requin)
+        while True:
+            print("Choisissez un scenario :")
+            liste_libelles = scenari.liste_libelles()
+            liste_libelles.append("Quitter le programme")
+            choix = demander_choix_menu(liste_libelles)
+            if choix == (len(liste_libelles) - 1):
+                break
+            else:
+                selection_scenario(scenario = scenari.scenario(choix))
     else:
         lancer(
             True, args.chronon,
             args.hauteur, args.largeur,
             args.nb_requin, args.nb_proie,
             args.cycle_reproduction_requin, args.cycle_reproduction_proie,
-            (args.visibilite_requin == "OUI"), (args.visibilite_proie == "OUI"),
+            args.visibilite_requin, args.visibilite_proie,
             (args.vue_arriere_requin == "OUI"), (args.vue_arriere_proie == "OUI"),
             args.points_de_vie_requin, args.points_par_repas_requin)
 
