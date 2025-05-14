@@ -40,7 +40,7 @@ class Monde:
         self.__vue_arriere_proie = vue_arriere_proie
         self.__points_vie_requin = points_vie_requin
         self.__points_par_repas_requin = points_par_repas_requin
-        self.ocean = Ocean(nb_lignes, nb_colonnes)
+        self.__ocean = Ocean(nb_lignes, nb_colonnes)
         self.__numero_chronon = 0
         proie = [Proie(self.ocean, self.__cycle_reproduction_proie, self.__visibilite_proie, self.__vue_arriere_proie) for _ in range(self.__nb_proies)]
         requins = [Requin(self.ocean, self.__cycle_reproduction_requin, self.__visibilite_requin, self.__vue_arriere_requin, self.__points_vie_requin, self.__points_par_repas_requin) for _ in range(self.__nb_requins)]
@@ -57,6 +57,10 @@ class Monde:
     @property
     def numero_chronon(self):
         return self.__numero_chronon
+    
+    @property
+    def ocean(self)-> Ocean:
+        return self.__ocean
 
     def placer_poissons_aleatoirement(self, proies: List[object], requins: List[object]):
         """Place une liste de proies et de requins dans la grille.
