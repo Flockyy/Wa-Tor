@@ -48,18 +48,18 @@ Les requins et les proies n'ont aucune visibilité : ils ne détectent que les p
         scenario.commentaires ='''
 Une proie rescapée se retrouve chassée par 15 requins à la vue affûtée et à la grande endurance !
 La proie saura-t-elle capable de survivre jusqu'à la mort des chasseurs ?
-Durée de vie des requins : 30 chronon...'''
+Durée de vie des requins : 25 chronon...'''
         scenario.nb_lignes = 30
         scenario.nb_colonnes = 30
         scenario.nb_proies = 1
         scenario.nb_requins = 15
-        scenario.cycle_reproduction_requin = 31
-        scenario.cycle_reproduction_proie = 31
+        scenario.cycle_reproduction_requin = 26
+        scenario.cycle_reproduction_proie = 26
         scenario.visibilite_requin = 15
-        scenario.visibilite_proie = 15
+        scenario.visibilite_proie = 1
         scenario.vue_arriere_requin = True
         scenario.vue_arriere_proie = True
-        scenario.points_vie_requin = 30
+        scenario.points_vie_requin = 25
         scenario.points_par_repas_requin = 6
     
     @property
