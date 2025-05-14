@@ -15,7 +15,13 @@ class Monde:
     placement de proies et de requins.
     """
 
-    def __init__(self, nb_lignes: int, nb_colonnes: int):
+    def __init__(self, nb_lignes: int, nb_colonnes: int,
+                 nb_requins: int, nb_proies: int,
+                 cycle_reproduction_requin: int, cycle_reproduction_proie: int,
+                 visibilite_requin: int, visibilite_proie: int,
+                 vue_arriere_requin: bool, vue_arriere_proie: bool,
+                 points_vie_requin: int,
+                 points_par_repas_requin: int):
         """Initialise le monde avec une grille de la taille donnée.
 
         Args:
@@ -24,8 +30,21 @@ class Monde:
         """
         self.__nb_lignes = nb_lignes
         self.__nb_colonnes = nb_colonnes
+        self.__nb_requins = nb_requins
+        self.__nb_proies = nb_proies
+        self.__cycle_reproduction_requin = cycle_reproduction_requin
+        self.__cycle_reproduction_proie = cycle_reproduction_proie
+        self.__visibilite_requin = visibilite_requin
+        self.__visibilite_proie = visibilite_proie
+        self.__vue_arriere_requin = vue_arriere_requin
+        self.__vue_arriere_proie = vue_arriere_proie
+        self.__points_vie_requin = points_vie_requin
+        self.__points_par_repas_requin = points_par_repas_requin
         self.ocean = Ocean(nb_lignes, nb_colonnes)
         self.__numero_chronon = 0
+        proie = [Proie(self.ocean, self.__cycle_reproduction_proie, self.__visibilite_proie, self.__vue_arriere_proie) for _ in range(self.__nb_proies)]
+        requins = [Requin(self.ocean, self.__cycle_reproduction_requin, self.__visibilite_requin, self.__vue_arriere_requin, self.__points_vie_requin, self.__points_par_repas_requin) for _ in range(self.__nb_requins)]
+        self.placer_poissons_aleatoirement(proie, requins)
 
     @property
     def nb_lignes(self):
@@ -39,7 +58,7 @@ class Monde:
     def numero_chronon(self):
         return self.__numero_chronon
 
-    def placer_poissons(self, proies: List[object], requins: List[object]):
+    def placer_poissons_aleatoirement(self, proies: List[object], requins: List[object]):
         """Place une liste de proies et de requins dans la grille.
         Cette méthode place les proies et les requins dans la grille à des positions aléatoires.
         """
