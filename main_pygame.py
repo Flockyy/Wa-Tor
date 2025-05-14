@@ -8,6 +8,7 @@ from requin import Requin
 from proie import Proie
 from ocean import Ocean, Coordonnees
 import argparse
+from pygame._sdl2 import Window
 
 # Color setup
 FOND = (62, 70, 73)
@@ -16,10 +17,10 @@ PROIE = (34, 168, 109)
 SHARK = (233, 110, 68)
 
 # Constant setup
-CELLSIZE = 8
-MARGIN = 2
-WIDTH = 90
-HEIGHT = 60
+TAILLE_CELLULE = 8
+MARGE = 2
+LARGEUR = 90
+HAUTEUR = 60
 WINDOW_X = 1280
 WINDOW_Y = 720
 
@@ -60,20 +61,27 @@ def demarrer_jeu():
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.FULLSCREEN)
     else:
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.RESIZABLE)
+        Window.from_display_module().maximize()
     
     pygame.display.set_caption("Wa-tor")
     lancer, pause = True, False
     chronon = round(nb_chronons.get_value())
 
     # Création du monde
-    monde = Monde(60, 90)
-    
-    # Création des proies et requins
-    proies = [Proie(monde.ocean, cycle_reproduction=round(temps_reprod_proies.get_value())) for _ in range(round(nb_proies.get_value()))]
-    requins = [Requin(monde.ocean, cycle_reproduction=round(temps_reprod_requins.get_value()), points_total_vie=round(nb_vie_requins.get_value()), points_par_repas=round(vie_par_repas_requins.get_value())) for _ in range(round(nb_requins.get_value()))]
-    
-    # Placement des proies et requins dans le monde
-    monde.placer_poissons(proies, requins) 
+    monde = Monde(
+        HAUTEUR, 
+        LARGEUR, 
+        round(nb_requins.get_value()), 
+        round(nb_proies.get_value()), 
+        round(temps_reprod_requins.get_value()), 
+        round(temps_reprod_proies.get_value()), 
+        1, 
+        1, 
+        True, 
+        True, 
+        round(nb_vie_requins.get_value()), 
+        round(vie_par_repas_requins.get_value())
+    )
     
     # Boucle principale du jeu
     while lancer:
@@ -103,8 +111,7 @@ def demarrer_jeu():
                     pygame.mixer.music.unpause()
         # Vérifier si le jeu est en pause
         if pause:
-            continue
-                
+            continue       
         
         # Remplir l'écran avec une couleur
         ecran.fill(FOND)
@@ -120,7 +127,7 @@ def demarrer_jeu():
                     color = SHARK
                 else:
                     color = OCEAN
-                pygame.draw.rect(ecran, color, (j * CELLSIZE + MARGIN, i * CELLSIZE + MARGIN, CELLSIZE - MARGIN, CELLSIZE - MARGIN))
+                pygame.draw.rect(ecran, color, (j * TAILLE_CELLULE + MARGE, i * TAILLE_CELLULE + MARGE, TAILLE_CELLULE - MARGE, TAILLE_CELLULE - MARGE))
                     
         # récupérer le nombre de requins et de proies restantes
         nb_requins_restants = sum(1 for i in range(monde.nb_lignes) for j in range(monde.nb_colonnes) if isinstance(monde.ocean.valeur_coordonnees(Coordonnees(i, j)), Requin))
@@ -152,7 +159,6 @@ def demarrer_jeu():
         chronon -= 1
 
 # Menu principal       
-
 police = pygame.font.Font(None, 36)
 font = pygame_menu.font.FONT_MUNRO
 my_theme  = pygame_menu.themes.THEME_DARK.copy()
@@ -197,9 +203,9 @@ vie_par_repas_requins = menu3.add.range_slider('Point de vie par repas :', defau
 temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :', default=4, range_values=(1,30), increment=1, value_format=lambda x: f"{x:.0f}")
 
 # Paramètres du jeu
-plein_ecran = menu2.add.selector('Mode plein ecran :', [('OUI', True), ('NON', False)], default=True)
-resolution = menu2.add.selector('Resolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
-scenario = menu2.add.selector('Scenario :', [('Mode infinie', 1), ('Scenario 2', 2), ('Scenario 3', 3)], default=0)
+plein_ecran = menu2.add.dropselect('Plein ecran :', [('Non', False), ('Oui', True)], default=0)
+resolution = menu2.add.dropselect('Resolution :', [('1280x720', (1280, 720)), ('900x600', (900, 600)), ('1920x1080', (1920, 1080))], default=0)
+scenario = menu2.add.dropselect('Scenario :', [('Mode vague', 1), ('Scenario 2', 2), ('Scenario 3', 3)], default=0)
 nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
 nb_proies = menu2.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
 nb_chronons = menu2.add.range_slider('Nombre de chronons :', default=1000, range_values=(1,10000), increment=1, value_format=lambda x: f"{x:.0f}")
