@@ -16,7 +16,7 @@ Le programme CLI peut être exécuté avec les arguments suivants :
 --auto", "-a [str]
         default=NON
         Automatiser la simulation (OUI ou NON)
- --chronon", "-c [int]
+--chronon", "-c [int]
         default=100
         Nombre d'étapes de simulation si activation paramètre --auto=OUI (cycle de vie)
 --hauteur", "-H [int]
