@@ -3,15 +3,35 @@ from typing import List
 import random
 
 class Coordonnees:
+    """Représente des coordonnées dans une grille sous forme de ligne et colonne.
+    """
     def __init__(self, ligne: int, colonne: int):
+        """Initialise une instance de Coordonnees
+
+        Args:
+            ligne (int): Indice de la ligne
+            colonne (int): Indice de la ligne
+        """
         self.ligne = ligne
         self.colonne = colonne
     def __str__(self):
+        """Retourne une représentation lisible de l'objet
+        """
         return f"Coordonnées = (Ligne {self.ligne} / Colonne {self.colonne})"
     def __repr__(self):
+        """Retourne une représentation textuelle de l'objet."""
         return f"{__name__}({getattr(self)})" #TODO: Alexis: à vérifier...
 
 class Direction(Enum):
+    """Enumération représentant les directions possibles
+
+    Valeurs :
+        - Aucune : Aucune direction
+        - Haut : Vers le haut
+        - Droite : Vers la droite
+        - Bas : Vers le bas
+        - Gauche : Vers la gauche
+    """
     Aucune = 0
     Haut = 1
     Droite = 2
@@ -19,11 +39,24 @@ class Direction(Enum):
     Gauche = 4
                 
     def liste_directions_melangees()-> list["Direction"]:
+        """Retourne une liste des directions mélangées (incluant Aucune)
+
+        Returns:
+            list["Direction"]: Liste des directions dans un ordre aléatoire
+        """
         liste_melangee = [direction for direction in Direction]
         random.shuffle(liste_melangee)
         return liste_melangee
     
     def direction_inverse(direction)-> "Direction":
+        """Récupére la direction inverse de la direction donnée en argument
+
+        Args:
+            direction (Direction): La direction que l'on veut inverser
+
+        Returns:
+            Direction: La direction inverse ou Aucune 
+        """
         match direction:
             case Direction.Haut:
                 return Direction.Bas
@@ -36,18 +69,41 @@ class Direction(Enum):
             case _:
                 return Direction.Aucune
 
-class Orientation():
+class Orientation:
+    """Représente une orientation par rapport à une cible dans l'océan
+
+    Attributs:
+        distance (int): Distance jusqu'à la cible
+        directions (List[Direction]): Liste des directions à suivre pour se rendre jusqu'à la cible
+    """
     #def __init__(self, distance: int = 0, directions: List[Direction] = []):
     #    self.distance = distance
     #    self.directions = directions
     #    print(f"Création Orientation : directions = {self.directions}")
     def __init__(self, distance: int = 0):
+        """Initialise une nouvelle orientation
+
+        Args:
+            distance (int): Distance initial jusqu'à la cible. Par défaut: 0
+        """
         self.distance = distance
         self.directions = []
     def ajouter_direction(self,direction: Direction):
+        """Ajoute une direction à la liste des directions menants à la cible
+
+        Args:
+            direction (Direction): Direction à ajouter
+        """
         self.directions.append(direction)
 
 class Ocean:
+    """Représentation d'un océan sous forme de grille dans laquelle vivent des poissons (requins et proies)
+
+    Attributs:
+        lignes (int): Nombre de lignes dans la grille
+        colonnes (int): Nombre de colonnes dans la grille 
+        grille (list): Grille contenant les objets
+    """
     def __init__(self, lignes: int, colonnes: int):
         """Initialise la grille avec le nombre donné de lignes et colonnes.
 
@@ -77,8 +133,8 @@ class Ocean:
 
         Args:
             proie (Proie): L'objet proie à placer.
-            i (int): La ligne de la grille.
-            j (int): La colonne de la grille.
+            ligne (int): La ligne de la grille.
+            colonne (int): La colonne de la grille.
         """
         if 0 <= coordonnees.ligne < self.__lignes and 0 <= coordonnees.colonne < self.__colonnes:
             self.__grille[coordonnees.ligne][coordonnees.colonne] = proie
@@ -90,8 +146,8 @@ class Ocean:
 
         Args:
             requin (Requin): L'objet requin à placer.
-            i (int): La ligne de la grille.
-            j (int): La colonne de la grille.
+            ligne (int): La ligne de la grille.
+            colonne (int): La colonne de la grille.
         """
         if 0 <= coordonnees.ligne < self.__lignes and 0 <= coordonnees.colonne < self.colonnes:
             self.__grille[coordonnees.ligne][coordonnees.colonne] = requin
@@ -99,12 +155,15 @@ class Ocean:
             raise IndexError("Position en dehors des limites de la grille.")
 
     def effectuer_deplacement(self,anciennes_coordonees: Coordonnees, nouvelles_coordonnees: Coordonnees, enfant: any = None)-> None:
-        """Gestion du déplacement d'un poisson 
+        """Gestion du déplacement d'un poisson d'une cellule à une autre. Si le déplacement s'effectue, alors le poisson à l'ancienne position
+        est déplacé vers la nouvelle position. L'ancienne position est vidée sauf si le paramètre enfant est True
 
         Args:
-            anciennes_coordonees (Coordonnees): _description_
-            nouvelles_coordonnees (Coordonnees): _description_
-            enfant (any, optional): _description_. Defaults to None.
+            anciennes_coordonees (Coordonnees): Coordonnée de la position actuelle du poisson
+            nouvelles_coordonnees (Coordonnees): Coordonnée de la nouvelle position du poisson
+            enfant (any): Si True, objet à placer après le déplacement sur l'ancienne coordonnée. Par défaut None
+        Returns:
+            None
         """
         if ((anciennes_coordonees.ligne == nouvelles_coordonnees.ligne) and (anciennes_coordonees.colonne == nouvelles_coordonnees.colonne)):
             if (enfant != None):
@@ -149,13 +208,20 @@ class Ocean:
             raise IndexError("Position en dehors des limites de la grille.")
     
     def effacer_valeur(self, coordonnees: Coordonnees):
+        """Efface la valeur à la position dans la grille. Permet de remplacer une entitée à des coordonnées spécifiques par None
+        pour indiquer que la cellule est vide 
+
+        Args:
+            coordonnees (Coordonnees): Coordonnées de la cellule à vider
+        """
         self.__grille[coordonnees.ligne][coordonnees.colonne] = None
         
     def deplacer_coordonnees(self, coordonnees_initiales: Coordonnees, direction: Direction)-> Coordonnees:
         """Change les coordonnes en fonction de la direction.
         Args:
-            coordonnees_initiales: Coordonnees
+            coordonnees_initiales: Coordonnees avant le déplacement
             direction (Direction): La direction dans laquelle changer la valeur.
+
         Returns:
             Coordonnees
         """
@@ -192,6 +258,15 @@ class Ocean:
             return nouvelles_coordonnees
         
     def calculer_orientation(self, coordonnees_depart: Coordonnees, coordonnees_destination: Coordonnees)-> Orientation:
+        """Calcul l'orientation (direction et distance) entre deux coordonées dans la grille
+
+        Args:
+            coordonnees_depart (Coordonnees): Coordonnées de d"part
+            coordonnees_destination (Coordonnees): Coordonnées de destination
+
+        Returns:
+            Orientation: Objet contenant la distance totale ainsi que les directions afin d'atteindre les coordonnées de destination
+        """
         distance_horizontale = abs(coordonnees_depart.colonne - coordonnees_destination.colonne)
         if (distance_horizontale == 0):
             direction_horizontale = Direction.Aucune
@@ -230,6 +305,14 @@ class Ocean:
         return orientation
     
     def coordonnees_libres(self, coordonnees: Coordonnees)-> bool:
+        """Vérifie grâce aux coordonées si la case est libre (vide)
+
+        Args:
+            coordonnees (Coordonnees): Coordonnées de la case à vérifier
+
+        Returns:
+            bool: Retourne True si la case est libres, sinon False
+        """
         return (self.infos_coordonnees(coordonnees) is None)
     
     def coordonnes_jouxtent_objet(self, coordonnees: Coordonnees, nom_classe: str)-> bool:
@@ -261,6 +344,8 @@ class Ocean:
         return False
         
     def __repr__(self):
+        """Retourne un représentation textuelle officielle de l'objet (utilisé pour le débogage)
+        """
         return f"Ocean({self.__lignes}, {self.__colonnes}, {self.__grille})"
 
     def __str__(self):

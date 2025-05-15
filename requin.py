@@ -26,15 +26,39 @@ class Requin(Poisson):
         return self.__points_energie
     
     def caractere_symbole(self)-> str:
+        """Retourne le caractère représentant un requin
+
+        Returns:
+            str: Le caractère utilisé pour identifier les requins
+        """
         return "X"
     
     def en_chasse(self)-> bool:
+        """Détermine si le requin est en chasse. Le requin est considéré en chasse si ses points d'énergie sont inférieurs 
+        au total de ses points de vie.
+
+        Returns:
+            bool: True si l'animal est en chasse 
+        """
         return (self.points_energie < self.__point_total_vie)
     
     def _nouvelle_instance(self):
+        """Crée une nouvelle instance de la class requin avec les mêmes paramètres. Cette méthode est utilisée
+        lors de la reproduction pour génèrer un nouvel individu
+
+        Returns:
+            Requin: Une nouvelle instance de requin avec les mêmes paramètres
+        """
         return Requin(self._ocean, self.cycle_reproduction, self.visibilite, self.vue_arriere, self.points_energie, self.__points_par_repas)
 
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
+        """Execute un cycle de vie pour le requin à une position donnée
+
+        Args:
+            coordonnees (Coordonnees): Position actuelle du requin sur la grille
+        Returns:
+            None
+        """
         super().executer_cycle(coordonnees)
         self.__points_energie -= 1
 

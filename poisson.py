@@ -9,6 +9,14 @@ class Poisson(ABC):
         cycle_reproduction (int): Nombre de cycle entre chaque reproduction
     """
     def __init__(self, ocean: Ocean, cycle_reproduction: int, visibilite: int, vue_arriere: bool):
+        """Initialise un être vivant avec ses paramètres
+
+        Args:
+            ocean (Ocean): Représentation de l'océan 
+            cycle_reproduction (int): Nombre de cycle entre chaque reproduction
+            visibilite (int): Distance maximale que l'être vivant peut voir autour de lui
+            vue_arriere (bool): Si True, le poisson peut voir derrière lui
+        """
         self._ocean = ocean
         self.__cycle_reproduction = cycle_reproduction
         self.__nb_cycles_depuis_derniere_repro = 0
@@ -82,6 +90,22 @@ class Poisson(ABC):
         """
 
         def traiter_rang_suivant(coordonnees_precedentes: Coordonnees, distance_rang: int = 1)-> Coordonnees:
+            """Recherche dans un rang successif la présence d’un élément correspondant à la classe recherchée,
+            en suivant une direction d’observation donnée.
+
+            Observe la case située juste devant dans la direction choisie, puis élargit son champ de vision en observant 
+            les cases sur le côté au fur et à mesure que la distance augmente. Si aucun élément recherché n’est trouvé, elle appelle 
+            le rang suivant jusqu’à atteindre une limite.
+
+            Args:
+                coordonnees_precedentes (Coordonnees) : Coordonnees précendentes 
+                distance_rang (int): Distance à laquelle le rang est observé. Incrémente à chaque appel
+
+            Returns:
+                Coordonnees | None: : Retourne la première case contenant la class recherchée
+                ou None si la recherche n'a pas abouti
+            """
+
             # Si on a parcouru la moitié de la carte dans la direction demandée, ou qu'on a atteint la limite de la vision,
             # alors on retourne None, sinon on effectue le traitement.
             if (direction_observee in (Direction.Haut, Direction.Bas)):
@@ -126,4 +150,10 @@ class Poisson(ABC):
         return traiter_rang_suivant(coordonnees_observation)
     
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
+        """Execute un tour de cycle pour les poissons:
+        Déplacement, alimentation (pour les requins), vieillissement et reproduction si les conditions sont remplies.
+
+        Args:
+            coordonnees (Coordonnees): Position actuelle du poisson sur la grille
+        """
         self.__nb_cycles_depuis_derniere_repro += 1
