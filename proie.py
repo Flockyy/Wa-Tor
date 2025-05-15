@@ -54,12 +54,11 @@ class Proie(Poisson):
             Proie: Une nouvelle instance de proie avec les mêmes paramètres
 
         """
-        return Proie(
-            self._ocean, self.cycle_reproduction, self.visibilite, self.vue_arriere
-        )
-
-    def executer_cycle(self, coordonnees: Coordonnees) -> None:
-        """Execute un cycle de vie pour la proie à une position donnée
+        return Proie(self._ocean, self.cycle_reproduction, self.visibilite, self.vue_arriere)
+    def executer_cycle(self, coordonnees: Coordonnees)-> None:
+        """Execute un cycle de vie pour la proie à une position donnée.
+        Ce cycle inclut la prise de décision pour le déplacement de la proie en fonction de sa 
+        visibilité, de sa capacité à détecter les requins à proximité, et de la gestion du mode fuite.
 
         Args:
             coordonnees (Coordonnees): Position actuelle de la proie sur la grille
@@ -69,13 +68,14 @@ class Proie(Poisson):
         """
         super().executer_cycle(coordonnees)
         # Note : pas de gestion du viellissement de la proie (selon la doc).
-        #        Si on décide de la gérer, alors il faut déplacer la gestion du viuellissement de Requin vers Poisson.
+        # Si on décide de la gérer, alors il faut déplacer la gestion du viuellissement de Requin vers Poisson.
 
         # recherche direction souhaitée
         direction_choisie = self.direction
         liste_directions = []
         liste_directions.extend(Direction.liste_directions_melangees())  # on mélange
         liste_directions.remove(Direction.Aucune)
+
         # Mode fuite : on detecte les requins les plus proches dans chaque direction
         # et on retire leurs directions de la liste des directions sûres
         liste_orientations_requins = []
@@ -88,11 +88,8 @@ class Proie(Poisson):
                         coordonnees, direction, "Requin"
                     )
                     if coordonnees_requin:
-                        liste_orientations_requins.append(
-                            self._ocean.calculer_orientation(
-                                coordonnees, coordonnees_requin
-                            )
-                        )
+                        liste_orientations_requins.append(self._ocean.calculer_orientation(coordonnees, coordonnees_requin))
+
         if len(liste_orientations_requins) > 0:
             liste_orientations_requins.sort(
                 key=lambda orientation: orientation.distance
@@ -101,12 +98,14 @@ class Proie(Poisson):
                 for direction in orientation.directions:
                     if direction in liste_directions:
                         liste_directions.remove(direction)
+
         # on teste tous les choix possibles en priorisant les directions sans requins (s'il y en a).
         # Si l'ancienne direction est sûre, on la teste en premier
         if direction_choisie in liste_directions:
             liste_directions.remove(direction_choisie)
             liste_directions.insert(0, direction_choisie)
         direction_choisie = Direction.Aucune
+        
         # on ajoute à la fin les directions manquantes (qui ont été virées à cause des requins)
         for direction in Direction.liste_directions_melangees():
             if (direction != Direction.Aucune) and (direction not in liste_directions):
