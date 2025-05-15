@@ -2,8 +2,8 @@
 
 echo $CHRONON
 
-SIMULATION="/Users/alexis/dev/simplon/Wa-Tor/.venv/bin/python \
-/Users/alexis/dev/simplon/Wa-Tor/main.py \
+SIMULATION="python \
+../main.py \
 --auto=$AUTO \
 --chronon=$CHRONON \
 --hauteur=$HAUTEUR \
