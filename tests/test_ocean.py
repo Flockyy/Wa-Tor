@@ -1,10 +1,10 @@
-from ocean import Grille
+from ocean import Ocean
 
 
 def test_grille():
     """Test de la classe Grille."""
     # Création d'une instance de la classe Grille
-    grille = Grille(5, 5)
+    grille = Ocean(5, 5)
 
     # Vérification de la taille de la grille
     assert grille.lignes == 5, "Le nombre de lignes doit être 5"

@@ -1,5 +1,3 @@
-from typing import List
-
 class Scenario:
     def __init__(self, libelle: str):
         self.__libelle = libelle

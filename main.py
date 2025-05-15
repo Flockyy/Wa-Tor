@@ -1,13 +1,10 @@
 # filename: main.py
 import os
 from time import sleep
-#import sys
 from monde import Monde
 import argparse
-from proie import Proie
-from requin import Requin
 from ocean import Coordonnees
-from scenari import Scenari, Scenario
+from scenari import Scenario
 
 MODE_DEBUG = False  # ça marche pas. (getattr(sys, 'gettrace', None) is not None)
 

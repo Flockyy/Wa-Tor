@@ -1,5 +1,4 @@
 #from typing import List
-import random
 from ocean import Ocean, Coordonnees, Direction
 from poisson import Poisson
 
