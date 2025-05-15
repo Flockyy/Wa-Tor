@@ -75,7 +75,7 @@ class Requin(Poisson):
                         if self.en_chasse():
                             direction_choisie = direction
                             break
-                    else:
+                    else: # cellule vide
                         direction_choisie = direction
                         break
 

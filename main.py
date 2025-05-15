@@ -1,7 +1,7 @@
 # filename: main.py
 import os
 from time import sleep
-import sys
+#import sys
 from monde import Monde
 import argparse
 from proie import Proie
@@ -35,53 +35,48 @@ def demander_choix_menu(liste_choix: list) -> int:
 def parse_args():
     """Parse les arguments de la ligne de commande."""
     parser = argparse.ArgumentParser(description="Wa-tor simulation")
+    #parser.add_argument(
+    #    "--menu",
+    #    type=str,
+    #    default="OUI",
+    #    help="Afficher le menu (OUI ou NON)"
+    #)
     parser.add_argument(
-        "--menu",
-        type=str,
-        default="OUI",
-        help="Afficher le menu (OUI ou NON)"
-    )
-    parser.add_argument(
-        "--auto",
+        "--auto", "-a",
         type=str,
         default="NON",
         help="Automatiser la simulation (OUI ou NON)"
     )
     parser.add_argument(
-        "--chronon",
+        "--chronon", "-c",
         type=int,
-        default=30,
+        default=100,
         help="Nombre d'étapes de simulation si activation paramètre --auto=OUI (cycle de vie)"
     )
     parser.add_argument(
-        "--hauteur",
+        "--hauteur", "-H",
         type=int,
         default=(10 if MODE_DEBUG else 30),
         help="Nombre de lignes dans la grille"
     )
     parser.add_argument(
-        "--largeur",
+        "--largeur", "-l",
         type=int,
         default=(10 if MODE_DEBUG else 30),
         help="Nombre de colonnes dans la grille"
     )
     parser.add_argument(
-        "--nb-proie",
+        "--nb-proie", "-p",
         type=int,
         default=(1 if MODE_DEBUG else 40),
         help="Nombre de proies à placer dans la grille"
     )
     parser.add_argument(
-        "--nb-requin",
+        "--nb-requin", "-r",
         type=int,
-        default=(0 if MODE_DEBUG else 10),
+        default=(0 if MODE_DEBUG else 15),
         help="Nombre de requins à placer dans la grille"
     )
-    #parser.add_argument(
-    #    "--fichier",
-    #    type=str,
-    #    help="Fichier de sortie pour les résultats de la simulation",
-    #)
     parser.add_argument(
         "--cycle-reproduction-requin",
         type=int,
@@ -109,6 +104,7 @@ def parse_args():
     parser.add_argument(
         "--vue_arriere-requin",
         type=str,
+        default=("OUI" if MODE_DEBUG else "OUI"),
         help="Capacité des requins à détecter les proies à distance derrière eux"
     )
     parser.add_argument(
@@ -139,6 +135,12 @@ def lancer(
         visibilite_requin: int, visibilite_proie: int,
         vue_arriere_requin: bool, vue_arriere_proie: bool,
         points_de_vie_requin: int, points_par_repas_requin: int):
+    #if ((hauteur == -1) or (largeur == -1)):
+    #    with shutil.get_terminal_size() as dimensions:
+    #        if hauteur == -1:
+    #            hauteur = dimensions.lines
+    #        if largeur == -1:
+    #            largeur = dimensions.columns
     monde = Monde(hauteur, largeur,
                   nb_requin, nb_proie,
                   cycle_reproduction_requin, cycle_reproduction_proie,
@@ -152,7 +154,7 @@ def lancer(
             print(f"Cycle {cnt + 1}/{nb_cycles}")
             monde.executer_cycle()
             for ligne in range(hauteur):
-                for colonne in range(nb_cycles):
+                for colonne in range(largeur):
                     if (
                         monde.ocean.valeur_coordonnees(Coordonnees(ligne, colonne))
                         == None
@@ -200,22 +202,6 @@ def lancer(
                 == "q"
             ):
                 break
-
-    ## Sauvegarde des résultats dans un fichier
-    #if args.fichier:
-    #    with open(args.fichier, "w") as f:
-    #        for i in range(args.hauteur):
-    #            for j in range(args.largeur):
-    #                if isinstance(monde.ocean.grille[i][j], Proie):
-    #                    f.write("P ")
-    #                elif isinstance(monde.ocean.grille[i][j], Requin):
-    #                    f.write("R ")
-    #                else:
-    #                    f.write(". ")
-    #            f.write("\n")
-    #else:
-    #    print("Aucun fichier de sortie spécifié.")
-
     print("Simulation terminée.")
 
 def selection_scenario(scenario: Scenario)-> None:
@@ -238,28 +224,28 @@ def selection_scenario(scenario: Scenario)-> None:
         return
 
 def main():
+    #if (args.menu == "OUI"):
+    #    scenari = Scenari()
+    #    print("Bienvenue dans WA-TOR !")
+    #    while True:
+    #        print("Choisissez un scenario :")
+    #        liste_libelles = scenari.liste_libelles()
+    #        liste_libelles.append("Quitter le programme")
+    #        choix = demander_choix_menu(liste_libelles)
+    #        if choix == (len(liste_libelles) - 1):
+    #            break
+    #        else:
+    #            selection_scenario(scenario = scenari.scenario(choix))
+    #else:
     args = parse_args()
-    if (args.menu == "OUI"):
-        scenari = Scenari()
-        print("Bienvenue dans WA-TOR !")
-        while True:
-            print("Choisissez un scenario :")
-            liste_libelles = scenari.liste_libelles()
-            liste_libelles.append("Quitter le programme")
-            choix = demander_choix_menu(liste_libelles)
-            if choix == (len(liste_libelles) - 1):
-                break
-            else:
-                selection_scenario(scenario = scenari.scenario(choix))
-    else:
-        lancer(
-            True, args.chronon,
-            args.hauteur, args.largeur,
-            args.nb_requin, args.nb_proie,
-            args.cycle_reproduction_requin, args.cycle_reproduction_proie,
-            args.visibilite_requin, args.visibilite_proie,
-            (args.vue_arriere_requin == "OUI"), (args.vue_arriere_proie == "OUI"),
-            args.points_de_vie_requin, args.points_par_repas_requin)
+    lancer(
+        (args.auto == "OUI"), args.chronon,
+        args.hauteur, args.largeur,
+        args.nb_requin, args.nb_proie,
+        args.cycle_reproduction_requin, args.cycle_reproduction_proie,
+        args.visibilite_requin, args.visibilite_proie,
+        (args.vue_arriere_requin == "OUI"), (args.vue_arriere_proie == "OUI"),
+        args.points_de_vie_requin, args.points_par_repas_requin)
 
 if __name__ == "__main__":
     main()
