@@ -11,15 +11,50 @@ pip install -r requirements.txt
 ``` 
 
 # ⚙️ Arguments disponibles
-Le programme peut être exécuté avec les arguments suivants :
+Le programme CLI peut être exécuté avec les arguments suivants :
 ```plaintext
---auto [oui/non]          # Active ou désactive le mode automatique
---hauteur [int]           # Définit la hauteur de la grille
---largeur [int]           # Définit la largeur de la grille
---chronon [int]           # Nombre de cycles de simulation
---proie [int]             # Nombre initial de poissons
---requin [int]            # Nombre initial de requins
---fps [int]               # Images par seconde pour l'affichage pygame
+--auto", "-a [str]
+        default=NON
+        Automatiser la simulation (OUI ou NON)
+ --chronon", "-c [int]
+        default=100
+        Nombre d'étapes de simulation si activation paramètre --auto=OUI (cycle de vie)
+--hauteur", "-H [int]
+        default=30
+        Nombre de lignes dans la grille
+--largeur", "-l [int]
+        default=30
+        Nombre de colonnes dans la grille
+--nb-proie", "-p [int]
+        default=40
+        Nombre de proies à placer dans la grille
+--nb-requin", "-r [int]
+        default=15
+        Nombre de requins à placer dans la grille
+--cycle-reproduction-requin [int]
+        default=12
+        Nombre de cycles entre chaque reproduction des requins
+--cycle-reproduction-proie [int]
+        default=8
+        Nombre de cycles entre chaque reproduction des proies
+--visibilite-requin [int]
+        default=1
+        Distance en cellules pour la vision des requins
+--visibilite-proie [int]
+        default=1
+        Distance en cellules pour la vision des proies
+--vue_arriere-requin [str]
+        default=OUI
+        Capacité des requins à détecter les proies à distance derrière eux
+--vue_arriere-proie [str]
+        default=OUI
+        Capacité des proies à détecter les requins à distance derrière eux
+--points-de-vie-requin [int]
+        default=12
+        Points de vie du requin (réduit de 1 à chaque cycle)
+--points-par-repas-requin [int]
+        default=6
+        Points de recharge par proie mangée
 ```
 
 # ▶️ Exemple d'utilisation
@@ -49,27 +84,24 @@ Wa-Tor/
 ├── poisson                # Module parent de proie et requins définissant leur logiques communes
 ├── proie.py               # Module définissant la classe proie
 ├── requin.py              # Module définissant la classe requin
-├── scenari.py             # Module définissant les différents scénarios possible
-├── installeur.py          # Script de création de l'executable
-├── tests/                 # Dossier contenant les tests unitaires
-│   ├── __init__.py        # Fichier d'initialisation des tests
-│   ├── test_monde.py      # Tests pour la logique de simulation
-│   ├── test_ocean.py      # Tests pour la logique de la grille
-│   ├── test_poisson.py    # Tests pour les classes des poissons
-│   ├── test_proie.py      # Tests pour les classes des proies
-│   └── test_requin.py     # Tests pour les classes des requins
 └── assets/                # Dossier pour les ressources (images, sons, etc.)
     └── sprites/           # Dossier pour les sprites utilisés dans pygame
 ```
 
 # 🤝👥 Membres et contributions
 
+Tout le monde a plus ou moin touché à toutes les fonctionalités mais dans les grandes lignes :
 
-Tout le monde a plus ou moin toucher à toutes les classes mais dans les grandes lignes :
-
-    Alexis : 
-
-    Florian : Gestion du monde, de l'ocean, base de l'affichage console, Pygame
-    
-    Vincent : 
-
+- Alexis
+    - Monde
+    - Ocean
+    - Poisson
+    - Proie
+    - Requin
+    - Spécificités de la version CLI
+- Florian
+    - Monde
+    - Ocean
+    - Spécificités de la version CLI,
+    - Spécificités de la version Pygame
+- Vincent 
