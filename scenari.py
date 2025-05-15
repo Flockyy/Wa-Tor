@@ -1,5 +1,3 @@
-from typing import List
-
 class Scenario:
     def __init__(self, libelle: str):
         self.__libelle = libelle
@@ -83,8 +81,7 @@ Durée de vie des requins : 25 chronon...'''
         scenario.points_par_repas_requin = 6
     
         scenario = self.ajouter_scenario('Mode infinie vague')
-        scenario.commentaires ='''
-        '''
+        scenario.commentaires =''''''
         scenario.nb_lignes = 60
         scenario.nb_colonnes = 90
         scenario.nb_proies = 900
@@ -99,8 +96,7 @@ Durée de vie des requins : 25 chronon...'''
         scenario.points_par_repas_requin = 1
 
         scenario = self.ajouter_scenario('Mode infinie brasier')
-        scenario.commentaires ='''
-        '''
+        scenario.commentaires =''''''
         scenario.nb_lignes = 60
         scenario.nb_colonnes = 90
         scenario.nb_proies = 900

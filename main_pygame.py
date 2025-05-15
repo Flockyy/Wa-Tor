@@ -8,7 +8,6 @@ from monde import Monde
 from requin import Requin
 from proie import Proie
 from ocean import Coordonnees
-from scenari import Scenari
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
@@ -62,82 +61,79 @@ def demarrer_jeu():
     global temps_reprod_requins
     global vie_par_repas_requins
     global temps_reprod_proies
-    global scenario_choisi
 
     # Choix du scénario
-    scenari = Scenari() 
-    if scenario_choisi.get_value()[0][1] == 1:
-        monde = Monde(
-            HAUTEUR, 
-            LARGEUR, 
-            round(nb_requins.get_value()), 
-            round(nb_proies.get_value()), 
-            round(temps_reprod_requins.get_value()), 
-            round(temps_reprod_proies.get_value()), 
-            1, 
-            1, 
-            True, 
-            True, 
-            round(nb_vie_requins.get_value()), 
-            round(vie_par_repas_requins.get_value())
-        )
-        pass
-    elif scenario_choisi.get_value()[0][1] == 2:
-        scenario = scenari.scenario(1)
-        monde = Monde(nb_lignes=scenario.nb_lignes,
-                      nb_colonnes=scenario.nb_colonnes,
-                      nb_requins=scenario.nb_requins,
-                      nb_proies=scenario.nb_proies,
-                      cycle_reproduction_requin=scenario.cycle_reproduction_requin,
-                      cycle_reproduction_proie=scenario.cycle_reproduction_proie,
-                      visibilite_requin=scenario.visibilite_requin,
-                      visibilite_proie=scenario.visibilite_proie,
-                      vue_arriere_requin=scenario.vue_arriere_requin,
-                      vue_arriere_proie=scenario.vue_arriere_proie,
-                      points_vie_requin=scenario.points_vie_requin,
-                      points_par_repas_requin=scenario.points_par_repas_requin)
-    elif scenario_choisi.get_value()[0][1] == 3:
-        scenario = scenari.scenario(2)
-        monde = Monde(nb_lignes=scenario.nb_lignes,
-                      nb_colonnes=scenario.nb_colonnes,
-                      nb_requins=scenario.nb_requins,
-                      nb_proies=scenario.nb_proies,
-                      cycle_reproduction_requin=scenario.cycle_reproduction_requin,
-                      cycle_reproduction_proie=scenario.cycle_reproduction_proie,
-                      visibilite_requin=scenario.visibilite_requin,
-                      visibilite_proie=scenario.visibilite_proie,
-                      vue_arriere_requin=scenario.vue_arriere_requin,
-                      vue_arriere_proie=scenario.vue_arriere_proie,
-                      points_vie_requin=scenario.points_vie_requin,
-                      points_par_repas_requin=scenario.points_par_repas_requin)
-    elif scenario_choisi.get_value()[0][1] == 4:
-        scenario = scenari.scenario(3)
-        monde = Monde(nb_lignes=scenario.nb_lignes,
-                      nb_colonnes=scenario.nb_colonnes,
-                      nb_requins=scenario.nb_requins,
-                      nb_proies=scenario.nb_proies,
-                      cycle_reproduction_requin=scenario.cycle_reproduction_requin,
-                      cycle_reproduction_proie=scenario.cycle_reproduction_proie,
-                      visibilite_requin=scenario.visibilite_requin,
-                      visibilite_proie=scenario.visibilite_proie,
-                      vue_arriere_requin=scenario.vue_arriere_requin,
-                      vue_arriere_proie=scenario.vue_arriere_proie,
-                      points_vie_requin=scenario.points_vie_requin,
-                      points_par_repas_requin=scenario.points_par_repas_requin)
-    elif scenario_choisi.get_value()[0][1] == 5:
-        scenario = scenari.scenario(4)
-        monde = Monde(nb_lignes=scenario.nb_lignes,
-                      nb_colonnes=scenario.nb_colonnes,
-                      nb_requins=scenario.nb_requins,
-                      nb_proies=scenario.nb_proies,
-                      cycle_reproduction_requin=scenario.cycle_reproduction_requin,
-                      cycle_reproduction_proie=scenario.cycle_reproduction_proie,
-                      visibilite_requin=scenario.visibilite_requin,
-                      visibilite_proie=scenario.visibilite_proie,
-                      vue_arriere_requin=scenario.vue_arriere_requin,
-                      vue_arriere_proie=scenario.vue_arriere_proie,
-                      points_vie_requin=scenario.points_vie_requin,
-                      points_par_repas_requin=scenario.points_par_repas_requin)
+    # scenari = Scenari() 
+    monde = Monde(
+        HAUTEUR, 
+        LARGEUR, 
+        round(nb_requins.get_value()), 
+        round(nb_proies.get_value()), 
+        round(temps_reprod_requins.get_value()), 
+        round(temps_reprod_proies.get_value()), 
+        1, 
+        1, 
+        True, 
+        True, 
+        round(nb_vie_requins.get_value()), 
+        round(vie_par_repas_requins.get_value())
+    )
+    # elif scenario_choisi.get_value()[0][1] == 2:
+    #     scenario = scenari.scenario(1)
+    #     monde = Monde(nb_lignes=scenario.nb_lignes,
+    #                   nb_colonnes=scenario.nb_colonnes,
+    #                   nb_requins=scenario.nb_requins,
+    #                   nb_proies=scenario.nb_proies,
+    #                   cycle_reproduction_requin=scenario.cycle_reproduction_requin,
+    #                   cycle_reproduction_proie=scenario.cycle_reproduction_proie,
+    #                   visibilite_requin=scenario.visibilite_requin,
+    #                   visibilite_proie=scenario.visibilite_proie,
+    #                   vue_arriere_requin=scenario.vue_arriere_requin,
+    #                   vue_arriere_proie=scenario.vue_arriere_proie,
+    #                   points_vie_requin=scenario.points_vie_requin,
+    #                   points_par_repas_requin=scenario.points_par_repas_requin)
+    # elif scenario_choisi.get_value()[0][1] == 3:
+    #     scenario = scenari.scenario(2)
+    #     monde = Monde(nb_lignes=scenario.nb_lignes,
+    #                   nb_colonnes=scenario.nb_colonnes,
+    #                   nb_requins=scenario.nb_requins,
+    #                   nb_proies=scenario.nb_proies,
+    #                   cycle_reproduction_requin=scenario.cycle_reproduction_requin,
+    #                   cycle_reproduction_proie=scenario.cycle_reproduction_proie,
+    #                   visibilite_requin=scenario.visibilite_requin,
+    #                   visibilite_proie=scenario.visibilite_proie,
+    #                   vue_arriere_requin=scenario.vue_arriere_requin,
+    #                   vue_arriere_proie=scenario.vue_arriere_proie,
+    #                   points_vie_requin=scenario.points_vie_requin,
+    #                   points_par_repas_requin=scenario.points_par_repas_requin)
+    # elif scenario_choisi.get_value()[0][1] == 4:
+    #     scenario = scenari.scenario(3)
+    #     monde = Monde(nb_lignes=scenario.nb_lignes,
+    #                   nb_colonnes=scenario.nb_colonnes,
+    #                   nb_requins=scenario.nb_requins,
+    #                   nb_proies=scenario.nb_proies,
+    #                   cycle_reproduction_requin=scenario.cycle_reproduction_requin,
+    #                   cycle_reproduction_proie=scenario.cycle_reproduction_proie,
+    #                   visibilite_requin=scenario.visibilite_requin,
+    #                   visibilite_proie=scenario.visibilite_proie,
+    #                   vue_arriere_requin=scenario.vue_arriere_requin,
+    #                   vue_arriere_proie=scenario.vue_arriere_proie,
+    #                   points_vie_requin=scenario.points_vie_requin,
+    #                   points_par_repas_requin=scenario.points_par_repas_requin)
+    # elif scenario_choisi.get_value()[0][1] == 5:
+    #     scenario = scenari.scenario(4)
+    #     monde = Monde(nb_lignes=scenario.nb_lignes,
+    #                   nb_colonnes=scenario.nb_colonnes,
+    #                   nb_requins=scenario.nb_requins,
+    #                   nb_proies=scenario.nb_proies,
+    #                   cycle_reproduction_requin=scenario.cycle_reproduction_requin,
+    #                   cycle_reproduction_proie=scenario.cycle_reproduction_proie,
+    #                   visibilite_requin=scenario.visibilite_requin,
+    #                   visibilite_proie=scenario.visibilite_proie,
+    #                   vue_arriere_requin=scenario.vue_arriere_requin,
+    #                   vue_arriere_proie=scenario.vue_arriere_proie,
+    #                   points_vie_requin=scenario.points_vie_requin,
+    #                   points_par_repas_requin=scenario.points_par_repas_requin)
 
     if plein_ecran.get_value()[0][1] == 'PE':
         ecran = pygame.display.set_mode(resolution.get_value()[0][1], pygame.FULLSCREEN)
@@ -156,7 +152,7 @@ def demarrer_jeu():
         for evenement in pygame.event.get():
             
             if evenement.type == pygame.QUIT:
-                exit()
+                pygame.quit()
                 
             if evenement.type == pygame.KEYDOWN and evenement.key == pygame.K_F1:
                 # Activer/désactiver le mode plein écran
@@ -272,7 +268,7 @@ temps_reprod_proies = menu4.add.range_slider('Temps de reproduction des proies :
 # Paramètres du jeu
 plein_ecran = menu2.add.dropselect('Affichage :', [('Plein ecran', 'PE'), ('Fenetre', 'F'), ('Plein ecran fenetre', 'PEF')], default=2)
 resolution = menu2.add.dropselect('Resolution :', [('1920x1080', (1920, 1080)), ('1280x720', (1280, 720)), ('900x600', (900, 600))], default=1)
-scenario_choisi = menu2.add.dropselect('Scenario :', [('Bac a sable', 1), ('Fugitif', 2), ('Rambo', 3), ('Infinie : vague', 4), ('Infinie : brasier', 5)], default=0)
+# scenario_choisi = menu2.add.dropselect('Scenario :', [('Bac a sable', 1), ('Fugitif', 2), ('Rambo', 3), ('Infinie : vague', 4), ('Infinie : brasier', 5)], default=0)
 nb_requins = menu2.add.range_slider('Nombre de requins :', default=400, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
 nb_proies = menu2.add.range_slider('Nombre de proies :', default=600, range_values=(1,1000), increment=1, value_format=lambda x: f"{x:.0f}")
 nb_chronons = menu2.add.range_slider('Nombre de chronons :', default=1000, range_values=(1,10000), increment=1, value_format=lambda x: f"{x:.0f}")
@@ -293,7 +289,6 @@ while lancer:
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
-            exit()
     
     if menu.is_enabled():
         menu.mainloop(ecran)
