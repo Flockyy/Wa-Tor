@@ -60,9 +60,13 @@ class Proie(Poisson):
             if self._ocean.coordonnees_libres(self._ocean.deplacer_coordonnees(coordonnees, direction)):
                 coordonnees_testees = self._ocean.deplacer_coordonnees(coordonnees, direction)
                 if self._ocean.coordonnees_libres(coordonnees_testees):
-                    if not self._ocean.coordonnes_jouxtent_objet(coordonnees_testees, "Requin"):
-                        direction_choisie = direction
-                        break
+                    if self.visibilite == 1:
+                        direction_choisie = direction # mode miro : si un requin se trouve juste à côté, la proie ne le voit pas.
+                        break 
+                    else:
+                        if not self._ocean.coordonnes_jouxtent_objet(coordonnees_testees, "Requin"):
+                            direction_choisie = direction
+                            break
 
         # Si direction_choisie == Direction.Aucune
         # alors cela signifie que la proie est complètement entourée,
