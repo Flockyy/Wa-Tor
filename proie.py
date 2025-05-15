@@ -13,14 +13,48 @@ class Proie(Poisson):
         cycle_reproduction (int): 8 par défaut. Nombre de cycle entre chaque reproduction.
     """
     def __init__(self, ocean: Ocean, cycle_reproduction: int = 8, visibilite: int = 2, vue_arriere: bool = True):
+        """Initialise une instance de poisson avec ses paramètres.
+
+        Args:
+            ocean (Ocean): _description_
+            cycle_reproduction (int, optional): _description_. Defaults to 8.
+            visibilite (int, optional): _description_. Defaults to 2.
+            vue_arriere (bool, optional): _description_. Defaults to True.
+        """
         super().__init__(ocean, cycle_reproduction, visibilite, vue_arriere)
-    def __str__(self):
+
+    def __str__(self) -> str:
+        """Retourne une représentation textuelle de l'objet Proie
+
+        Returns:
+            str: Description indiquant le cycle de reproduction des proies
+        """
         return f"Proie ayant un cycle de reproduction de {self.cycle_reproduction} tours"
     def caractere_symbole(self)-> str:
+        """Retourne le caractère représentant une proie
+
+        Returns:
+            str: Le caractère utilisé pour identifier la proie
+        """
         return "o"
     def _nouvelle_instance(self):
+        """Crée une nouvelle instance de la class proie avec les mêmes paramètres. Cette méthode est utilisée
+        lors de la reproduction pour génèrer un nouvel individu
+
+        Returns:
+            Proie: Une nouvelle instance de proie avec les mêmes paramètres
+
+        """
         return Proie(self._ocean, self.cycle_reproduction, self.visibilite, self.vue_arriere)
     def executer_cycle(self, coordonnees: Coordonnees)-> None:
+        """Execute un cycle de vie pour la proie à une position donnée
+
+        Args:
+            coordonnees (Coordonnees): Position actuelle de la proie sur la grille
+            
+        Returns:
+            None
+        """
         super().executer_cycle(coordonnees)
         # Note : pas de gestion du viellissement de la proie (selon la doc).
         #        Si on décide de la gérer, alors il faut déplacer la gestion du viuellissement de Requin vers Poisson.

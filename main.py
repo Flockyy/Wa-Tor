@@ -30,7 +30,8 @@ def demander_choix_menu(liste_choix: list) -> int:
         print("Numéro non reconnu.")
     
 def parse_args():
-    """Parse les arguments de la ligne de commande."""
+    """Analyse les arguments de la ligne de commande pour configurer la simulation Wa-Tor."""
+    
     parser = argparse.ArgumentParser(description="Wa-tor simulation")
     #parser.add_argument(
     #    "--menu",
@@ -132,6 +133,27 @@ def lancer(
         visibilite_requin: int, visibilite_proie: int,
         vue_arriere_requin: bool, vue_arriere_proie: bool,
         points_de_vie_requin: int, points_par_repas_requin: int):
+    """Lance la simulation du modèle Wa-Tor.
+    Initialise le monde avec les dimensions et paramètres données, en mode automatique
+    ou manuel (avec validatien de l'utilisateur entre chaque cycle (un cycle représente une itération complète
+    de déplacement et reproduction pour les poissons))
+
+    Args:
+        automatique (bool): Si True, le cycle s'execute automatiquement sans interruption.
+        nb_cycles (int): Nombre de cycle à executer
+        hauteur (int): Nombre de lignes de la grille 
+        largeur (int): Nombre de colonnes de la grille
+        nb_requin (int): Nombre initial de requins
+        nb_proie (int): Nombre initial de proies
+        cycle_reproduction_requin (int): Nombre de cycle avant qu'un requin puisse se reproduire
+        cycle_reproduction_proie (int): Nombre de cycle avant qu'une proie puisse se reproduire
+        visibilite_requin (int): Portée de la vision des requins
+        visibilite_proie (int): Portée de la vision des proies
+        vue_arriere_requin (bool): Si True, les requins peuvent voir derrière eux
+        vue_arriere_proie (bool): Si True, les proies peuvent voir derrière eux
+        points_de_vie_requin (int): Nombre de cycle qu'un requin peut survivre sans manger
+        points_par_repas_requin (int): Point de vie récupérée par les requins en mangeant
+    """
     #if ((hauteur == -1) or (largeur == -1)):
     #    with shutil.get_terminal_size() as dimensions:
     #        if hauteur == -1:
@@ -202,6 +224,15 @@ def lancer(
     print("Simulation terminée.")
 
 def selection_scenario(scenario: Scenario)-> None:
+    """Permet de choisir un scénario prédéfini et de lancer la simulation associée
+
+    Args:
+        scenario (Scenario): Scénario contenant les paramètres prédéfinis (taille de la grille,
+        nombre de requins/proie, cycle de reproduction, ...)
+
+    Returns:
+        None
+    """
     print(f"Scenario sélectionné : {scenario.libelle}")
     print("Commentaires :")
     print(scenario.commentaires)
@@ -221,6 +252,13 @@ def selection_scenario(scenario: Scenario)-> None:
         return
 
 def main():
+    """Point d'entrée principal du programme.
+    Récupère les arguments de la ligne de commande à l'aide de la fonction parse_args()
+    et lance la simulation en appelant la fonction lancer() avec les paramètres fournis.
+
+    Returns:
+        None
+    """
     #if (args.menu == "OUI"):
     #    scenari = Scenari()
     #    print("Bienvenue dans WA-TOR !")
