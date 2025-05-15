@@ -6,7 +6,7 @@ import argparse
 from ocean import Coordonnees
 from scenari import Scenario
 
-MODE_DEBUG = False  # ça marche pas. (getattr(sys, 'gettrace', None) is not None)
+MODE_DEBUG = False  # (getattr(sys, 'gettrace', None) is not None)
 
 def demander_choix_menu(liste_choix: list) -> int:
     """
