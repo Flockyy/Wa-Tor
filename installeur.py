@@ -10,5 +10,5 @@ setup(
             "packages": ["pygame", "pygame_menu"],
         }
     },
-    include_files=["assets/bg.png", "assets/music.mp3", "assets/music2.mp3"]
+    include_files=["assets/bg.png", "assets/music.mp3", "assets/music2.mp3"],
 )

@@ -1,6 +1,3 @@
-# filename: monde.py
-# Wa-tor grid and simulation
-
 import random
 from typing import List
 from proie import Proie
@@ -15,13 +12,21 @@ class Monde:
     placement de proies et de requins.
     """
 
-    def __init__(self, nb_lignes: int, nb_colonnes: int,
-                 nb_requins: int, nb_proies: int,
-                 cycle_reproduction_requin: int, cycle_reproduction_proie: int,
-                 visibilite_requin: int, visibilite_proie: int,
-                 vue_arriere_requin: bool, vue_arriere_proie: bool,
-                 points_vie_requin: int,
-                 points_par_repas_requin: int):
+    def __init__(
+        self,
+        nb_lignes: int,
+        nb_colonnes: int,
+        nb_requins: int,
+        nb_proies: int,
+        cycle_reproduction_requin: int,
+        cycle_reproduction_proie: int,
+        visibilite_requin: int,
+        visibilite_proie: int,
+        vue_arriere_requin: bool,
+        vue_arriere_proie: bool,
+        points_vie_requin: int,
+        points_par_repas_requin: int,
+    ):
         """Initialise le monde avec une grille de la taille donnée.
 
         Args:
@@ -42,27 +47,47 @@ class Monde:
         self.__points_par_repas_requin = points_par_repas_requin
         self.__ocean = Ocean(nb_lignes, nb_colonnes)
         self.__numero_chronon = 0
-        proie = [Proie(self.ocean, self.__cycle_reproduction_proie, self.__visibilite_proie, self.__vue_arriere_proie) for _ in range(self.__nb_proies)]
-        requins = [Requin(self.ocean, self.__cycle_reproduction_requin, self.__visibilite_requin, self.__vue_arriere_requin, self.__points_vie_requin, self.__points_par_repas_requin) for _ in range(self.__nb_requins)]
+        proie = [
+            Proie(
+                self.ocean,
+                self.__cycle_reproduction_proie,
+                self.__visibilite_proie,
+                self.__vue_arriere_proie,
+            )
+            for _ in range(self.__nb_proies)
+        ]
+        requins = [
+            Requin(
+                self.ocean,
+                self.__cycle_reproduction_requin,
+                self.__visibilite_requin,
+                self.__vue_arriere_requin,
+                self.__points_vie_requin,
+                self.__points_par_repas_requin,
+            )
+            for _ in range(self.__nb_requins)
+        ]
         self.placer_poissons_aleatoirement(proie, requins)
 
     @property
     def nb_lignes(self):
         return self.__nb_lignes
-    
+
     @property
     def nb_colonnes(self):
         return self.__nb_colonnes
-    
+
     @property
     def numero_chronon(self):
         return self.__numero_chronon
-    
+
     @property
-    def ocean(self)-> Ocean:
+    def ocean(self) -> Ocean:
         return self.__ocean
 
-    def placer_poissons_aleatoirement(self, proies: List[object], requins: List[object]):
+    def placer_poissons_aleatoirement(
+        self, proies: List[object], requins: List[object]
+    ):
         """Place une liste de proies et de requins dans la grille.
         Cette méthode place les proies et les requins dans la grille à des positions aléatoires.
         Si une position est déjà occupée, une nouvelle position est tirée jusqu'à trouver une cellule vide.
@@ -106,9 +131,9 @@ class Monde:
             coordonnees = Coordonnees(ligne, colonne)
             if self.ocean.valeur_coordonnees(coordonnees) is None:
                 return coordonnees
-            
-    def executer_cycle(self)-> None:
-        """Exécution d'un cycle pour l'ensemble des poissons. 
+
+    def executer_cycle(self) -> None:
+        """Exécution d'un cycle pour l'ensemble des poissons.
         Le cycle se déroule en deux phases:
         1. Les requins sont traités en premier, dans l’ordre de parcours de la grille. Ils peuvent se déplacer, se reproduire ou manger une proie.
         2. Les proies survivantes (ou nouvelles) sont ensuite traitées.
@@ -116,26 +141,32 @@ class Monde:
         Returns:
             None
         """
-        liste_poissons = [] # on récupère dans l'ordre les requins puis les proies…
+        liste_poissons = []  # on récupère dans l'ordre les requins puis les proies…
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Requin):
-                    liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
+                    liste_poissons.append(
+                        {"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)}
+                    )
         for poisson in liste_poissons:
             poisson["instance"].executer_cycle(poisson["coordonnes"])
-        liste_poissons = [] # les requins ont peut-être mangé... on passe la main aux proies survivantes.
+        liste_poissons = (
+            []
+        )  # les requins ont peut-être mangé... on passe la main aux proies survivantes.
         for ligne in range(self.nb_lignes):
             for colonne in range(self.nb_colonnes):
                 coordonnees = Coordonnees(ligne, colonne)
                 poisson = self.ocean.valeur_coordonnees(coordonnees)
                 if isinstance(poisson, Proie):
-                    liste_poissons.append({"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)})
+                    liste_poissons.append(
+                        {"instance": poisson, "coordonnes": Coordonnees(ligne, colonne)}
+                    )
         for poisson in liste_poissons:
             poisson["instance"].executer_cycle(poisson["coordonnes"])
 
-    #def liste_scenarii
+    # def liste_scenarii
 
     def __repr__(self):
         """Retourne une représentation textuelle du monde."""
