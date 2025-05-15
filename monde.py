@@ -65,6 +65,11 @@ class Monde:
     def placer_poissons_aleatoirement(self, proies: List[object], requins: List[object]):
         """Place une liste de proies et de requins dans la grille.
         Cette méthode place les proies et les requins dans la grille à des positions aléatoires.
+        Si une position est déjà occupée, une nouvelle position est tirée jusqu'à trouver une cellule vide.
+
+        Args:
+            proies (List[object]): Liste d'objets de type Proie à placer dans la grille.
+            requins (List[object]): Liste d'objets de type Requin à placer dans la grille.
         """
         if not isinstance(proies, list):
             raise TypeError("Les proies doivent être une liste")
@@ -89,8 +94,8 @@ class Monde:
                 coordonnees = self._get_random_empty_cell()
             self.ocean.placer_requin(requin, coordonnees)
 
-    def _get_random_empty_cell(self):
-        """Retourne une cellule vide aléatoire dans la grille.
+    def _get_random_empty_cell(self) -> tuple:
+        """Génère des coordonnées aléatoires jusqu'à trouver une cellule vide (non occupée) dans la grille de l'océan.
 
         Returns:
             tuple: Coordonnées (i, j) de la cellule vide.
@@ -103,7 +108,10 @@ class Monde:
                 return coordonnees
             
     def executer_cycle(self)-> None:
-        """Exécution d'un cycle pour l'ensemble des poissons
+        """Exécution d'un cycle pour l'ensemble des poissons. 
+        Le cycle se déroule en deux phases:
+        1. Les requins sont traités en premier, dans l’ordre de parcours de la grille. Ils peuvent se déplacer, se reproduire ou manger une proie.
+        2. Les proies survivantes (ou nouvelles) sont ensuite traitées.
 
         Returns:
             None

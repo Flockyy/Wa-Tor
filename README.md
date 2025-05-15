@@ -105,3 +105,8 @@ Tout le monde a plus ou moin touché à toutes les fonctionalités mais dans les
     - Spécificités de la version CLI,
     - Spécificités de la version Pygame
 - Vincent 
+    - Poisson
+    - Proie
+    - Requin
+    - Monde
+

@@ -1,4 +1,6 @@
 class Scenario:
+    """Représente un scénario de simulation pour Wa-Tor
+    """
     def __init__(self, libelle: str):
         self.__libelle = libelle
         self.commentaires = ""
@@ -20,6 +22,8 @@ class Scenario:
         return self.__libelle
 
 class Scenari:
+    """Gère un ensemble de scénarios prédéfinis pour Wa-Tor
+    """
     def __init__(self):
         self.__liste_scenari = []
 
@@ -115,12 +119,33 @@ Durée de vie des requins : 25 chronon...'''
         return self.__liste_scenari
     
     def liste_libelles(self)-> list:
+        """Retourne la liste des libellés de tous les scénarios
+
+        Returns:
+            list: Liste contenant les noms des différents scénarios ajouté à l'objet Scenari
+        """
         return [scenario.libelle for scenario in self.__liste_scenari]
     
     def scenario(self, numero_scenario: int)-> Scenario:
+        """Retourne un scénario en fonction de son indice dans la liste
+
+        Args:
+            numero_scenario (int): L'indice du scénario à récupérer
+
+        Returns:
+            Scenario: Le scénario correspondant à l'indice donnée
+        """
         return self.liste_scenari[numero_scenario]
 
     def ajouter_scenario(self, libelle: str)-> Scenario:
+        """Crée un nouveau scénario avec le libellé donné et l'ajoute à la liste des scénarios
+
+        Args:
+            libelle (str): Le nom du scénario à créer
+
+        Returns:
+            Scenario: L'objet Scenario nouvellement crée et ajouté à la liste
+        """
         scenario = Scenario(libelle)
         self.__liste_scenari.append(scenario)
         return scenario
