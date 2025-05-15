@@ -1,11 +1,11 @@
 class Scenario:
-    """Représente un scénario de simulation pour Wa-Tor
-    """
+    """Représente un scénario de simulation pour Wa-Tor"""
+
     def __init__(self, libelle: str):
         self.__libelle = libelle
         self.commentaires = ""
         self.nb_lignes = 0
-        self.nb_colonnes = 0 
+        self.nb_colonnes = 0
         self.nb_requins = 0
         self.nb_proies = 0
         self.cycle_reproduction_requin = 0
@@ -16,22 +16,23 @@ class Scenario:
         self.vue_arriere_proie = False
         self.points_vie_requin = 0
         self.points_par_repas_requin = 0
-    
+
     @property
-    def libelle(self)-> str:
+    def libelle(self) -> str:
         return self.__libelle
 
+
 class Scenari:
-    """Gère un ensemble de scénarios prédéfinis pour Wa-Tor
-    """
+    """Gère un ensemble de scénarios prédéfinis pour Wa-Tor"""
+
     def __init__(self):
         self.__liste_scenari = []
 
         # Scenario par défaut
-        scenario = self.ajouter_scenario('Scenario par défaut')
-        scenario.commentaires ='''
+        scenario = self.ajouter_scenario("Scenario par défaut")
+        scenario.commentaires = """
 Un océan de 30x30 avec des valeurs par défaut.
-Les requins et les proies n'ont aucune visibilité : ils ne détectent que les poissons à côté d\'eux !'''
+Les requins et les proies n'ont aucune visibilité : ils ne détectent que les poissons à côté d\'eux !"""
         scenario.nb_lignes = 30
         scenario.nb_colonnes = 30
         scenario.nb_proies = 40
@@ -46,11 +47,11 @@ Les requins et les proies n'ont aucune visibilité : ils ne détectent que les p
         scenario.points_par_repas_requin = 6
 
         # Scenario Chasse au fugitif
-        scenario = self.ajouter_scenario('Chasse au fugitif')
-        scenario.commentaires ='''
+        scenario = self.ajouter_scenario("Chasse au fugitif")
+        scenario.commentaires = """
 Une proie rescapée se retrouve chassée par 15 requins à la vue affûtée et à la grande endurance !
 La proie saura-t-elle capable de survivre jusqu'à la mort des chasseurs ?
-Durée de vie des requins : 25 chronon...'''
+Durée de vie des requins : 25 chronon..."""
         scenario.nb_lignes = 30
         scenario.nb_colonnes = 30
         scenario.nb_proies = 1
@@ -65,12 +66,12 @@ Durée de vie des requins : 25 chronon...'''
         scenario.points_par_repas_requin = 6
 
         # Scenario Rambo
-        scenario = self.ajouter_scenario('Rambo s\'évade !')
-        scenario.commentaires ='''
+        scenario = self.ajouter_scenario("Rambo s'évade !")
+        scenario.commentaires = """
 Comme pour dans le scenario "Chasse au fugitif", une proie rescapée se retrouve chassée...
 C'est contre 4 requins à la vue affûtée et à la grande endurance qu'il faudra survivre !
 Mais cette fois, la proie a la vue aussi affûtée que celle des requins... Rambo saura-t-il s'en sortir ?
-Durée de vie des requins : 25 chronon...'''
+Durée de vie des requins : 25 chronon..."""
         scenario.nb_lignes = 30
         scenario.nb_colonnes = 30
         scenario.nb_proies = 1
@@ -83,9 +84,9 @@ Durée de vie des requins : 25 chronon...'''
         scenario.vue_arriere_proie = True
         scenario.points_vie_requin = 25
         scenario.points_par_repas_requin = 6
-    
-        scenario = self.ajouter_scenario('Mode infinie vague')
-        scenario.commentaires =''''''
+
+        scenario = self.ajouter_scenario("Mode infinie vague")
+        scenario.commentaires = """"""
         scenario.nb_lignes = 60
         scenario.nb_colonnes = 90
         scenario.nb_proies = 900
@@ -99,8 +100,8 @@ Durée de vie des requins : 25 chronon...'''
         scenario.points_vie_requin = 12
         scenario.points_par_repas_requin = 1
 
-        scenario = self.ajouter_scenario('Mode infinie brasier')
-        scenario.commentaires =''''''
+        scenario = self.ajouter_scenario("Mode infinie brasier")
+        scenario.commentaires = """"""
         scenario.nb_lignes = 60
         scenario.nb_colonnes = 90
         scenario.nb_proies = 900
@@ -113,20 +114,20 @@ Durée de vie des requins : 25 chronon...'''
         scenario.vue_arriere_proie = True
         scenario.points_vie_requin = 12
         scenario.points_par_repas_requin = 2
-        
+
     @property
-    def liste_scenari(self)-> list[Scenario]:
+    def liste_scenari(self) -> list[Scenario]:
         return self.__liste_scenari
-    
-    def liste_libelles(self)-> list:
+
+    def liste_libelles(self) -> list:
         """Retourne la liste des libellés de tous les scénarios
 
         Returns:
             list: Liste contenant les noms des différents scénarios ajouté à l'objet Scenari
         """
         return [scenario.libelle for scenario in self.__liste_scenari]
-    
-    def scenario(self, numero_scenario: int)-> Scenario:
+
+    def scenario(self, numero_scenario: int) -> Scenario:
         """Retourne un scénario en fonction de son indice dans la liste
 
         Args:
@@ -137,7 +138,7 @@ Durée de vie des requins : 25 chronon...'''
         """
         return self.liste_scenari[numero_scenario]
 
-    def ajouter_scenario(self, libelle: str)-> Scenario:
+    def ajouter_scenario(self, libelle: str) -> Scenario:
         """Crée un nouveau scénario avec le libellé donné et l'ajoute à la liste des scénarios
 
         Args:

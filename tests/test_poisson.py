@@ -2,6 +2,7 @@ from poisson import Poisson
 from proie import Proie
 from requin import Requin
 
+
 def test_poisson():
     """Test de la classe Poisson."""
     le_poisson = Poisson(10)
